@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Valkyrie Nexus Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="compact-layout.css">
+  <link rel="stylesheet" href="layout-polish.css">
+  <link rel="stylesheet" href="ui-v3.css">
+  <link rel="stylesheet" href="ui-v4.css">
+  <link rel="stylesheet" href="ui-v4-patch.css">
+  <link rel="stylesheet" href="ui-v5.css">
+  <link rel="stylesheet" href="ui-v6.css">
+  <link rel="stylesheet" href="ui-v7.css">
+  <link rel="stylesheet" href="ui-v8.css">
+  <link rel="stylesheet" href="ui-v9.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="header-brand">
+      <div class="eyebrow">VALKYRIE NEXUS RESEARCH</div>
+      <h1>カードプール & デッキ研究</h1>
+      <p id="updatedText" class="muted">データ読込中…</p>
+      <nav class="header-tabs" aria-label="主要画面">
+        <button class="tab active" data-tab="cards" type="button">カード一覧</button>
+        <button class="tab" data-tab="decks" type="button">デッキ構築</button>
+        <button class="tab" data-tab="pulls" type="button">開封統計</button>
+      </nav>
+    </div>
+    <div id="summaryCards" class="summary-grid"></div>
+  </header>
+
+  <main>
+    <section id="cardsPanel" class="panel active">
+      <div class="cards-workspace">
+        <div class="cards-main">
+          <div id="cardsGallery" class="card-gallery" aria-live="polite"></div>
+
+          <div id="cardsTableView" class="table-wrap card-table-view" hidden>
+            <table>
+              <thead><tr><th>画像</th><th>No.</th><th>カード</th><th>Rarity</th><th>種別</th><th>Cost</th><th>ATK/HP</th><th>所持</th><th>キーワード</th><th>効果</th></tr></thead>
+              <tbody id="cardsBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <aside id="quickDeck" class="quick-deck" aria-label="簡易デッキビルダー">
+          <div class="quick-deck-head">
+            <div class="quick-deck-title-row">
+              <strong>デッキ構築</strong>
+              <span id="quickDeckCount" class="quick-deck-count">0 / 30枚</span>
+            </div>
+            <div class="quick-deck-actions">
+              <button id="quickDeckClear" type="button">クリア</button>
+              <button id="quickDeckOpen" class="primary" type="button">デッキ構築タブへ</button>
+            </div>
+          </div>
+          <div id="quickDeckList" class="quick-deck-list">
+            <div class="quick-deck-empty">カード左下の＋で追加<br>D&amp;Dでデッキへ追加</div>
+          </div>
+          <div id="quickDeckTrash" class="quick-deck-trash">ここへドロップでカードを外す</div>
+          <div class="quick-deck-foot">
+            <span id="quickDeckUnique">0種</span>
+            <span>Cost順 / 各3枚・合計30枚まで</span>
+          </div>
+        </aside>
+      </div>
+
+      <footer class="card-control-footer" aria-label="カード一覧操作">
+        <div class="footer-filter-row">
+          <input id="searchInput" type="search" placeholder="カード名・効果・キーワードを検索" aria-label="カード検索">
+
+          <fieldset id="typeFilter" class="filter-multi type-multi" aria-label="種類で絞り込む">
+            <label><input type="checkbox" name="type" value="ユニット" checked><span>ミニオン</span></label>
+            <label><input type="checkbox" name="type" value="アーツ" checked><span>スペル</span></label>
+          </fieldset>
+
+          <fieldset id="rarityFilter" class="rarity-multi" aria-label="レアリティで絞り込む">
+            <label class="rarity-check rarity-N"><input type="checkbox" name="rarity" value="N" checked><span>N</span></label>
+            <label class="rarity-check rarity-R"><input type="checkbox" name="rarity" value="R" checked><span>R</span></label>
+            <label class="rarity-check rarity-SR"><input type="checkbox" name="rarity" value="SR" checked><span>SR</span></label>
+            <label class="rarity-check rarity-UR"><input type="checkbox" name="rarity" value="UR" checked><span>UR</span></label>
+          </fieldset>
+
+          <div id="effectFilterWrap" class="effect-filter-wrap">
+            <button id="effectFilterButton" class="effect-filter-button" type="button">効果 <span id="effectFilterCount" class="effect-filter-count"></span></button>
+            <div id="effectFilterPanel" class="effect-filter-panel" aria-label="効果で絞り込む"></div>
+          </div>
+
+          <select id="ownedFilter" aria-label="所持状態">
+            <option value="">所持/未所持すべて</option>
+            <option value="owned">所持のみ</option>
+            <option value="missing">未所持のみ</option>
+          </select>
+
+          <select id="sortSelect" aria-label="並び順">
+            <option value="id">No.順</option>
+            <option value="cost">コスト順</option>
+            <option value="rarity">レアリティ順</option>
+            <option value="count">所持枚数順</option>
+          </select>
+
+          <div class="view-switch" role="group" aria-label="表示形式">
+            <button id="thumbnailViewBtn" class="view-button active" data-view="thumbnail" type="button" aria-pressed="true">▦ サムネイル</button>
+            <button id="detailViewBtn" class="view-button" data-view="detail" type="button" aria-pressed="false">☷ 詳細</button>
+          </div>
+        </div>
+
+        <div class="footer-stat-filter-row">
+          <span class="filter-group-label">ゲーム内フィルター準拠</span>
+
+          <fieldset id="costFilter" class="stat-filter-group" aria-label="コストで絞り込む">
+            <legend>Cost</legend><span class="filter-group-label">Cost</span>
+            <label class="edge"><input type="checkbox" value="le1" checked><span>1以下</span></label>
+            <label><input type="checkbox" value="2" checked><span>2</span></label><label><input type="checkbox" value="3" checked><span>3</span></label>
+            <label><input type="checkbox" value="4" checked><span>4</span></label><label><input type="checkbox" value="5" checked><span>5</span></label>
+            <label><input type="checkbox" value="6" checked><span>6</span></label><label class="edge"><input type="checkbox" value="ge7" checked><span>7以上</span></label>
+          </fieldset>
+
+          <fieldset id="atkFilter" class="stat-filter-group" aria-label="ATKで絞り込む">
+            <legend>ATK</legend><span class="filter-group-label">ATK</span>
+            <label class="edge"><input type="checkbox" value="le1" checked><span>1以下</span></label>
+            <label><input type="checkbox" value="2" checked><span>2</span></label><label><input type="checkbox" value="3" checked><span>3</span></label>
+            <label><input type="checkbox" value="4" checked><span>4</span></label><label><input type="checkbox" value="5" checked><span>5</span></label>
+            <label><input type="checkbox" value="6" checked><span>6</span></label><label><input type="checkbox" value="7" checked><span>7</span></label>
+            <label><input type="checkbox" value="8" checked><span>8</span></label><label><input type="checkbox" value="9" checked><span>9</span></label>
+            <label class="edge"><input type="checkbox" value="ge10" checked><span>10以上</span></label>
+          </fieldset>
+
+          <fieldset id="hpFilter" class="stat-filter-group" aria-label="HPで絞り込む">
+            <legend>HP</legend><span class="filter-group-label">HP</span>
+            <label class="edge"><input type="checkbox" value="le1" checked><span>1以下</span></label>
+            <label><input type="checkbox" value="2" checked><span>2</span></label><label><input type="checkbox" value="3" checked><span>3</span></label>
+            <label><input type="checkbox" value="4" checked><span>4</span></label><label><input type="checkbox" value="5" checked><span>5</span></label>
+            <label><input type="checkbox" value="6" checked><span>6</span></label><label><input type="checkbox" value="7" checked><span>7</span></label>
+            <label><input type="checkbox" value="8" checked><span>8</span></label><label><input type="checkbox" value="9" checked><span>9</span></label>
+            <label class="edge"><input type="checkbox" value="ge10" checked><span>10以上</span></label>
+          </fieldset>
+        </div>
+
+        <div class="footer-status-row">
+          <div id="cardCount" class="section-note"></div>
+          <div class="section-note view-hint">効果はホバー/クリックでチェック / ＋またはD&amp;Dでデッキ追加 / クリックで元画像と詳細</div>
+        </div>
+      </footer>
+    </section>
+
+    <section id="decksPanel" class="panel">
+      <div id="draftDeckPanel" class="draft-deck-card" hidden></div>
+      <div class="deck-intro">
+        <strong>現在の推奨案</strong>
+        <span>ゲーム内一次情報と現在の所持プールを基準にした作業仮説。実戦結果に応じて更新する。</span>
+      </div>
+      <div id="decksContainer" class="deck-grid"></div>
+    </section>
+
+    <section id="pullsPanel" class="panel">
+      <div id="pullStats" class="stats-grid"></div>
+      <div id="pullCharts"></div>
+      <div class="table-wrap compact">
+        <table>
+          <thead><tr><th>開封</th><th>日時</th><th>N</th><th>R</th><th>SR</th><th>UR</th><th>NEW</th><th>Dust</th></tr></thead>
+          <tbody id="pullsBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="cardModal" class="modal" hidden>
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="カード詳細">
+      <button class="modal-close" type="button" data-modal-close aria-label="閉じる">×</button>
+      <div id="cardModalBody"></div>
+    </div>
+  </div>
+
+  <footer class="source-footer">Source of truth: GitHub repository data/*.csv / decks/*.csv</footer>
+  <script src="snapshot.js"></script>
+  <script src="card-sprite.js"></script>
+  <script src="generated-card-images-manifest.js"></script>
+  <script src="app.js"></script>
+  <script src="card-images-hq.js"></script>
+  <script src="quick-deck.js"></script>
+  <script src="quick-deck-polish.js"></script>
+  <script src="ui-v3.js"></script>
+  <script src="pack-rates.js"></script>
+  <script src="ui-v4.js"></script>
+  <script src="ui-v4-patch.js"></script>
+  <script src="ui-v5.js"></script>
+  <script src="ui-v6.js"></script>
+  <script src="ui-v7.js"></script>
+  <script src="ui-v8.js"></script>
+  <script src="ui-v9.js"></script>
+</body>
+</html>

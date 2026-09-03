@@ -1,0 +1,218 @@
+/* V8: official-card geometry baseline, cleaner stat footer, game-like modal stats. */
+
+/* The confirmed card-art frame in the game is effectively 2:3.  Use that
+   geometry everywhere so canonical screenshots do not inherit the taller
+   legacy atlas viewport. */
+:root{--vn-card-aspect:2/3}
+
+/* ---------- Footer: compact controls, grouped from the left ---------- */
+.card-control-footer{
+  padding:8px 10px 8px!important;
+  min-height:90px!important;
+}
+.footer-filter-row{
+  min-height:32px!important;
+  margin-bottom:7px!important;
+}
+.footer-stat-filter-row{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  justify-content:flex-start!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-height:32px!important;
+  margin:0!important;
+}
+.footer-stat-filter-row>.filter-group-label{display:none!important}
+.footer-status-row{padding-top:5px!important;min-height:12px!important}
+.stat-filter-group{
+  flex:0 0 auto!important;
+  width:max-content!important;
+  min-width:0!important;
+  height:31px!important;
+  min-height:31px!important;
+  padding:2px 4px!important;
+  gap:1px!important;
+  border-radius:6px!important;
+}
+.stat-filter-group>label{margin:0!important}
+.stat-filter-group>label>span{
+  min-width:24px!important;
+  height:24px!important;
+  min-height:24px!important;
+  padding:0 5px!important;
+  border-radius:4px!important;
+  font-size:9px!important;
+}
+.stat-filter-group>label.edge>span{min-width:34px!important}
+.stat-filter-group>.filter-group-label{
+  min-width:32px!important;
+  height:24px!important;
+  margin-right:2px!important;
+  padding:0 4px!important;
+  justify-content:flex-start!important;
+  font-weight:900!important;
+  font-size:9px!important;
+}
+
+/* Follow the game's card-stat color language: Cost green, ATK blue, HP red. */
+#costFilter{border-color:#2d6d56!important;background:#101f1d!important}
+#costFilter>.filter-group-label{color:#65d7a0!important}
+#costFilter label>span{border-color:#284f46!important;color:#bfe9d8!important}
+#costFilter label input:checked+span{background:#174b3b!important;border-color:#4ab98d!important;color:#e2fff4!important}
+
+#atkFilter{border-color:#325f8f!important;background:#101b2a!important}
+#atkFilter>.filter-group-label{color:#67b8ff!important}
+#atkFilter label>span{border-color:#294c70!important;color:#c6ddf5!important}
+#atkFilter label input:checked+span{background:#17466e!important;border-color:#5ca8e8!important;color:#e6f5ff!important}
+
+#hpFilter{border-color:#7a3b48!important;background:#251518!important}
+#hpFilter>.filter-group-label{color:#ff8795!important}
+#hpFilter label>span{border-color:#60313b!important;color:#f0c7cc!important}
+#hpFilter label input:checked+span{background:#652c38!important;border-color:#d66576!important;color:#fff0f2!important}
+
+main{padding-bottom:104px!important}
+
+/* ---------- One official 2:3 card-art geometry everywhere ---------- */
+.card-art.gallery,
+.card-art.thumb,
+.card-art.original{
+  aspect-ratio:var(--vn-card-aspect)!important;
+  background-color:#080b14!important;
+  background-repeat:no-repeat!important;
+  background-position:center center!important;
+}
+.card-art.gallery>img,
+.card-art.thumb>img,
+.card-art.original>img,
+.deck-copy-card .card-art.gallery>img,
+.draft-mini-card .card-art.gallery>img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+}
+.card-art.thumb{width:40px!important;height:auto!important;border-radius:5px!important}
+.quick-deck-thumb .card-art.thumb{width:28px!important;height:auto!important;aspect-ratio:var(--vn-card-aspect)!important}
+.draft-deck-item .card-art.thumb{width:32px!important;height:auto!important;aspect-ratio:var(--vn-card-aspect)!important}
+.tile-art-shell{aspect-ratio:var(--vn-card-aspect)!important;background:#080b14!important}
+.card-tile .card-art.gallery{height:100%!important}
+.deck-copy-card,.draft-mini-card{aspect-ratio:var(--vn-card-aspect)!important}
+.deck-copy-card .card-art.gallery,.draft-mini-card .card-art.gallery{
+  width:100%!important;height:100%!important;aspect-ratio:var(--vn-card-aspect)!important;
+  transform:none!important;background-position:center center!important;
+}
+
+/* The hover/detail surfaces must use exactly the same viewport, so old atlas
+   crops and future canonical images have identical outer geometry. */
+.tile-overlay{box-sizing:border-box!important}
+
+/* Modal uses the same ratio and a slightly smaller official-art frame. */
+.modal-card-grid{
+  grid-template-columns:minmax(225px,340px) minmax(320px,1fr)!important;
+  gap:28px!important;
+}
+.modal-art-wrap{display:flex!important;flex-direction:column!important;align-items:center!important}
+.modal-art-label,.image-note{width:min(320px,100%)!important}
+.card-art.original{
+  width:min(320px,100%)!important;
+  height:auto!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  border-radius:9px!important;
+  background:#080b14!important;
+}
+
+/* ---------- Game-like stats in the card detail modal ---------- */
+.modal-tags{align-items:flex-start!important;gap:10px!important;min-height:48px!important}
+.modal-tags>.modal-game-stat{
+  width:38px!important;
+  border:0!important;
+  background:transparent!important;
+  padding:0!important;
+  border-radius:0!important;
+  display:inline-flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:0!important;
+  color:#edf2ff!important;
+}
+.stat-symbol{
+  position:relative!important;
+  width:34px!important;
+  height:34px!important;
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 34px!important;
+  font-size:16px!important;
+  font-weight:950!important;
+  line-height:1!important;
+  color:#fff!important;
+  text-shadow:0 2px 2px #000,0 0 4px #000!important;
+}
+.stat-symbol b{position:relative!important;z-index:4!important;font-size:16px!important;line-height:1!important}
+
+/* COST: green double-edged diamond, matching the game's mana gem. */
+.stat-symbol-cost:before{
+  content:"";position:absolute;left:6px;top:6px;width:22px;height:22px;
+  transform:rotate(45deg);border-radius:3px;
+  background:linear-gradient(135deg,#7af0bd 0 9%,#173d31 11% 84%,#07150f 86% 100%);
+  border:2px solid #71e2ae;
+  box-shadow:0 0 0 1px #d9fff0 inset,0 0 0 1px #07110d,0 1px 3px #000;
+}
+.stat-symbol-cost:after{
+  content:"";position:absolute;left:10px;top:10px;width:14px;height:14px;
+  transform:rotate(45deg);border-radius:2px;
+  border:1px solid rgba(218,255,239,.65);background:rgba(4,21,16,.42);
+}
+
+/* ATK: narrow blue blade/crest with a pointed tip and flared guard. */
+.stat-symbol-atk:before{
+  content:"";position:absolute;inset:1px 7px 1px;
+  clip-path:polygon(50% 0,67% 17%,64% 54%,88% 66%,72% 78%,50% 100%,28% 78%,12% 66%,36% 54%,33% 17%);
+  background:linear-gradient(90deg,#12375f 0 18%,#8bd7ff 21% 36%,#2d7fca 39% 61%,#bdeaff 64% 78%,#14375d 81% 100%);
+  filter:drop-shadow(0 0 1px #d9f5ff) drop-shadow(0 1px 1px #000);
+}
+.stat-symbol-atk:after{
+  content:"";position:absolute;left:15px;top:5px;width:4px;height:20px;
+  background:linear-gradient(#ecfbff,#7bcaff 34%,#1f65a8 100%);
+  clip-path:polygon(50% 0,100% 22%,72% 100%,28% 100%,0 22%);
+  opacity:.95;
+}
+
+/* HP: red heart-shield rather than a plain text heart. */
+.stat-symbol-hp:before{
+  content:"";position:absolute;inset:3px 3px 1px;
+  clip-path:polygon(50% 100%,12% 61%,6% 42%,9% 24%,22% 12%,39% 12%,50% 24%,61% 12%,78% 12%,91% 24%,94% 42%,88% 61%);
+  background:linear-gradient(135deg,#ff7b78 0 14%,#bd2938 17% 62%,#5f101b 100%);
+  filter:drop-shadow(0 0 1px #ffe5d5) drop-shadow(0 1px 1px #000);
+}
+.stat-symbol-hp:after{
+  content:"";position:absolute;inset:7px 7px 6px;
+  clip-path:polygon(50% 100%,12% 58%,8% 40%,14% 23%,29% 18%,50% 34%,71% 18%,86% 23%,92% 40%,88% 58%);
+  border:1px solid rgba(255,225,184,.8);background:rgba(78,5,15,.28);
+}
+.modal-stat-label{
+  margin-top:0!important;
+  font-size:7px!important;
+  font-weight:950!important;
+  line-height:1!important;
+  letter-spacing:.03em!important;
+  color:#aab4ce!important;
+  text-align:center!important;
+}
+.modal-game-stat.stat-cost .modal-stat-label{color:#74d8ad!important}
+.modal-game-stat.stat-atk .modal-stat-label{color:#77bfff!important}
+.modal-game-stat.stat-hp .modal-stat-label{color:#ff8f9a!important}
+
+@media(max-width:1180px){
+  .footer-stat-filter-row{flex-wrap:wrap!important;gap:4px!important}
+  .card-control-footer{min-height:128px!important}
+  main{padding-bottom:142px!important}
+}
+@media(max-width:900px){
+  .modal-card-grid{grid-template-columns:1fr!important}
+  .card-art.original{width:min(300px,100%)!important}
+  .modal-art-label,.image-note{width:min(300px,100%)!important}
+}

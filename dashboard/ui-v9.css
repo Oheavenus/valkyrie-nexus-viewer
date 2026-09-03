@@ -1,0 +1,196 @@
+/* V9: rarity identity, larger 2:3 atlas, fixed deck-row art, and lean rendering surfaces. */
+
+:root{
+  --rarity-n:#8793a6;
+  --rarity-r:#3b8cff;
+  --rarity-sr:#b35cff;
+  --rarity-ur:#e0b536;
+}
+
+/* The V8 2:3 frame leaves enough vertical room to grow the 20x8 atlas by
+   correcting the old 8:13 height calculation. */
+.card-gallery{
+  --atlas-card-w:min(
+    calc((100vw - 258px - 19 * var(--atlas-gap) - 16px) / 20),
+    calc((100vh - 188px - 7 * var(--atlas-gap)) / 12)
+  )!important;
+  /* Do not create a stacking context here: a hovered card must be able to
+     rise above the sticky header. */
+}
+.card-tile{
+  --rarity-color:var(--rarity-n);
+  --rarity-glow:rgba(135,147,166,.42);
+  --thumbnail-frame:rgba(135,147,166,.48);
+  box-sizing:border-box!important;
+  border:1px solid var(--thumbnail-frame)!important;
+  box-shadow:none!important;
+  transition:transform .11s ease,border-color .11s ease!important;
+}
+.card-tile.rarity-R{--rarity-color:var(--rarity-r);--rarity-glow:rgba(59,140,255,.62);--thumbnail-frame:rgba(59,140,255,.56)}
+.card-tile.rarity-SR{--rarity-color:var(--rarity-sr);--rarity-glow:rgba(179,92,255,.68);--thumbnail-frame:rgba(179,92,255,.58)}
+.card-tile.rarity-UR{--rarity-color:var(--rarity-ur);--rarity-glow:rgba(224,181,54,.68);--thumbnail-frame:rgba(224,181,54,.62)}
+.card-tile:hover,.card-tile:focus-visible{
+  z-index:30;
+  border-color:var(--thumbnail-frame)!important;
+  box-shadow:
+    0 9px 22px rgba(0,0,0,.6),
+    0 0 10px 2px var(--rarity-glow)!important;
+  outline:none!important;
+}
+.tile-no{backdrop-filter:none!important}
+.tile-owned{box-shadow:none!important}
+/* Gallery hover deliberately stays image-free. Extra card text is available
+   in the click-through detail modal; keeping this interaction CSS-only avoids
+   a decode/layout hitch on first hover. */
+.card-tile:hover .tile-overlay,.card-tile:focus-visible .tile-overlay{display:none!important}
+
+/* Rarity is expressed with the same border and hover light in deck building. */
+.deck-copy-card,.draft-mini-card{
+  --rarity-color:var(--rarity-n);
+  --rarity-glow:rgba(135,147,166,.42);
+  --thumbnail-frame:rgba(135,147,166,.48);
+  box-sizing:border-box!important;
+  border:1px solid var(--thumbnail-frame)!important;
+  height:72px!important;
+  min-height:72px!important;
+  aspect-ratio:2/3!important;
+  transition:transform .1s ease,border-color .1s ease!important;
+}
+.deck-copy-card.rarity-R,.draft-mini-card.rarity-R{--rarity-color:var(--rarity-r);--rarity-glow:rgba(59,140,255,.62);--thumbnail-frame:rgba(59,140,255,.56)}
+.deck-copy-card.rarity-SR,.draft-mini-card.rarity-SR{--rarity-color:var(--rarity-sr);--rarity-glow:rgba(179,92,255,.68);--thumbnail-frame:rgba(179,92,255,.58)}
+.deck-copy-card.rarity-UR,.draft-mini-card.rarity-UR{--rarity-color:var(--rarity-ur);--rarity-glow:rgba(224,181,54,.68);--thumbnail-frame:rgba(224,181,54,.62)}
+.deck-copy-card:hover,.deck-copy-card:focus-visible,
+.draft-mini-card:hover,.draft-mini-card:focus-visible{
+  z-index:8!important;
+  transform:translateY(-1px)!important;
+  border-color:var(--thumbnail-frame)!important;
+  box-shadow:0 3px 12px #000,0 0 7px 2px var(--rarity-glow)!important;
+  outline:none!important;
+}
+.deck-copy-grid,.draft-mini-grid{
+  grid-template-rows:repeat(3,72px)!important;
+}
+
+/* Fix the Hearthstone-style quick-deck art after V8's global thumb width rule.
+   Positive stacking levels also avoid the image disappearing behind the row. */
+.quick-deck-row{
+  --rarity-color:var(--rarity-n);
+  --rarity-glow:rgba(135,147,166,.35);
+  --thumbnail-frame:rgba(135,147,166,.44);
+  border:1px solid var(--thumbnail-frame)!important;
+}
+.quick-deck-row.rarity-R{--rarity-color:var(--rarity-r);--rarity-glow:rgba(59,140,255,.45);--thumbnail-frame:rgba(59,140,255,.52)}
+.quick-deck-row.rarity-SR{--rarity-color:var(--rarity-sr);--rarity-glow:rgba(179,92,255,.5);--thumbnail-frame:rgba(179,92,255,.54)}
+.quick-deck-row.rarity-UR{--rarity-color:var(--rarity-ur);--rarity-glow:rgba(224,181,54,.5);--thumbnail-frame:rgba(224,181,54,.58)}
+.quick-deck-row:hover{box-shadow:inset 0 0 0 1px rgba(0,0,0,.25),0 0 7px var(--rarity-glow)!important}
+.quick-deck-row-art{
+  inset:0!important;
+  z-index:0!important;
+  background:#111727!important;
+}
+.quick-deck-row-art .card-art.thumb{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  aspect-ratio:auto!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  opacity:.72!important;
+  filter:none!important;
+}
+.quick-deck-row-art .card-art.thumb>img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:50% 30%!important;
+}
+.quick-deck-row::after{
+  z-index:1!important;
+  background:linear-gradient(90deg,rgba(7,10,20,.12) 0%,rgba(8,11,22,.34) 30%,rgba(8,11,22,.82) 66%,#080b16 91%)!important;
+}
+.quick-deck-text{z-index:2!important}
+.quick-deck-controls{z-index:3!important}
+
+/* The strong rarity frame belongs to the full card in the detail modal. */
+.modal-art-wrap{
+  --detail-rarity-frame:var(--rarity-n);
+  --detail-rarity-glow:rgba(135,147,166,.52);
+}
+.modal-art-wrap.rarity-R{--detail-rarity-frame:var(--rarity-r);--detail-rarity-glow:rgba(59,140,255,.7)}
+.modal-art-wrap.rarity-SR{--detail-rarity-frame:var(--rarity-sr);--detail-rarity-glow:rgba(179,92,255,.72)}
+.modal-art-wrap.rarity-UR{--detail-rarity-frame:var(--rarity-ur);--detail-rarity-glow:rgba(224,181,54,.76)}
+.modal-art-wrap .card-art.original{
+  border:3px solid var(--detail-rarity-frame)!important;
+  box-shadow:0 16px 40px rgba(0,0,0,.48),0 0 16px 2px var(--detail-rarity-glow)!important;
+}
+
+/* More game-like Cost / ATK / HP emblems in the detail view. */
+.modal-tags>.modal-game-stat{width:46px!important}
+.stat-symbol{
+  width:42px!important;
+  height:42px!important;
+  flex-basis:42px!important;
+}
+.stat-symbol b{
+  z-index:5!important;
+  font-size:18px!important;
+  letter-spacing:-.03em!important;
+  -webkit-text-stroke:.45px rgba(0,0,0,.9);
+  text-shadow:0 2px 2px #000,0 0 5px #000!important;
+}
+.stat-symbol-cost:before{
+  left:7px!important;top:7px!important;width:27px!important;height:27px!important;
+  border-radius:4px!important;
+  border:2px solid #7ce9b5!important;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.8) 0 8%,transparent 9%),
+    linear-gradient(315deg,#06150f 0 15%,#173f31 18% 76%,#63dca5 80% 100%)!important;
+  box-shadow:0 0 0 2px #0a2118,0 0 0 3px #4cae83,0 2px 5px #000!important;
+}
+.stat-symbol-cost:after{
+  left:13px!important;top:13px!important;width:15px!important;height:15px!important;
+  border:1px solid rgba(215,255,237,.78)!important;
+  background:radial-gradient(circle at 34% 28%,rgba(162,255,213,.48),rgba(6,30,21,.34) 63%)!important;
+}
+.stat-symbol-atk:before{
+  inset:1px 5px 0!important;
+  clip-path:polygon(50% 0,61% 10%,63% 49%,92% 64%,72% 76%,61% 75%,50% 100%,39% 75%,28% 76%,8% 64%,37% 49%,39% 10%)!important;
+  background:linear-gradient(90deg,#0a2544 0 18%,#75ccff 23% 38%,#1d69ad 43% 58%,#bcecff 64% 78%,#0d3158 83% 100%)!important;
+  filter:drop-shadow(0 0 1px #dff7ff) drop-shadow(0 2px 2px #000)!important;
+}
+.stat-symbol-atk:after{
+  left:18px!important;top:5px!important;width:5px!important;height:27px!important;
+  background:linear-gradient(#f4fdff,#78c9ff 34%,#154f88 100%)!important;
+  clip-path:polygon(50% 0,100% 18%,72% 100%,28% 100%,0 18%)!important;
+}
+.stat-symbol-hp:before{
+  inset:4px 2px 0!important;
+  clip-path:polygon(50% 100%,10% 62%,4% 43%,7% 25%,20% 10%,38% 9%,50% 23%,62% 9%,80% 10%,93% 25%,96% 43%,90% 62%)!important;
+  background:
+    linear-gradient(140deg,rgba(255,220,210,.82) 0 9%,transparent 10%),
+    linear-gradient(135deg,#ff7f78 0 15%,#c52639 20% 64%,#5f0b18 100%)!important;
+  filter:drop-shadow(0 0 1px #ffe9dd) drop-shadow(0 2px 2px #000)!important;
+}
+.stat-symbol-hp:after{
+  inset:10px 9px 8px!important;
+  border:1px solid rgba(255,224,195,.78)!important;
+  background:radial-gradient(circle at 35% 28%,rgba(255,164,150,.42),rgba(88,4,18,.28) 66%)!important;
+}
+.modal-stat-label{font-size:7.5px!important;margin-top:1px!important}
+
+@media(max-width:1450px){
+  .card-gallery{
+    --atlas-card-w:min(
+      calc((100vw - 258px - 19 * var(--atlas-gap) - 16px) / 20),
+      calc((100vh - 188px - 7 * var(--atlas-gap)) / 12)
+    )!important;
+  }
+}
+@media(max-width:1200px){
+  .card-gallery{--atlas-card-w:auto!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .card-tile,.deck-copy-card,.draft-mini-card{transition:none!important}
+}

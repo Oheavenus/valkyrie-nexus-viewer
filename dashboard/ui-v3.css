@@ -1,0 +1,48 @@
+/* V3 dashboard refinements: multi-rarity filters, legal deck limits, compact deck cards and pull charts. */
+
+/* Multi-select rarity pills in the fixed footer. */
+.rarity-multi{margin:0;padding:0 5px;border:1px solid var(--line);border-radius:6px;background:#141a30;display:flex;align-items:center;gap:3px;height:33px;min-width:170px}
+.rarity-check{position:relative;display:block;cursor:pointer;user-select:none}
+.rarity-check input{position:absolute;opacity:0;pointer-events:none}
+.rarity-check span{display:grid;place-items:center;min-width:31px;height:24px;padding:0 6px;border:1px solid #394361;border-radius:4px;color:#7f8aaa;background:#11162a;font-size:10px;font-weight:900;transition:.12s ease}
+.rarity-check input:checked+span{color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.rarity-check.rarity-N input:checked+span{background:#485263;border-color:#778294}
+.rarity-check.rarity-R input:checked+span{background:#1d4f9e;border-color:#3b82f6}
+.rarity-check.rarity-SR input:checked+span{background:#64239b;border-color:#a855f7}
+.rarity-check.rarity-UR input:checked+span{background:#715410;border-color:#d6a927}
+.rarity-check:focus-within span{outline:1px solid #c8baff;outline-offset:1px}
+
+/* Legal-limit feedback is quiet: no alerts, just disabled controls. */
+.tile-add-btn.limit-reached{opacity:.26;filter:grayscale(1);cursor:default;background:#24293a!important;border-color:#586078!important;transform:none!important}
+.quick-deck-controls button:disabled{opacity:.28;cursor:default;background:#1d2233;border-color:#424a61}
+.quick-deck-count{font-weight:900}
+
+/* Stronger Hearthstone-style row image: art on left, fully opaque at right. */
+.quick-deck-row-art .card-art.thumb{opacity:.66!important;filter:saturate(1.05) contrast(1.05)!important}
+.quick-deck-row::after{background:linear-gradient(90deg,rgba(7,10,20,.18) 0%,rgba(8,11,22,.38) 28%,rgba(8,11,22,.74) 58%,rgb(8,11,22) 86%,rgb(8,11,22) 100%)!important}
+.quick-deck-name{font-size:11px!important}.quick-deck-meta{font-size:8.4px!important}
+
+/* Deck tab: each recommended deck is a compact 30-card visual board. */
+#decksPanel{padding-top:4px}
+#decksPanel .deck-intro{padding:7px 10px;margin-bottom:7px;border-radius:8px;font-size:10px;line-height:1.3}
+#decksContainer.deck-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:start}
+.deck-compact-card{border:1px solid var(--line);border-radius:10px;background:#13182c;overflow:hidden;min-width:0;box-shadow:0 5px 18px rgba(0,0,0,.16)}
+.deck-compact-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start;padding:9px 10px 7px;background:linear-gradient(120deg,#1b2240,#28204b)}
+.deck-compact-title{font-size:14px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.deck-compact-summary{font-size:9px;line-height:1.3;color:#aeb9da;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:23px}
+.deck-compact-flags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}.deck-compact-flags .pill{font-size:8px;padding:2px 5px}
+.deck-compact-score{text-align:right;font-size:8px;color:#9ca8ca;white-space:nowrap}.deck-compact-score b{display:block;font-size:20px;line-height:1;color:#fff;margin:2px 0}.deck-compact-score .ready{color:#6ee7a1}.deck-compact-score .need{color:#fb8da1}
+.deck-mini-curve{height:29px;padding:3px 8px 2px;display:flex;align-items:flex-end;gap:3px;border-bottom:1px solid #293251;background:#101529}.deck-mini-curve-col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;min-width:0;height:100%;font-size:6px;color:#8995b6}.deck-mini-curve-bar{width:72%;min-height:1px;background:linear-gradient(#9b74f2,#6540c7);border-radius:2px 2px 0 0}
+.deck-copy-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;padding:6px;background:#0e1325}
+.deck-copy-card{position:relative;display:block;min-width:0;border:1px solid #303a5e;border-radius:4px;overflow:hidden;padding:0;background:#090d18;cursor:pointer;aspect-ratio:8/13;color:inherit}.deck-copy-card:hover{z-index:5;border-color:#9b82ec;box-shadow:0 3px 12px #000;transform:translateY(-1px)}.deck-copy-card .card-art.gallery{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto}.deck-copy-card.missing-copy{border-color:#8f3449}.deck-copy-card.missing-copy::after{content:"不足";position:absolute;right:2px;bottom:2px;background:#7d263b;color:#ffd8e0;font-size:6px;font-weight:900;padding:1px 2px;border-radius:2px}.deck-copy-cost{position:absolute;left:2px;top:2px;z-index:2;min-width:12px;height:12px;display:grid;place-items:center;border-radius:50%;background:#193d68;color:#fff;font-size:6px;font-weight:900;box-shadow:0 1px 3px #000}
+
+/* Browser-local draft uses the same compact visual language. */
+#draftDeckPanel{margin-bottom:7px;padding:0;border-radius:9px;overflow:hidden;background:#11172a;border:1px solid #5b4a93}
+.draft-compact-head{height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 9px;background:linear-gradient(90deg,#211b42,#151a31);font-size:9px}.draft-compact-head strong{font-size:11px;margin-right:7px}.draft-compact-head span{color:#aab5d5}.draft-mini-grid{display:grid;grid-template-columns:repeat(30,minmax(0,1fr));gap:1px;padding:3px}.draft-mini-card{position:relative;border:1px solid #303a5e;padding:0;background:#080c18;border-radius:2px;overflow:hidden;aspect-ratio:8/13;cursor:pointer}.draft-mini-card .card-art.gallery{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto}.draft-mini-card.missing-copy{border-color:#9e364e}
+
+/* Pull stats: donut plus concise legend, table remains below. */
+#pullsPanel{padding-top:4px}.pull-dashboard{display:grid;grid-template-columns:230px minmax(0,1fr);gap:10px;margin:8px 0 10px}.pull-donut-card{display:grid;grid-template-columns:118px 1fr;gap:10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:10px;background:#141a30}.rarity-donut{width:112px;height:112px;border-radius:50%;position:relative;background:conic-gradient(#697586 0 var(--n),#3b82f6 var(--n) var(--r),#a855f7 var(--r) var(--sr),#d6a927 var(--sr) 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}.rarity-donut::after{content:"";position:absolute;inset:24px;border-radius:50%;background:#141a30;border:1px solid #313b5f}.rarity-donut-center{position:absolute;inset:0;z-index:2;display:grid;place-content:center;text-align:center;font-size:8px;color:#9da8c7}.rarity-donut-center b{font-size:20px;color:#fff;line-height:1}.pull-legend{display:grid;gap:5px}.pull-legend-row{display:grid;grid-template-columns:32px 1fr auto;gap:6px;align-items:center;font-size:9px}.pull-legend-chip{font-weight:900}.pull-legend-row strong{font-size:10px}.pull-legend-row span:last-child{color:#aab5d4}.pull-insights{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.pull-insight{border:1px solid var(--line);border-radius:9px;background:#141a30;padding:11px}.pull-insight span{font-size:9px;color:#98a4c5}.pull-insight b{display:block;font-size:20px;margin:4px 0}.pull-insight small{font-size:8px;color:#8994b3;line-height:1.35}
+#pullStats.stats-grid{grid-template-columns:repeat(5,minmax(95px,1fr));gap:6px;margin-bottom:5px}.stat-card{padding:7px 9px}.stat-card b{font-size:16px}.stat-card span{font-size:9px}
+
+@media(max-width:1300px){#decksContainer.deck-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.draft-mini-grid{grid-template-columns:repeat(20,minmax(0,1fr))}}
+@media(max-width:900px){#decksContainer.deck-grid{grid-template-columns:1fr}.pull-dashboard{grid-template-columns:1fr}.pull-donut-card{grid-template-columns:118px 1fr}.pull-insights{grid-template-columns:repeat(3,1fr)}.rarity-multi{min-width:150px}.draft-mini-grid{grid-template-columns:repeat(10,minmax(0,1fr))}}

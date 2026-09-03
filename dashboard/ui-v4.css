@@ -1,0 +1,100 @@
+/* V4: game-like footer filters, stable mana curves, and analysis-first pull screen. */
+
+/* ---------- Card footer filters ---------- */
+.card-control-footer{padding:5px 7px 4px;gap:4px}
+.footer-filter-row{display:grid!important;grid-template-columns:minmax(280px,1fr) auto auto auto 150px 118px auto;gap:5px;align-items:center}
+.footer-stat-filter-row{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1.25fr) minmax(0,1.25fr);gap:5px;align-items:center}
+.footer-filter-row input[type="search"],.footer-filter-row select{height:30px!important;font-size:11px!important}
+.filter-multi,.rarity-multi,.stat-filter-group{margin:0;padding:0 4px;border:1px solid var(--line);border-radius:6px;background:#141a30;display:flex;align-items:center;gap:2px;min-height:30px}
+.filter-multi label,.stat-filter-group label{position:relative;cursor:pointer;user-select:none}
+.filter-multi input,.stat-filter-group input{position:absolute;opacity:0;pointer-events:none}
+.filter-multi span,.stat-filter-group span{display:grid;place-items:center;height:22px;min-width:28px;padding:0 5px;border:1px solid #35405e;border-radius:4px;background:#10162a;color:#7f8aaa;font-size:9px;font-weight:900;white-space:nowrap}
+.filter-multi input:checked+span,.stat-filter-group input:checked+span{background:#283458;border-color:#7b8dbf;color:#fff}
+.type-multi span{min-width:52px}.type-multi input:checked+span{background:#185b54;border-color:#3aa89b}
+.rarity-multi{min-width:150px!important;height:30px!important}.rarity-check span{height:22px!important;min-width:28px!important;font-size:9px!important}
+.filter-group-label{font-size:8px;font-weight:900;color:#93a1c5;padding:0 3px;white-space:nowrap}
+.stat-filter-group{padding-left:5px;overflow:hidden}.stat-filter-group legend{display:none}.stat-filter-group span{min-width:27px;padding:0 4px;font-size:8.5px}
+.stat-filter-group .edge span{min-width:37px}
+.footer-status-row{min-height:12px}.footer-status-row .section-note{font-size:8px!important}
+
+/* Effect filter: desktop overlay, no internal scrolling. */
+.effect-filter-wrap{position:relative}
+.effect-filter-button{height:30px;min-width:92px;border:1px solid #475475;border-radius:6px;background:#151b31;color:#d8dff5;font-size:10px;font-weight:900;padding:0 9px;cursor:pointer}
+.effect-filter-button:hover,.effect-filter-button.active,.effect-filter-wrap.open .effect-filter-button{background:#3a2b69;border-color:#9276dc;color:#fff}
+.effect-filter-count{display:inline-grid;place-items:center;min-width:16px;height:16px;border-radius:9px;background:#7b52dc;color:#fff;font-size:8px;margin-left:4px}.effect-filter-count:empty{display:none}
+.effect-filter-panel{display:none;position:fixed;left:50%;bottom:72px;transform:translateX(-50%);width:min(980px,calc(100vw - 330px));max-height:none;overflow:visible;padding:10px;border:1px solid #65519c;border-radius:10px;background:rgba(12,16,31,.995);box-shadow:0 18px 46px rgba(0,0,0,.68);z-index:220}
+.effect-filter-wrap:hover .effect-filter-panel,.effect-filter-wrap:focus-within .effect-filter-panel,.effect-filter-wrap.open .effect-filter-panel{display:block}
+.effect-filter-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.effect-filter-head strong{font-size:12px;color:#f2f5ff}.effect-filter-head button{font-size:9px;padding:4px 8px}
+.effect-filter-options{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+.effect-filter-options label{position:relative;display:grid;grid-template-columns:15px minmax(0,1fr) auto;gap:7px;align-items:center;min-height:34px;padding:6px 7px;border:1px solid #2e3856;border-radius:6px;background:#12182c;cursor:pointer;font-size:10px;color:#eef2ff}
+.effect-filter-options input{position:absolute;opacity:0;pointer-events:none}
+.effect-filter-options label::before{content:"";width:13px;height:13px;border:1.5px solid #7683a6;border-radius:3px;background:#0d1223;box-shadow:inset 0 0 0 2px #0d1223}
+.effect-filter-options label:has(input:checked){border-color:#8c6ce0;background:#2a2148}.effect-filter-options label:has(input:checked)::before{background:#8b5cf6;border-color:#b9a5f5;box-shadow:inset 0 0 0 2px #2a2148}
+.effect-filter-options span{display:block!important;min-width:0!important;width:auto!important;height:auto!important;padding:0!important;border:0!important;background:transparent!important;color:#eef2ff!important;font-size:10.5px!important;font-weight:800!important;line-height:1.2!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.effect-filter-options small{color:#8f9abb!important;font-size:9px!important;white-space:nowrap}
+
+/* Taller footer means the atlas should budget more vertical room. */
+.card-gallery{--atlas-card-w:min(calc((100vw - 258px - 19 * var(--atlas-gap) - 16px) / 20),calc((100vh - 188px - 7 * var(--atlas-gap)) / 8 * 8 / 13))!important}
+.quick-deck{height:calc(100vh - 194px)!important}
+
+/* ---------- Deck boards: 10 columns x 3 rows ---------- */
+#decksContainer.deck-grid{grid-template-columns:1fr!important;gap:7px!important}
+.deck-library-tools{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px;align-items:center;font-size:9px;color:#98a5c7;padding:3px 0}.deck-library-tools button{font-size:8.5px;padding:4px 8px}
+.deck-compact-card{display:grid!important;grid-template-columns:minmax(360px,1fr) minmax(450px,520px);grid-template-rows:auto minmax(0,1fr);grid-template-areas:"head cards" "info cards";min-height:205px;max-height:230px}
+.deck-compact-head{grid-area:head;display:grid!important;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"copy score" "actions actions";gap:5px 8px;padding:8px 10px 6px!important}
+.deck-compact-copy{grid-area:copy;min-width:0}.deck-compact-score{grid-area:score}.deck-card-actions{grid-area:actions;display:flex;gap:5px;align-items:center}.deck-card-actions button,.draft-v4-actions button{font-size:8px;font-weight:800;padding:4px 8px;border-radius:5px;border:1px solid #4e5a7d;background:#151c34;color:#dbe2f7;cursor:pointer}.deck-card-actions button:hover,.draft-v4-actions button:hover{background:#3d2f6b;border-color:#9679df}.deck-card-actions button[data-deck-action="delete"],.draft-v4-actions button[data-draft-action="delete"]{margin-left:auto;color:#ffb5c0;border-color:#693749}
+.deck-compact-title{font-size:15px!important}.deck-compact-summary{font-size:9.5px!important;line-height:1.35!important;-webkit-line-clamp:3!important;min-height:0!important}
+.deck-copy-grid{grid-area:cards;grid-template-columns:repeat(10,minmax(0,1fr))!important;grid-template-rows:repeat(3,minmax(0,1fr));gap:2px!important;padding:6px!important;height:100%;align-content:center}
+.deck-copy-card{aspect-ratio:8/13!important;min-height:0}.deck-copy-cost{width:14px;height:14px;font-size:7px}
+
+/* Mana curve always gets the full left width and a fixed visual box. */
+.deck-info-side{grid-area:info;padding:7px 10px 8px;border-top:1px solid #27304e;background:#0f1427;display:block!important;position:relative;min-height:92px;overflow:hidden}
+.deck-info-note{position:absolute;right:10px;bottom:7px;font-size:8px;color:#8390b1;white-space:nowrap}
+.curve-title{font-size:9.5px;font-weight:900;color:#b9c4e2;margin-bottom:4px}
+.curve-bars{width:100%;height:66px;display:flex!important;align-items:flex-end!important;justify-content:stretch;gap:7px;padding:0 2px 13px;border-bottom:1px solid #293251}
+.deck-mini-curve-col{flex:1 1 0!important;max-width:none!important;min-width:0!important;height:52px!important;display:flex!important;flex-direction:column!important;justify-content:flex-end!important;align-items:center!important;font-size:7px!important;color:#8995b6}
+.deck-mini-curve-bar{width:min(76%,54px)!important;min-height:3px!important;background:linear-gradient(#aa82fb,#6f49cf)!important;border-radius:3px 3px 0 0!important}
+.curve-count{font-size:7.5px;color:#d8def1;line-height:1.1;margin-bottom:2px}.curve-cost{font-size:7px;color:#8995b6;line-height:1.1;margin-top:2px}
+
+/* Draft deck gets the same 10x3 visual geometry and curve ratio. */
+#draftDeckPanel{display:grid!important;grid-template-columns:minmax(360px,1fr) minmax(450px,520px);grid-template-rows:auto 1fr;grid-template-areas:"head cards" "curve cards";min-height:205px;max-height:230px;margin-bottom:7px!important}
+#draftDeckPanel[hidden]{display:none!important}.draft-compact-head{grid-area:head;height:auto!important;min-height:46px;display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:center;padding:7px 10px!important}.draft-compact-head>div:first-child{min-width:0}.draft-compact-head strong{font-size:14px!important}.draft-v4-actions{display:flex;gap:4px;align-items:center}
+.draft-mini-grid{grid-area:cards;grid-template-columns:repeat(10,minmax(0,1fr))!important;grid-template-rows:repeat(3,minmax(0,1fr));gap:2px!important;padding:6px!important;height:100%;align-content:center;background:#0d1223}
+.draft-mini-card{aspect-ratio:8/13!important}.draft-v4-curve{grid-area:curve;padding:8px 10px;background:#0f1427;border-top:1px solid #28304e;align-self:stretch;min-height:92px;overflow:hidden}.draft-v4-curve .curve-bars{height:66px}
+
+/* ---------- Pull statistics: analysis left, readable history right ---------- */
+#pullsPanel.active{display:grid!important;grid-template-columns:minmax(0,1fr) 520px;grid-template-rows:auto minmax(0,1fr);gap:10px;padding:7px!important;height:calc(100vh - 72px);overflow:hidden}
+#pullStats.stats-grid{grid-column:1/-1;grid-row:1;margin:0!important;gap:8px!important}
+#pullStats .stat-card{padding:9px 11px!important}#pullStats .stat-card span{font-size:10px!important}#pullStats .stat-card b{font-size:18px!important}
+#pullCharts{grid-column:1;grid-row:2;min-width:0;overflow:auto;padding-right:2px}
+#pullsPanel>.table-wrap.compact{grid-column:2;grid-row:2;margin:0!important;max-height:none!important;height:100%;overflow-y:auto;overflow-x:hidden;border-radius:9px;background:#11172a}
+#pullsPanel>.table-wrap.compact table{font-size:10.5px!important;min-width:0!important;width:100%!important;table-layout:fixed}
+#pullsPanel>.table-wrap.compact th,#pullsPanel>.table-wrap.compact td{padding:7px 6px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
+#pullsPanel>.table-wrap.compact th{font-size:9.5px!important}
+#pullsPanel>.table-wrap.compact th:nth-child(1),#pullsPanel>.table-wrap.compact td:nth-child(1){width:126px}
+#pullsPanel>.table-wrap.compact th:nth-child(2),#pullsPanel>.table-wrap.compact td:nth-child(2){width:104px}
+#pullsPanel>.table-wrap.compact th:nth-child(n+3),#pullsPanel>.table-wrap.compact td:nth-child(n+3){text-align:center}
+.pull-date-cell{display:flex;flex-direction:column;line-height:1.15}.pull-date-cell .pull-date{font-size:10px;font-weight:800;color:#e8edff}.pull-date-cell .pull-time{font-size:10px;color:#aeb9d8;margin-top:2px}
+
+.pull-main-dashboard{display:grid;gap:10px}.pull-hero{display:grid;grid-template-columns:360px minmax(0,1fr);gap:10px}
+.pull-donut-card{grid-template-columns:190px 1fr!important;gap:14px!important;padding:14px!important;min-height:210px}
+.rarity-donut{width:184px!important;height:184px!important}.rarity-donut::after{inset:39px!important}.rarity-donut-center b{font-size:30px!important}.rarity-donut-center span{font-size:10px!important}
+.pull-legend{gap:8px!important}.pull-legend-row{grid-template-columns:38px 1fr auto!important;font-size:11px!important}.pull-legend-row strong{font-size:12px!important}.pull-legend-row span:last-child{font-size:10px!important}
+.pull-insights{grid-template-columns:repeat(3,1fr)!important;gap:8px!important}.pull-insight{min-height:210px;padding:16px!important;display:flex;flex-direction:column;justify-content:center}.pull-insight span{font-size:11px!important}.pull-insight b{font-size:29px!important}.pull-insight small{font-size:9.5px!important;line-height:1.4!important}
+.rate-compare-section{border:1px solid var(--line);border-radius:10px;background:#11172b;overflow:hidden}.rate-compare-title{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#171e36;border-bottom:1px solid #2d3758}.rate-compare-title strong{font-size:13px}.rate-compare-title span{font-size:9px;color:#8996b7}
+.rate-compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px}.rate-compare-card{border:1.5px solid #526078;border-radius:8px;padding:10px 11px;background:#12192d}.rate-compare-card.rarity-N{border-color:#727d8d}.rate-compare-card.rarity-R{border-color:#3b82f6}.rate-compare-card.rarity-SR{border-color:#a855f7}.rate-compare-card.rarity-UR{border-color:#d6a927}.rate-compare-head{display:flex;align-items:center;justify-content:space-between}.rate-compare-head strong{font-size:25px}.rate-compare-official{font-size:10px;color:#a9b5d3;margin-top:6px}.rate-compare-delta{font-size:14px;font-weight:900;margin-top:6px}.rate-compare-delta.up{color:#68e6a2}.rate-compare-delta.down{color:#ff889b}.rate-compare-delta.flat{color:#b9c2d8}.rate-compare-count{font-size:9px;color:#8793b2;margin-top:4px}
+
+@media(max-width:1450px){
+  #pullsPanel.active{grid-template-columns:minmax(0,1fr) 470px}.pull-hero{grid-template-columns:320px minmax(0,1fr)}.pull-donut-card{grid-template-columns:164px 1fr!important}.rarity-donut{width:158px!important;height:158px!important}.rarity-donut::after{inset:34px!important}.pull-insight{min-height:184px}
+}
+@media(max-width:1250px){
+  .footer-filter-row{grid-template-columns:minmax(220px,1fr) auto auto auto 135px 108px}.footer-filter-row .view-switch{display:none}.footer-stat-filter-row{grid-template-columns:auto 1fr 1fr}.footer-stat-filter-row #hpFilter{grid-column:2/4}
+  .effect-filter-panel{width:min(820px,calc(100vw - 60px));grid-template-columns:repeat(4,minmax(0,1fr))}.effect-filter-options{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .deck-compact-card,#draftDeckPanel{grid-template-columns:minmax(300px,1fr) minmax(390px,460px)}
+  #pullsPanel.active{grid-template-columns:minmax(0,1fr) 430px}.pull-hero{grid-template-columns:1fr}.pull-insights{grid-template-columns:repeat(3,1fr)!important}.pull-donut-card{grid-template-columns:180px 1fr!important}.rarity-donut{width:174px!important;height:174px!important}.pull-insight{min-height:125px}
+}
+@media(max-width:900px){
+  .footer-filter-row,.footer-stat-filter-row{display:flex!important;overflow-x:auto}.effect-filter-panel{position:fixed;left:8px;right:8px;bottom:86px;transform:none;width:auto}.effect-filter-options{grid-template-columns:repeat(2,minmax(0,1fr))}.stat-filter-group{flex:0 0 auto}
+  .deck-compact-card,#draftDeckPanel{display:block!important;max-height:none}.deck-copy-grid,.draft-mini-grid{grid-template-columns:repeat(10,minmax(0,1fr))!important}
+  #pullsPanel.active{display:block!important;height:auto;overflow:visible}#pullsPanel>.table-wrap.compact{height:auto;max-height:none!important;margin-top:8px!important;overflow-x:auto}#pullsPanel>.table-wrap.compact table{min-width:680px!important}.rate-compare-grid{grid-template-columns:1fr}
+}

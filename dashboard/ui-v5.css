@@ -1,0 +1,99 @@
+/* V5 refinements: vertical effect palette, denser mana curves, larger uniform deck thumbnails. */
+
+/* Effect filter: narrower, taller, closer to the in-game filter palette. */
+.effect-filter-panel{
+  width:min(560px,calc(100vw - 36px))!important;
+  left:50%!important;
+  bottom:72px!important;
+  transform:translateX(-50%)!important;
+  padding:10px!important;
+}
+.effect-filter-options{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:4px!important}
+.effect-filter-options label{min-height:29px!important;padding:4px 7px!important;font-size:10px!important}
+.effect-filter-options span{font-size:10.5px!important}
+.effect-filter-options small{font-size:8.5px!important}
+.effect-filter-options label.effect-fast span{color:#ff6b3d!important}
+.effect-filter-options label.effect-guard span{color:#55a5ff!important}
+.effect-filter-options label.effect-stealth span{color:#63d47e!important}
+.effect-filter-options label.effect-pierce span{color:#e956dd!important}
+.effect-filter-options label.effect-snipe span{color:#f3c74f!important}
+.effect-filter-options label.effect-charge span{color:#ff7a32!important}
+.effect-filter-options label.effect-double span{color:#f0c84d!important}
+.effect-filter-options label.effect-disable span{color:#9ec1df!important}
+.effect-filter-options label.effect-wall span{color:#9bc7e9!important}
+.effect-filter-options label.effect-grit span{color:#ff6c62!important}
+.effect-filter-options label.effect-undying span{color:#e9a052!important}
+.effect-filter-options label.effect-link span{color:#58d6ca!important}
+.effect-filter-options label.effect-resonance span{color:#67a7ff!important}
+.effect-filter-options label.effect-blessing span{color:#c2b9ff!important}
+.effect-filter-options label.effect-requiem span{color:#a67be8!important}
+.effect-filter-options label.effect-lone span{color:#eed37c!important}
+.effect-filter-options label.effect-chain span{color:#77dc66!important}
+.effect-filter-options label.effect-activate span{color:#f0c64b!important}
+.effect-filter-options label.effect-depth span{color:#47c9f2!important}
+
+/* Recommended decks: slightly larger 10x3 card boards. */
+.deck-compact-card{
+  grid-template-columns:minmax(300px,1fr) 560px!important;
+  min-height:245px!important;
+  max-height:255px!important;
+}
+.deck-copy-grid{
+  grid-template-columns:repeat(10,minmax(0,1fr))!important;
+  grid-template-rows:repeat(3,minmax(0,1fr))!important;
+  gap:1px!important;
+  padding:4px!important;
+}
+.deck-copy-card,.draft-mini-card{border-radius:3px!important;overflow:hidden!important;background:#090d18!important}
+.deck-copy-card .card-art.gallery,.draft-mini-card .card-art.gallery{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;aspect-ratio:auto!important;
+  background-position:center center!important;background-repeat:no-repeat!important;
+}
+.deck-copy-card .card-art.gallery img,.draft-mini-card .card-art.gallery img{
+  width:100%!important;height:100%!important;object-fit:cover!important;object-position:center center!important;
+}
+
+/* Compact, edge-aligned mana curve with consistent bar widths and tiny gaps. */
+.deck-info-side{min-height:72px!important;padding:6px 10px!important;display:block!important}
+.deck-info-side .curve-title,.draft-v4-curve .curve-title{font-size:9px!important;margin:0 0 2px!important}
+.deck-info-side .curve-bars,.draft-v4-curve .curve-bars{
+  width:auto!important;max-width:310px!important;height:50px!important;
+  justify-content:flex-start!important;gap:2px!important;padding:0!important;border-bottom:0!important;
+}
+.deck-info-side .deck-mini-curve-col,.draft-v4-curve .deck-mini-curve-col{
+  flex:0 0 40px!important;width:40px!important;max-width:40px!important;min-width:40px!important;
+  height:47px!important;
+}
+.deck-info-side .deck-mini-curve-bar,.draft-v4-curve .deck-mini-curve-bar{
+  width:36px!important;max-width:36px!important;min-width:36px!important;border-radius:2px 2px 0 0!important;
+}
+.deck-info-side .curve-count,.draft-v4-curve .curve-count{font-size:8px!important;margin-bottom:1px!important}
+.deck-info-side .curve-cost,.draft-v4-curve .curve-cost{font-size:7.5px!important;margin-top:1px!important}
+.deck-info-note{right:10px!important;bottom:6px!important}
+
+/* Draft uses the same enlarged card area and compact curve. */
+#draftDeckPanel{
+  grid-template-columns:minmax(300px,1fr) 560px!important;
+  min-height:245px!important;
+  max-height:255px!important;
+}
+.draft-mini-grid{
+  grid-template-columns:repeat(10,minmax(0,1fr))!important;
+  grid-template-rows:repeat(3,minmax(0,1fr))!important;
+  gap:1px!important;padding:4px!important;
+}
+.draft-v4-curve{min-height:72px!important;padding:6px 10px!important}
+
+/* Pull history now shows a simple ordinal instead of the internal pull id. */
+#pullsPanel>.table-wrap.compact th:nth-child(1),#pullsPanel>.table-wrap.compact td:nth-child(1){width:70px!important;text-align:center!important}
+#pullsPanel>.table-wrap.compact th:nth-child(2),#pullsPanel>.table-wrap.compact td:nth-child(2){width:106px!important}
+.pull-sequence{font-weight:900;color:#e8edff;white-space:nowrap}
+
+@media(max-width:1450px){
+  .deck-compact-card,#draftDeckPanel{grid-template-columns:minmax(280px,1fr) 520px!important}
+}
+@media(max-width:1100px){
+  .deck-compact-card,#draftDeckPanel{grid-template-columns:minmax(250px,1fr) 470px!important}
+  .effect-filter-options{grid-template-columns:1fr!important}
+  .effect-filter-panel{width:min(420px,calc(100vw - 28px))!important}
+}

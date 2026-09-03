@@ -1,0 +1,147 @@
+/* V6: disciplined footer controls, anchored effect palette, left-side 10x3 deck boards. */
+
+/* ---------- Card footer: one aligned toolbar ---------- */
+.card-control-footer,.footer-filter-row,.footer-stat-filter-row{overflow:visible!important}
+.footer-filter-row{
+  display:grid!important;
+  grid-template-columns:minmax(320px,1fr) 72px 126px 150px 122px 94px 124px 118px!important;
+  gap:5px!important;
+  align-items:center!important;
+}
+.footer-filter-row>*{align-self:center!important;box-sizing:border-box!important;margin:0!important}
+.footer-filter-row input[type="search"]{height:32px!important;font-size:11px!important;padding:0 10px!important}
+.filter-multi,.rarity-multi,.owned-multi{
+  height:32px!important;min-height:32px!important;margin:0!important;padding:2px 4px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:3px!important;
+  border:1px solid #35405e;border-radius:6px;background:#11172a;
+}
+.filter-multi label,.rarity-multi label,.owned-multi label{height:26px!important;display:flex!important;align-items:center!important;margin:0!important}
+.filter-multi span,.rarity-multi span,.owned-multi span{
+  height:26px!important;min-height:26px!important;box-sizing:border-box!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  padding:0 7px!important;line-height:1!important;border-radius:4px!important;
+}
+.type-multi{min-width:126px!important}.type-multi span{min-width:56px!important;font-size:9.5px!important}
+.type-multi label:first-child input:checked+span{background:#155c55!important;border-color:#41b9ab!important;color:#dcfffa!important}
+.type-multi label:last-child input:checked+span{background:#3f326d!important;border-color:#8b72cf!important;color:#f0eaff!important}
+.rarity-multi{min-width:150px!important}.rarity-check span{min-width:31px!important;font-size:9.5px!important}
+
+/* Owned / missing is a two-button filter. Both selected means "all". */
+#ownedFilter.owned-select-hidden{display:none!important}
+.owned-multi{min-width:122px!important;padding:2px 3px!important}
+.owned-multi span{min-width:54px!important;font-size:9px!important;color:#7e89a7!important;background:#0f1527!important;border:1px solid #394360!important}
+.owned-multi .owned-check input:checked+span{background:#164d42!important;border-color:#3cae8d!important;color:#dcfff3!important}
+.owned-multi .missing-check input:checked+span{background:#5b3038!important;border-color:#cf6573!important;color:#ffe5e9!important}
+
+/* Reset / effect / sort / view each has its own visual role. */
+#resetCardFilters{
+  height:32px!important;margin:0!important;padding:0 10px!important;border-radius:6px!important;
+  border:1px solid #9b5b43!important;background:#4a2d25!important;color:#ffd9cc!important;
+  font-size:9.5px!important;font-weight:900!important;cursor:pointer;
+}
+#resetCardFilters:hover{background:#6a3b2e!important;border-color:#d07a59!important}
+.effect-filter-button{
+  width:94px!important;height:32px!important;margin:0!important;border-color:#7256ac!important;
+  background:#2d2450!important;color:#efe9ff!important;font-size:9.5px!important;
+}
+.effect-filter-button:hover,.effect-filter-button.active,.effect-filter-wrap.open .effect-filter-button{background:#543995!important;border-color:#b18aef!important}
+#sortSelect{height:32px!important;border-color:#41638d!important;background:#13243a!important;color:#e3efff!important;font-size:10px!important}
+.view-switch{height:32px!important;display:flex!important;align-items:center!important;margin:0!important}
+.view-switch .view-button{height:32px!important;padding:0 9px!important;font-size:9px!important;border-color:#465778!important;background:#182039!important}
+.view-switch .view-button.active{background:#51408b!important;border-color:#987ee0!important;color:#fff!important}
+
+/* Effect palette belongs to the effect button, not the middle of the screen. */
+.effect-filter-wrap{position:relative!important;height:32px!important;display:flex!important;align-items:center!important;overflow:visible!important}
+.effect-filter-panel{
+  position:absolute!important;left:50%!important;right:auto!important;bottom:100%!important;top:auto!important;
+  transform:translateX(-50%)!important;width:470px!important;max-width:min(470px,calc(100vw - 24px))!important;
+  padding:9px!important;margin:0!important;z-index:420!important;
+  border-radius:9px!important;box-shadow:0 12px 34px rgba(0,0,0,.68)!important;
+}
+.effect-filter-options{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:4px!important}
+.effect-filter-options label{min-height:28px!important;padding:4px 7px!important}
+
+/* Stat filters form one clean second row. */
+.footer-stat-filter-row{
+  display:grid!important;grid-template-columns:minmax(360px,.78fr) minmax(470px,1.08fr) minmax(470px,1.08fr)!important;
+  gap:5px!important;align-items:center!important;
+}
+.footer-stat-filter-row>*{margin:0!important;align-self:center!important}
+.stat-filter-group{height:30px!important;min-height:30px!important;padding:2px 5px!important;display:flex!important;align-items:center!important;gap:2px!important}
+.stat-filter-group span{height:23px!important;min-height:23px!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important}
+
+/* ---------- Deck tab: actual cards on the left, metadata/curve on the right ---------- */
+.deck-compact-card{
+  display:grid!important;
+  grid-template-columns:520px minmax(300px,1fr)!important;
+  grid-template-rows:auto minmax(0,1fr)!important;
+  grid-template-areas:"cards head" "cards info"!important;
+  min-height:250px!important;max-height:250px!important;
+}
+.deck-copy-grid{
+  grid-area:cards!important;display:grid!important;
+  grid-template-columns:repeat(10,48px)!important;grid-template-rows:repeat(3,78px)!important;
+  gap:2px!important;padding:4px!important;justify-content:start!important;align-content:center!important;
+  min-width:0!important;overflow:hidden!important;background:#0d1223!important;
+}
+.deck-copy-card{
+  width:48px!important;height:78px!important;min-width:48px!important;min-height:78px!important;
+  aspect-ratio:auto!important;overflow:hidden!important;border-radius:3px!important;
+}
+.deck-copy-card .card-art.gallery,.draft-mini-card .card-art.gallery{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  transform:scale(1.025)!important;transform-origin:center center!important;
+  background-position:center center!important;
+}
+.deck-copy-card .card-art.gallery img,.draft-mini-card .card-art.gallery img{object-fit:cover!important;object-position:center center!important}
+.deck-compact-head{grid-area:head!important;padding:8px 10px 5px!important;align-content:start!important}
+.deck-info-side{grid-area:info!important;padding:6px 10px 8px!important;min-height:68px!important}
+.deck-card-actions{justify-content:flex-start!important;gap:5px!important}
+.deck-card-actions button[data-deck-action="delete"]{margin-left:0!important}
+
+/* Fixed compact mana curve; never stretches across the whole deck card. */
+.deck-info-side .curve-bars,.draft-v4-curve .curve-bars{
+  width:max-content!important;max-width:100%!important;height:48px!important;
+  display:flex!important;justify-content:flex-start!important;align-items:flex-end!important;gap:1px!important;padding:0!important;
+}
+.deck-info-side .deck-mini-curve-col,.draft-v4-curve .deck-mini-curve-col{
+  flex:0 0 34px!important;width:34px!important;min-width:34px!important;max-width:34px!important;height:45px!important;
+}
+.deck-info-side .deck-mini-curve-bar,.draft-v4-curve .deck-mini-curve-bar{width:33px!important;min-width:33px!important;max-width:33px!important}
+
+/* Draft deck mirrors completed deck geometry exactly. */
+#draftDeckPanel{
+  display:grid!important;
+  grid-template-columns:520px minmax(300px,1fr)!important;
+  grid-template-rows:auto minmax(0,1fr)!important;
+  grid-template-areas:"cards head" "cards curve"!important;
+  min-height:250px!important;max-height:250px!important;
+}
+#draftDeckPanel[hidden]{display:none!important}
+.draft-mini-grid{
+  grid-area:cards!important;display:grid!important;
+  grid-template-columns:repeat(10,48px)!important;grid-template-rows:repeat(3,78px)!important;
+  gap:2px!important;padding:4px!important;justify-content:start!important;align-content:center!important;
+  min-width:0!important;overflow:hidden!important;background:#0d1223!important;
+}
+.draft-mini-card{width:48px!important;height:78px!important;min-width:48px!important;min-height:78px!important;aspect-ratio:auto!important;border-radius:3px!important;overflow:hidden!important}
+.draft-compact-head{
+  grid-area:head!important;height:auto!important;min-height:0!important;padding:8px 10px 5px!important;
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;
+  grid-template-areas:"summary status" "actions actions"!important;gap:5px 8px!important;align-content:start!important;
+}
+.draft-compact-head>div:first-child{grid-area:summary!important}.draft-compact-head>span.need,.draft-compact-head>span.ready{grid-area:status!important;align-self:start!important}
+.draft-v4-actions{grid-area:actions!important;display:flex!important;justify-content:flex-start!important;gap:5px!important;margin:0!important}
+.draft-v4-actions button[data-draft-action="delete"]{margin-left:0!important}
+.draft-v4-curve{grid-area:curve!important;min-height:68px!important;padding:6px 10px 8px!important;overflow:hidden!important}
+
+@media(max-width:1450px){
+  .footer-filter-row{grid-template-columns:minmax(260px,1fr) 68px 116px 142px 116px 88px 112px 108px!important}
+  .footer-stat-filter-row{grid-template-columns:minmax(320px,.75fr) minmax(420px,1fr) minmax(420px,1fr)!important}
+  .deck-compact-card,#draftDeckPanel{grid-template-columns:506px minmax(260px,1fr)!important}
+}
+@media(max-width:1180px){
+  .footer-filter-row{grid-template-columns:minmax(260px,1fr) repeat(3,auto)!important;grid-auto-flow:row!important}
+  .footer-stat-filter-row{grid-template-columns:1fr!important}
+  .deck-compact-card,#draftDeckPanel{grid-template-columns:506px minmax(240px,1fr)!important}
+}
