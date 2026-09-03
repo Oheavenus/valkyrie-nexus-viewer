@@ -159,3 +159,122 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once:true });
   else start();
 })();
+
+// v1.1.2 official terminology / rule clarification layer.
+// Keep stored DB values as ユニット / アーツ and make the visible dashboard
+// match the terminology used by the current in-game card list.
+(function () {
+  let scheduled = false;
+  let observer = null;
+
+  function cardById(id) {
+    try {
+      const key = String(id || '').padStart(3, '0');
+      return Array.isArray(allCards) ? allCards.find(card => card.card_id === key) || null : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function officialTypeLabel(card) {
+    if (card?.type === 'ユニット') return 'ユニット';
+    if (card?.type === 'アーツ') return 'アーツ';
+    return '—';
+  }
+
+  // app.js defines this as a global function; replace the informal labels for
+  // future renders while retaining the underlying type values.
+  try { typeLabel = officialTypeLabel; } catch (_) {}
+  window.VN_RULE_NOTES = Object.freeze({
+    ...(window.VN_RULE_NOTES || {}),
+    '狙撃': '攻撃時に反撃を受けない。ver1.1.2で命中時の「反撃回避!」表示と行動ログが追加され、挙動が明確化された。'
+  });
+
+  function setTextIfDifferent(node, text) {
+    if (node && node.textContent !== text) node.textContent = text;
+  }
+
+  function patchTypeFilter() {
+    const unit = document.querySelector('#typeFilter input[value="ユニット"] + span');
+    const arts = document.querySelector('#typeFilter input[value="アーツ"] + span');
+    setTextIfDifferent(unit, 'ユニット');
+    setTextIfDifferent(arts, 'アーツ');
+  }
+
+  function patchRenderedCards() {
+    document.querySelectorAll('.type-badge').forEach(badge => {
+      if (badge.classList.contains('minion')) {
+        setTextIfDifferent(badge, 'ユニット');
+        badge.title = 'ユニット：ゲーム内では剣（ATK）とハート（HP）で識別';
+      } else if (badge.classList.contains('spell')) {
+        setTextIfDifferent(badge, 'アーツ');
+        badge.title = 'アーツ：ゲーム内では紫の宝石アイコンで識別';
+      }
+    });
+
+    document.querySelectorAll('.card-tile[data-card-id]').forEach(tile => {
+      const card = cardById(tile.dataset.cardId);
+      const row = tile.querySelector('.tile-stat-row');
+      if (!card || !row) return;
+      const parts = row.children;
+      if (parts[0]) setTextIfDifferent(parts[0], officialTypeLabel(card));
+      if (card.type === 'アーツ' && parts[2] && parts[2].textContent === 'スペル') {
+        parts[2].textContent = 'アーツ';
+      }
+    });
+  }
+
+  function patchViewerStatsLabels() {
+    document.querySelectorAll('.viewer-type-card > span').forEach(label => {
+      const text = label.textContent?.trim();
+      if (text === 'ミニオン') label.textContent = 'ユニット';
+      if (text === 'スペル') label.textContent = 'アーツ';
+    });
+  }
+
+  function patchSniperRuleNote() {
+    const body = document.querySelector('#cardModalBody');
+    if (!body) return;
+    const match = body.querySelector('.modal-kicker')?.textContent?.match(/No\.(\d+)/);
+    const card = match ? cardById(match[1]) : null;
+    const details = body.querySelector('.card-details');
+    const existing = body.querySelector('.official-v112-sniper-note');
+
+    if (!card || !details || !(card.keywords || '').split(/[;,、]/).map(v => v.trim()).includes('狙撃')) {
+      existing?.remove();
+      return;
+    }
+    if (existing) return;
+
+    const dt = document.createElement('dt');
+    dt.className = 'official-v112-sniper-note';
+    dt.textContent = 'ルール補足';
+    const dd = document.createElement('dd');
+    dd.className = 'official-v112-sniper-note';
+    dd.textContent = window.VN_RULE_NOTES['狙撃'];
+    details.append(dt, dd);
+  }
+
+  function patch() {
+    scheduled = false;
+    patchTypeFilter();
+    patchRenderedCards();
+    patchViewerStatsLabels();
+    patchSniperRuleNote();
+  }
+
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(patch);
+  }
+
+  function start() {
+    observer = new MutationObserver(schedule);
+    observer.observe(document.body, { childList:true, subtree:true });
+    patch();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once:true });
+  else start();
+})();
