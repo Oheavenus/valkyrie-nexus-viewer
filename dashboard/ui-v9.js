@@ -6,7 +6,9 @@
   let tableSignature = '';
 
   function signature(rows) {
-    return rows.map(card => card.card_id).join(',');
+    // Include owned count so browser-local collection edits can refresh the
+    // visible card without forcing a full filter/view reset.
+    return rows.map(card => `${card.card_id}:${Number(card.count || 0)}`).join(',');
   }
 
   function updateViewButtons(thumbnail) {

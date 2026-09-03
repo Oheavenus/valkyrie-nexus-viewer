@@ -62,7 +62,7 @@
     // All sources share the official 2:3 artwork viewport. Canonical images are
     // already close to this geometry; older reviewed/raw sources are cropped at
     // the viewport edge rather than letterboxed, preventing visible size jitter.
-    return `<img class="card-source-image ${sourceKind ? `source-${sourceKind}` : ''}" src="${src}"${fallbackAttr} alt="" aria-hidden="true" width="200" height="300" loading="${loading}" decoding="async" fetchpriority="${priority}" onerror="${onerror}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;display:block">`;
+    return `<img class="card-source-image ${sourceKind ? `source-${sourceKind}` : ''}" src="${src}"${fallbackAttr} alt="" aria-hidden="true" width="120" height="180" loading="${loading}" decoding="async" fetchpriority="${priority}" onerror="${onerror}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;display:block">`;
   }
 
   function localImageTags(key, hasSprite, size) {

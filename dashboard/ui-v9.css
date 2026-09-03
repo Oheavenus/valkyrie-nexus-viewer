@@ -24,24 +24,31 @@
   box-sizing:border-box!important;
   border:1px solid var(--thumbnail-frame)!important;
   box-shadow:none!important;
-  transition:transform .11s ease,border-color .11s ease!important;
+  transition:none!important;
 }
 .card-tile.rarity-R{--rarity-color:var(--rarity-r);--rarity-glow:rgba(59,140,255,.62);--thumbnail-frame:rgba(59,140,255,.56)}
 .card-tile.rarity-SR{--rarity-color:var(--rarity-sr);--rarity-glow:rgba(179,92,255,.68);--thumbnail-frame:rgba(179,92,255,.58)}
 .card-tile.rarity-UR{--rarity-color:var(--rarity-ur);--rarity-glow:rgba(224,181,54,.68);--thumbnail-frame:rgba(224,181,54,.62)}
-.card-tile:hover,.card-tile:focus-visible{
-  z-index:30;
-  border-color:var(--thumbnail-frame)!important;
-  box-shadow:
-    0 9px 22px rgba(0,0,0,.6),
-    0 0 10px 2px var(--rarity-glow)!important;
-  outline:none!important;
+.card-tile:hover{
+  z-index:1!important;
+  transform:none!important;
+  border-color:var(--rarity-color)!important;
+  box-shadow:none!important;
+  outline:0!important;
+  outline-offset:0!important;
+}
+.card-tile:focus-visible{
+  z-index:1!important;
+  transform:none!important;
+  border-color:var(--rarity-color)!important;
+  box-shadow:none!important;
+  outline:2px solid var(--rarity-color)!important;
+  outline-offset:1px!important;
 }
 .tile-no{backdrop-filter:none!important}
 .tile-owned{box-shadow:none!important}
-/* Gallery hover deliberately stays image-free. Extra card text is available
-   in the click-through detail modal; keeping this interaction CSS-only avoids
-   a decode/layout hitch on first hover. */
+/* Gallery hover is deliberately inert. Extra card text is available in the
+   click-through detail modal; keyboard focus keeps an outline for access. */
 .card-tile:hover .tile-overlay,.card-tile:focus-visible .tile-overlay{display:none!important}
 
 /* Rarity is expressed with the same border and hover light in deck building. */

@@ -1,0 +1,138 @@
+/* Browser-local owned-card controls for the public viewer only. */
+.vn-public-viewer .tile-owned{display:none!important}
+.vn-public-viewer .tile-add-btn{
+  left:4px!important;
+  right:auto!important;
+  bottom:4px!important;
+  min-width:24px!important;
+  width:auto!important;
+  height:20px!important;
+  padding:0 4px!important;
+  border-radius:5px!important;
+  background:rgba(20,65,124,.9)!important;
+  border:1px solid #5fa8ff!important;
+  color:#eaf4ff!important;
+  font-size:9px!important;
+  font-weight:900!important;
+  line-height:18px!important;
+  box-shadow:0 1px 4px rgba(0,0,0,.55)!important;
+}
+.vn-public-viewer .tile-add-btn.limit-reached{opacity:.4!important}
+
+.viewer-owned-editor{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  white-space:nowrap;
+  vertical-align:middle;
+}
+.viewer-owned-label{
+  color:#a9b8cc;
+  font-size:10px;
+  font-weight:800;
+}
+.viewer-owned-button{
+  display:inline-grid;
+  place-items:center;
+  width:22px;
+  height:22px;
+  box-sizing:border-box;
+  border:1px solid #3d7964;
+  border-radius:5px;
+  background:#173f35;
+  color:#d8fff2;
+  font-size:15px;
+  font-weight:900;
+  line-height:1;
+  cursor:pointer;
+  user-select:none;
+}
+.viewer-owned-button:hover,.viewer-owned-button:focus-visible{
+  border-color:#63c99f;
+  background:#205746;
+  outline:none;
+}
+.viewer-owned-button.disabled{
+  opacity:.3;
+  cursor:default;
+}
+.viewer-owned-count{
+  display:inline-grid;
+  place-items:center;
+  min-width:18px;
+  height:22px;
+  color:#f4fbff;
+  font-size:12px;
+  font-weight:900;
+}
+
+.vn-public-viewer .tile-art-shell>.viewer-owned-editor.compact{
+  position:absolute;
+  z-index:7;
+  right:3px;
+  bottom:3px;
+  gap:1px;
+  padding:2px;
+  border:1px solid rgba(76,176,137,.68);
+  border-radius:5px;
+  background:rgba(7,31,27,.9);
+  box-shadow:0 1px 4px rgba(0,0,0,.55);
+}
+.vn-public-viewer .tile-art-shell>.viewer-owned-editor.compact .viewer-owned-label{display:none}
+.vn-public-viewer .tile-art-shell>.viewer-owned-editor.compact .viewer-owned-button{
+  width:16px;
+  height:16px;
+  border:0;
+  border-radius:3px;
+  background:rgba(37,108,81,.86);
+  font-size:12px;
+}
+.vn-public-viewer .tile-art-shell>.viewer-owned-editor.compact .viewer-owned-count{
+  min-width:12px;
+  height:16px;
+  font-size:9px;
+}
+
+.vn-public-viewer #cardsBody td:nth-child(8){min-width:112px}
+.vn-public-viewer #cardsBody .viewer-owned-editor{justify-content:flex-start}
+
+.viewer-collection-reset{
+  min-height:32px;
+  padding:0 10px;
+  border:1px solid #5e4650;
+  border-radius:6px;
+  background:#25181d;
+  color:#e5c8cf;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+}
+.viewer-collection-reset:hover,.viewer-collection-reset:focus-visible{
+  border-color:#a66878;
+  background:#3a2029;
+  color:#fff;
+  outline:none;
+}
+.viewer-local-note{
+  margin-left:auto;
+  color:#7fc8ae!important;
+}
+
+.vn-public-viewer .modal-tags>.viewer-owned-editor{
+  min-height:42px;
+  padding:0 8px;
+  border:1px solid #345d50;
+  border-radius:7px;
+  background:#10251f;
+}
+.vn-public-viewer .modal-tags>.viewer-owned-editor .viewer-owned-label{font-size:11px;color:#8ed7bd}
+.vn-public-viewer .modal-tags>.viewer-owned-editor .viewer-owned-button{width:26px;height:26px}
+.vn-public-viewer .modal-tags>.viewer-owned-editor .viewer-owned-count{min-width:20px;height:26px;font-size:14px}
+
+@media(max-width:900px){
+  .viewer-local-note{margin-left:0}
+  .vn-public-viewer .tile-art-shell>.viewer-owned-editor.compact{
+    right:2px;bottom:2px;padding:1px;
+  }
+}
