@@ -15,11 +15,23 @@
   <link rel="stylesheet" href="ui-v7.css">
   <link rel="stylesheet" href="ui-v8.css">
   <link rel="stylesheet" href="ui-v9.css">
+  <link rel="stylesheet" href="startup-loader.css">
   <link rel="stylesheet" href="viewer-collection.css">
   <link rel="stylesheet" href="viewer-mobile-v2.css">
   <link rel="stylesheet" href="viewer-mobile-v3.css">
 </head>
 <body>
+  <div id="startupLoader" class="startup-loader" role="status" aria-live="polite" aria-label="ダッシュボードを読み込み中">
+    <div class="startup-loader-card">
+      <div class="startup-loader-brand">VALKYRIE NEXUS</div>
+      <div id="startupLoaderText" class="startup-loader-text">ダッシュボードを準備しています…</div>
+      <div class="startup-progress-track" aria-hidden="true">
+        <div id="startupLoaderBar" class="startup-progress-bar"></div>
+      </div>
+      <div id="startupLoaderProgress" class="startup-loader-progress">準備中…</div>
+    </div>
+  </div>
+
   <header class="topbar">
     <div class="header-brand">
       <div class="eyebrow">VALKYRIE NEXUS RESEARCH</div>
@@ -195,6 +207,7 @@
   <script src="ui-v7.js"></script>
   <script src="ui-v8.js"></script>
   <script src="ui-v9.js"></script>
+  <script src="startup-loader.js"></script>
   <script>window.VN_PUBLIC_VIEWER = true;</script>
   <script src="viewer-collection.js"></script>
   <script src="viewer-mobile-v2.js"></script>
