@@ -11,6 +11,8 @@
   let scrollStopTimer = 0;
   let lastScrollY = window.scrollY || 0;
   let started = false;
+  let dynamicObserver = null;
+  let dynamicScheduled = false;
 
   const $ = selector => document.querySelector(selector);
   const isMobile = () => media.matches;
@@ -43,6 +45,7 @@
       button.type = 'button';
       button.setAttribute('aria-expanded', 'false');
       button.setAttribute('aria-controls', 'viewerFilterSheet');
+      button.dataset.open = '0';
       button.innerHTML = '<span aria-hidden="true">∧</span><b>絞り込み</b>';
       footer.prepend(button);
       footer.id = footer.id || 'viewerFilterSheet';
@@ -65,7 +68,7 @@
       document.body.insertAdjacentHTML('beforeend', '<button id="viewerEffectBackdrop" class="viewer-effect-backdrop" type="button" aria-label="効果フィルターを閉じる"></button>');
     }
     if (!$('#viewerDeckDrawerToggle')) {
-      document.body.insertAdjacentHTML('beforeend', '<button id="viewerDeckDrawerToggle" class="viewer-deck-drawer-toggle" type="button" aria-label="デッキ一覧を開く" aria-expanded="false">‹</button>');
+      document.body.insertAdjacentHTML('beforeend', '<button id="viewerDeckDrawerToggle" class="viewer-deck-drawer-toggle" type="button" aria-label="デッキ一覧を開く" aria-expanded="false" data-open="0">‹</button>');
     }
     if (!$('#viewerDeckToast')) {
       document.body.insertAdjacentHTML('beforeend', '<div id="viewerDeckToast" class="viewer-deck-toast" role="status" aria-live="polite"></div>');
@@ -94,6 +97,9 @@
   function syncFooterHandle() {
     const button = $('#viewerFooterHandle');
     if (!button) return;
+    const state = filterOpen ? '1' : '0';
+    if (button.dataset.open === state) return;
+    button.dataset.open = state;
     button.setAttribute('aria-expanded', filterOpen ? 'true' : 'false');
     button.innerHTML = filterOpen
       ? '<span aria-hidden="true">∨</span><b>閉じる</b>'
@@ -121,6 +127,9 @@
     const toggle = $('#viewerDeckDrawerToggle');
     if (!toggle) return;
     const open = document.body.classList.contains('viewer-deck-drawer-open');
+    const state = open ? '1' : '0';
+    if (toggle.dataset.open === state) return;
+    toggle.dataset.open = state;
     toggle.textContent = open ? '›' : '‹';
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     toggle.setAttribute('aria-label', open ? 'デッキ一覧を閉じる' : 'デッキ一覧を開く');
@@ -132,6 +141,7 @@
     window.clearTimeout(drawerPeekTimer);
     document.body.classList.toggle('viewer-deck-drawer-open', Boolean(open));
     document.body.classList.toggle('viewer-deck-drawer-pinned', drawerPinned);
+    if (!open) document.body.classList.remove('viewer-deck-drawer-peek');
     syncDrawerToggle();
   }
 
@@ -153,7 +163,8 @@
     if (!toast) return;
     const card = cardById(id);
     const qty = draftQuantity(id);
-    toast.textContent = `${card?.name || `No.${idKey(id)}`} をデッキに追加${qty > 1 ? ` ×${qty}` : ''}`;
+    const text = `${card?.name || `No.${idKey(id)}`} をデッキに追加${qty > 1 ? ` ×${qty}` : ''}`;
+    if (toast.textContent !== text) toast.textContent = text;
     toast.classList.remove('show');
     void toast.offsetWidth;
     toast.classList.add('show');
@@ -278,12 +289,33 @@
     });
   }
 
-  function observeDynamicUI() {
-    const observer = new MutationObserver(() => {
+  function observeDynamicTargets() {
+    if (!dynamicObserver) return;
+    dynamicObserver.disconnect();
+    dynamicObserver.observe(document.body, { childList:true, subtree:true });
+  }
+
+  function runDynamicSync() {
+    dynamicScheduled = false;
+    if (dynamicObserver) dynamicObserver.disconnect();
+    try {
       ensureMobileChrome();
       syncDeckToggleVisibility();
-    });
-    observer.observe(document.body, { childList:true, subtree:true });
+    } finally {
+      observeDynamicTargets();
+    }
+  }
+
+  function scheduleDynamicSync() {
+    if (dynamicScheduled) return;
+    dynamicScheduled = true;
+    requestAnimationFrame(runDynamicSync);
+  }
+
+  function observeDynamicUI() {
+    if (dynamicObserver) dynamicObserver.disconnect();
+    dynamicObserver = new MutationObserver(scheduleDynamicSync);
+    observeDynamicTargets();
   }
 
   function start() {
@@ -291,6 +323,8 @@
     started = true;
     document.documentElement.classList.add('vn-mobile-v2');
     document.body?.classList.add('vn-mobile-v2');
+    document.body?.classList.remove('viewer-deck-drawer-open', 'viewer-deck-drawer-pinned', 'viewer-deck-drawer-peek');
+    drawerPinned = false;
     ensureMobileChrome();
     setupEvents();
     observeDynamicUI();
