@@ -122,6 +122,7 @@
         return `<article class="viewer-rarity-card rarity-${rarity}"><div class="viewer-rarity-head"><span class="rarity ${rarity}">${rarity}</span><b>${ratioText(r.owned, r.total)}</b></div><div class="viewer-progress"><span style="width:${pct}%"></span></div><div class="viewer-rarity-meta"><span>総枚数 ${r.copies}</span><span>3枚所持 ${r.maxed}種</span></div></article>`;
       }).join('')}</div></section>
       <section class="viewer-stats-section"><h2>カード種別</h2><div class="viewer-type-grid"><article class="viewer-type-card"><span>ミニオン</span><b>${ratioText(s.type['ユニット'].owned, s.type['ユニット'].total)}</b><small>総枚数 ${s.type['ユニット'].copies}</small></article><article class="viewer-type-card"><span>スペル</span><b>${ratioText(s.type['アーツ'].owned, s.type['アーツ'].total)}</b><small>総枚数 ${s.type['アーツ'].copies}</small></article></div></section>`;
+    panel.dataset.viewerStatsReady = 'true';
   }
   function ensureStatisticsUI() {
     const tabs = document.querySelector('.header-tabs');
@@ -138,7 +139,8 @@
       panel = document.createElement('section'); panel.id = 'pullsPanel'; panel.className = 'panel';
       document.querySelector('main')?.appendChild(panel);
     }
-    panel.hidden = false; panel.style.removeProperty('display'); renderPublicStats();
+    panel.hidden = false; panel.style.removeProperty('display');
+    if (panel.dataset.viewerStatsReady !== 'true') renderPublicStats();
   }
   function refreshAfterOwnershipChange() {
     try { if (typeof renderSummary === 'function') renderSummary(); } catch (_) {}
