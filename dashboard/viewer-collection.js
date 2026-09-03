@@ -1,6 +1,6 @@
 // Public viewer collection tracker.
-// Keeps each visitor's owned-card counts in that browser only; never writes the
-// private repository collection.csv and never sends collection data anywhere.
+// Each visitor keeps owned-card counts in localStorage. Public collection data
+// never writes back to the private repository.
 (function () {
   if (!window.VN_PUBLIC_VIEWER) return;
 
@@ -83,7 +83,6 @@
     const key = idKey(id);
     if (!/^\d{3,}$/.test(key)) return;
     const next = normalizeCount(nextValue);
-    if (next === ownedCount(key)) return;
     if (next > 0) counts[key] = next;
     else delete counts[key];
     saveCounts();
@@ -95,45 +94,43 @@
       collection.set(key, { ...existing, count:next });
     } catch (_) {}
 
-    refreshAfterOwnershipChange(key);
+    refreshAfterOwnershipChange();
   }
 
   function changeCount(id, delta) {
     setCount(id, ownedCount(id) + Number(delta || 0));
   }
 
-  function scheduleDecorate() {
-    if (decorateScheduled) return;
-    decorateScheduled = true;
-    requestAnimationFrame(() => {
-      decorateScheduled = false;
-      decorateAll();
+  function refreshQuickDeckOwnership() {
+    let draft = [];
+    try { draft = window.VN_QUICK_DECK?.get?.() || []; } catch (_) {}
+    const byId = new Map(draft.map(item => [idKey(item.id), Number(item.qty || 0)]));
+    document.querySelectorAll('.quick-deck-row[data-card-id]').forEach(row => {
+      const id = idKey(row.dataset.cardId);
+      const card = cardById(id);
+      const have = ownedCount(id);
+      const qty = byId.get(id) || 0;
+      const shortage = Math.max(0, qty - have);
+      const meta = row.querySelector('.quick-deck-meta');
+      if (!meta) return;
+      meta.classList.toggle('need', shortage > 0);
+      meta.textContent = `Cost ${card?.cost ?? '—'} · 所持 ${have}${shortage ? ` · 不足 ${shortage}` : ''}`;
     });
   }
 
-  function refreshAfterOwnershipChange(changedId) {
+  function refreshAfterOwnershipChange() {
     try { if (typeof renderSummary === 'function') renderSummary(); } catch (_) {}
+    setPublicHeaderText();
     try { if (typeof filterCards === 'function') filterCards(); } catch (_) {}
-    try {
-      if (typeof renderDecks === 'function') Promise.resolve(renderDecks()).catch(() => {});
-    } catch (_) {}
-
-    const modal = document.querySelector('#cardModal');
-    if (modal && !modal.hidden) {
-      const shown = modal.querySelector('[data-viewer-owned-card]')?.dataset.viewerOwnedCard;
-      const target = shown || modal.querySelector('.modal-kicker')?.textContent?.match(/No\.(\d+)/)?.[1];
-      if (target && (!changedId || idKey(target) === idKey(changedId))) {
-        try { openCardModal(target); } catch (_) {}
-      }
-    }
-
+    try { if (typeof renderDecks === 'function') Promise.resolve(renderDecks()).catch(() => {}); } catch (_) {}
+    refreshQuickDeckOwnership();
     scheduleDecorate();
   }
 
-  function editorHTML(id, compact = false) {
+  function editorHTML(id) {
     const key = idKey(id);
     const count = ownedCount(key);
-    return `<span class="viewer-owned-editor${compact ? ' compact' : ''}" data-viewer-owned-card="${key}" data-owned-count="${count}" role="group" aria-label="所持枚数 ${count}枚">
+    return `<span class="viewer-owned-editor" data-viewer-owned-card="${key}" role="group" aria-label="所持枚数 ${count}枚">
       <span class="viewer-owned-label">所持</span>
       <span class="viewer-owned-button dec${count <= 0 ? ' disabled' : ''}" role="button" tabindex="${count <= 0 ? '-1' : '0'}" aria-disabled="${count <= 0 ? 'true' : 'false'}" data-owned-action="dec" data-card-id="${key}" title="所持を1枚減らす">−</span>
       <span class="viewer-owned-count" aria-live="polite">${count}</span>
@@ -141,25 +138,49 @@
     </span>`;
   }
 
-  function editorNeedsRefresh(editor, id) {
-    return !editor || editor.dataset.viewerOwnedCard !== idKey(id) || Number(editor.dataset.ownedCount) !== ownedCount(id);
+  function syncEditor(editor, id) {
+    if (!editor) return;
+    const key = idKey(id);
+    const count = ownedCount(key);
+    editor.dataset.viewerOwnedCard = key;
+    editor.setAttribute('aria-label', `所持枚数 ${count}枚`);
+    const countEl = editor.querySelector('.viewer-owned-count');
+    if (countEl) countEl.textContent = String(count);
+    const dec = editor.querySelector('[data-owned-action="dec"]');
+    const inc = editor.querySelector('[data-owned-action="inc"]');
+    if (dec) {
+      const disabled = count <= 0;
+      dec.classList.toggle('disabled', disabled);
+      dec.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+      dec.tabIndex = disabled ? -1 : 0;
+      dec.dataset.cardId = key;
+    }
+    if (inc) {
+      const disabled = count >= MAX_COPIES;
+      inc.classList.toggle('disabled', disabled);
+      inc.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+      inc.tabIndex = disabled ? -1 : 0;
+      inc.dataset.cardId = key;
+    }
   }
 
   function decorateGallery() {
     const gallery = document.querySelector('#cardsGallery');
     if (!gallery) return;
     gallery.querySelectorAll('.card-tile[data-card-id]').forEach(tile => {
-      const shell = tile.querySelector('.tile-art-shell');
-      if (!shell) return;
-      tile.querySelector('.tile-owned')?.setAttribute('aria-hidden', 'true');
-      const editor = shell.querySelector('.viewer-owned-editor');
-      if (editorNeedsRefresh(editor, tile.dataset.cardId)) {
-        if (editor) editor.outerHTML = editorHTML(tile.dataset.cardId, true);
-        else shell.insertAdjacentHTML('beforeend', editorHTML(tile.dataset.cardId, true));
+      const id = idKey(tile.dataset.cardId);
+      tile.querySelectorAll('.viewer-owned-editor').forEach(el => el.remove());
+      const badge = tile.querySelector('.tile-owned');
+      if (badge) {
+        const count = ownedCount(id);
+        badge.textContent = `×${count}`;
+        badge.classList.toggle('owned', count > 0);
+        badge.classList.toggle('missing', count <= 0);
+        badge.removeAttribute('aria-hidden');
       }
-      const deckAdd = shell.querySelector('.tile-add-btn');
+      const deckAdd = tile.querySelector('.tile-add-btn');
       if (deckAdd) {
-        if (deckAdd.textContent !== 'D＋') deckAdd.textContent = 'D＋';
+        deckAdd.textContent = '+';
         deckAdd.setAttribute('aria-label', 'デッキに追加');
         if (deckAdd.getAttribute('aria-disabled') !== 'true') deckAdd.title = 'デッキに追加';
       }
@@ -172,98 +193,87 @@
       if (!cell) return;
       const count = ownedCount(row.dataset.cardId);
       cell.classList.toggle('owned', count > 0);
-      cell.classList.toggle('missing', count === 0);
-      const editor = cell.querySelector('.viewer-owned-editor');
-      if (editorNeedsRefresh(editor, row.dataset.cardId)) cell.innerHTML = editorHTML(row.dataset.cardId);
+      cell.classList.toggle('missing', count <= 0);
+      if (cell.textContent !== String(count)) cell.textContent = String(count);
     });
+  }
+
+  function modalCardId() {
+    const kicker = document.querySelector('#cardModal .modal-kicker');
+    const match = kicker?.textContent?.match(/No\.(\d+)/);
+    return match ? idKey(match[1]) : '';
   }
 
   function decorateModal() {
     const modal = document.querySelector('#cardModal');
     if (!modal || modal.hidden) return;
-    const match = modal.querySelector('.modal-kicker')?.textContent?.match(/No\.(\d+)/);
-    if (!match) return;
-    const id = idKey(match[1]);
+    const id = modalCardId();
+    if (!id) return;
     const tags = modal.querySelector('.modal-tags');
     if (!tags) return;
-    const editor = tags.querySelector('.viewer-owned-editor');
-    if (editorNeedsRefresh(editor, id)) {
-      if (editor) editor.outerHTML = editorHTML(id);
-      else tags.insertAdjacentHTML('beforeend', editorHTML(id));
-    }
-  }
 
-  function refreshQuickDeckOwnership() {
-    document.querySelectorAll('.quick-deck-row[data-card-id]').forEach(row => {
-      const id = idKey(row.dataset.cardId);
-      const card = cardById(id);
-      const have = ownedCount(id);
-      const qty = Number(row.querySelector('.quick-deck-qty')?.textContent || 0);
-      const shortage = Math.max(0, qty - have);
-      const meta = row.querySelector('.quick-deck-meta');
-      if (meta) {
-        const text = `Cost ${card?.cost ?? '—'} · 所持 ${have}${shortage ? ` · 不足 ${shortage}` : ''}`;
-        if (meta.textContent !== text) meta.textContent = text;
-        meta.classList.toggle('need', shortage > 0);
-      }
+    [...tags.children].forEach(child => {
+      if (child.classList?.contains('viewer-owned-editor')) return;
+      if (child.tagName === 'SPAN' && /^所持\s*\d+/.test(child.textContent || '')) child.remove();
     });
 
-    try {
-      const draft = window.VN_QUICK_DECK?.get?.() || [];
-      let totalShortage = 0;
-      draft.forEach(item => {
-        const have = ownedCount(item.id);
-        totalShortage += Math.max(0, Number(item.qty || 0) - have);
-        const copies = [...document.querySelectorAll(`.draft-mini-card[data-card-id="${idKey(item.id)}"]`)];
-        copies.forEach((button, index) => button.classList.toggle('missing-copy', index >= have));
-      });
-      const status = document.querySelector('.draft-compact-head > span:last-child');
-      if (status) {
-        const text = totalShortage ? `不足 ${totalShortage}枚` : '構築可能';
-        if (status.textContent !== text) status.textContent = text;
-        status.classList.toggle('need', totalShortage > 0);
-        status.classList.toggle('ready', totalShortage === 0);
-      }
-    } catch (_) {}
+    let editor = tags.querySelector('.viewer-owned-editor');
+    if (!editor) {
+      tags.insertAdjacentHTML('beforeend', editorHTML(id));
+      editor = tags.querySelector('.viewer-owned-editor');
+    }
+    syncEditor(editor, id);
   }
 
-  function ensureResetControl() {
-    const row = document.querySelector('.footer-filter-row');
-    if (!row || row.querySelector('#viewerCollectionReset')) return;
+  function removeStatisticsUI(final = false) {
+    document.querySelector('.tab[data-tab="pulls"]')?.remove();
+    const panel = document.querySelector('#pullsPanel');
+    if (!panel) return;
+    panel.classList.remove('active');
+    panel.hidden = true;
+    panel.style.display = 'none';
+    if (final) panel.remove();
+  }
+
+  function ensureHeaderResetControl() {
+    const tabs = document.querySelector('.header-tabs');
+    if (!tabs || tabs.querySelector('#viewerCollectionReset')) return;
     const button = document.createElement('button');
     button.id = 'viewerCollectionReset';
-    button.className = 'viewer-collection-reset';
+    button.className = 'viewer-header-reset';
     button.type = 'button';
-    button.textContent = '所持をリセット';
+    button.textContent = '所持リセット';
     button.title = 'このブラウザに保存した所持枚数をすべて0に戻す';
-    const ownedFilter = document.querySelector('#ownedFilter');
-    if (ownedFilter?.nextSibling) ownedFilter.parentNode.insertBefore(button, ownedFilter.nextSibling);
-    else row.appendChild(button);
+    tabs.appendChild(button);
   }
 
-  function ensureLocalNote() {
-    const status = document.querySelector('.footer-status-row');
-    if (status && !status.querySelector('.viewer-local-note')) {
-      const note = document.createElement('div');
-      note.className = 'section-note viewer-local-note';
-      note.textContent = '所持枚数はこのブラウザ内だけに保存されます';
-      status.appendChild(note);
-    }
+  function removeLegacyFooterArtifacts() {
+    document.querySelectorAll('.footer-filter-row #viewerCollectionReset, .viewer-local-note').forEach(el => el.remove());
+  }
+
+  function setPublicHeaderText() {
     const updated = document.querySelector('#updatedText');
-    if (updated && updated.textContent !== 'カード情報: 公開DB / 所持データ: このブラウザに保存') {
-      updated.textContent = 'カード情報: 公開DB / 所持データ: このブラウザに保存';
-    }
+    if (updated) updated.textContent = 'カード情報: 公開DB / 所持データ: このブラウザに保存';
   }
 
   function decorateAll() {
+    decorateScheduled = false;
     if (!window.VN_PUBLIC_VIEWER) return;
     document.body?.classList.add('vn-public-viewer');
+    removeStatisticsUI(started);
+    ensureHeaderResetControl();
+    removeLegacyFooterArtifacts();
     decorateGallery();
     decorateTable();
     decorateModal();
     refreshQuickDeckOwnership();
-    ensureResetControl();
-    ensureLocalNote();
+    setPublicHeaderText();
+  }
+
+  function scheduleDecorate() {
+    if (decorateScheduled) return;
+    decorateScheduled = true;
+    requestAnimationFrame(decorateAll);
   }
 
   function setupObserver() {
@@ -286,11 +296,11 @@
       if (event.target.closest?.('#viewerCollectionReset')) {
         event.preventDefault();
         event.stopPropagation();
-        if (Object.keys(counts).length && !window.confirm('このブラウザに登録した所持状況をすべて0枚に戻しますか？')) return;
+        if (!window.confirm('このブラウザに登録した所持状況をすべて0枚に戻しますか？')) return;
         counts = {};
         saveCounts();
         applyCountsToModel();
-        refreshAfterOwnershipChange('');
+        refreshAfterOwnershipChange();
       }
     }, true);
 
@@ -308,6 +318,9 @@
     let ready = false;
     try { ready = Array.isArray(allCards) && allCards.length > 0; } catch (_) {}
     if (!ready) {
+      removeStatisticsUI(false);
+      ensureHeaderResetControl();
+      removeLegacyFooterArtifacts();
       if (attempt < 100) setTimeout(() => startWhenReady(attempt + 1), 50);
       return;
     }
@@ -315,10 +328,12 @@
     started = true;
     applyCountsToModel();
     try { renderSummary(); } catch (_) {}
+    setPublicHeaderText();
     try { filterCards(); } catch (_) {}
     try { Promise.resolve(renderDecks()).catch(() => {}); } catch (_) {}
-    ensureResetControl();
-    ensureLocalNote();
+    removeStatisticsUI(true);
+    ensureHeaderResetControl();
+    removeLegacyFooterArtifacts();
     decorateAll();
     setupObserver();
     setupEvents();
@@ -339,7 +354,7 @@
       counts = {};
       saveCounts();
       applyCountsToModel();
-      refreshAfterOwnershipChange('');
+      refreshAfterOwnershipChange();
     },
     maxCopies: MAX_COPIES
   };
