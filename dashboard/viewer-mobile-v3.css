@@ -103,76 +103,88 @@
     margin:0!important;
   }
 
-  /* Each stat selector is one complete horizontal row: label + every value. */
+  /*
+    Stat selectors are deliberately flex rows rather than grids. Older UI layers
+    assign grid placement to .filter-group-label; flex resets that behavior and
+    guarantees: Cost [buttons...] / ATK [buttons...] / HP [buttons...] in one row.
+  */
   .vn-public-viewer.viewer-filters-open #costFilter,
   .vn-public-viewer.viewer-filters-open #atkFilter,
   .vn-public-viewer.viewer-filters-open #hpFilter{
     grid-column:1/-1!important;
+    display:flex!important;
+    flex-flow:row nowrap!important;
+    align-items:center!important;
+    justify-content:stretch!important;
     width:100%!important;
     max-width:none!important;
     min-width:0!important;
-    min-height:44px!important;
-    height:44px!important;
+    min-height:42px!important;
+    height:42px!important;
     margin:0!important;
     padding:4px!important;
-    align-items:center!important;
-    align-content:center!important;
     gap:2px!important;
-    overflow:visible!important;
+    overflow:hidden!important;
   }
-  .vn-public-viewer.viewer-filters-open #costFilter{
-    order:50!important;
-    display:grid!important;
-    grid-template-columns:40px repeat(7,minmax(0,1fr))!important;
-  }
-  .vn-public-viewer.viewer-filters-open #atkFilter{
-    order:60!important;
-    display:grid!important;
-    grid-template-columns:40px repeat(10,minmax(0,1fr))!important;
-  }
-  .vn-public-viewer.viewer-filters-open #hpFilter{
-    order:70!important;
-    display:grid!important;
-    grid-template-columns:40px repeat(10,minmax(0,1fr))!important;
-  }
+  .vn-public-viewer.viewer-filters-open #costFilter{order:50!important}
+  .vn-public-viewer.viewer-filters-open #atkFilter{order:60!important}
+  .vn-public-viewer.viewer-filters-open #hpFilter{order:70!important}
 
-  /* fieldset legends otherwise consume a whole grid row on mobile browsers. */
   .vn-public-viewer.viewer-filters-open .stat-filter-group>legend{
     display:none!important;
   }
   .vn-public-viewer.viewer-filters-open .stat-filter-group>.filter-group-label{
     display:grid!important;
-    place-items:center start!important;
-    width:100%!important;
-    min-width:0!important;
-    height:34px!important;
+    place-items:center!important;
+    flex:0 0 40px!important;
+    width:40px!important;
+    min-width:40px!important;
+    max-width:40px!important;
+    height:32px!important;
     margin:0!important;
-    padding:0 5px!important;
+    padding:0 3px!important;
+    grid-column:auto!important;
+    grid-row:auto!important;
+    align-self:center!important;
     font-size:9px!important;
+    font-weight:800!important;
     line-height:1!important;
+    white-space:nowrap!important;
   }
   .vn-public-viewer.viewer-filters-open .stat-filter-group label{
     display:block!important;
+    position:relative!important;
+    flex:1 1 0!important;
     align-self:center!important;
     min-width:0!important;
-    width:100%!important;
-    height:34px!important;
+    width:auto!important;
+    max-width:none!important;
+    height:32px!important;
     margin:0!important;
+    padding:0!important;
+    grid-column:auto!important;
+    grid-row:auto!important;
+  }
+  .vn-public-viewer.viewer-filters-open .stat-filter-group label.edge{
+    flex:1.35 1 0!important;
   }
   .vn-public-viewer.viewer-filters-open .stat-filter-group label span,
   .vn-public-viewer.viewer-filters-open .stat-filter-group label.edge span{
     display:grid!important;
     place-items:center!important;
-    width:100%!important;
+    position:absolute!important;
+    inset:0!important;
+    width:auto!important;
     min-width:0!important;
     max-width:none!important;
-    height:34px!important;
+    height:auto!important;
     margin:0!important;
-    padding:0!important;
-    font-size:7.2px!important;
+    padding:0 1px!important;
+    font-size:7px!important;
     line-height:1!important;
     white-space:nowrap!important;
     overflow:hidden!important;
+    text-overflow:clip!important;
   }
 
   .vn-public-viewer.viewer-filters-open #resetCardFilters{
@@ -212,16 +224,23 @@
   .vn-public-viewer.viewer-filters-open #atkFilter,
   .vn-public-viewer.viewer-filters-open #hpFilter{
     gap:1px!important;
+    padding-left:3px!important;
+    padding-right:3px!important;
   }
-  .vn-public-viewer.viewer-filters-open #costFilter{
-    grid-template-columns:38px repeat(7,minmax(0,1fr))!important;
+  .vn-public-viewer.viewer-filters-open .stat-filter-group>.filter-group-label{
+    flex-basis:34px!important;
+    width:34px!important;
+    min-width:34px!important;
+    max-width:34px!important;
+    padding:0 1px!important;
+    font-size:8px!important;
   }
-  .vn-public-viewer.viewer-filters-open #atkFilter,
-  .vn-public-viewer.viewer-filters-open #hpFilter{
-    grid-template-columns:38px repeat(10,minmax(0,1fr))!important;
+  .vn-public-viewer.viewer-filters-open .stat-filter-group label.edge{
+    flex-grow:1.45!important;
   }
   .vn-public-viewer.viewer-filters-open .stat-filter-group label span,
   .vn-public-viewer.viewer-filters-open .stat-filter-group label.edge span{
-    font-size:6.7px!important;
+    font-size:6.3px!important;
+    padding:0!important;
   }
 }
