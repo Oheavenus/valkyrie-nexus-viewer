@@ -62,17 +62,31 @@
     order:31!important;
   }
 
+  /* Match ownership controls to the Minion / Spell control dimensions. */
   .vn-public-viewer.viewer-filters-open #ownedButtons{
     display:flex!important;
     align-items:center!important;
     justify-content:center!important;
-    gap:4px!important;
-    padding:3px 5px!important;
+    gap:3px!important;
+    padding:2px 4px!important;
   }
-  .vn-public-viewer.viewer-filters-open #ownedButtons label,
-  .vn-public-viewer.viewer-filters-open #ownedButtons button{
+  .vn-public-viewer.viewer-filters-open #ownedButtons label{
+    display:block!important;
     flex:1 1 0!important;
     min-width:0!important;
+    width:100%!important;
+    height:34px!important;
+    margin:0!important;
+  }
+  .vn-public-viewer.viewer-filters-open #ownedButtons label span{
+    display:grid!important;
+    place-items:center!important;
+    width:100%!important;
+    min-width:0!important;
+    height:34px!important;
+    margin:0!important;
+    padding:0 8px!important;
+    line-height:1!important;
   }
 
   .vn-public-viewer.viewer-filters-open #effectFilterWrap{
@@ -89,6 +103,7 @@
     margin:0!important;
   }
 
+  /* Each stat selector is one complete horizontal row: label + every value. */
   .vn-public-viewer.viewer-filters-open #costFilter,
   .vn-public-viewer.viewer-filters-open #atkFilter,
   .vn-public-viewer.viewer-filters-open #hpFilter{
@@ -96,44 +111,52 @@
     width:100%!important;
     max-width:none!important;
     min-width:0!important;
-    min-height:42px!important;
-    height:42px!important;
+    min-height:44px!important;
+    height:44px!important;
     margin:0!important;
     padding:4px!important;
     align-items:center!important;
-    gap:3px!important;
-    overflow:hidden!important;
+    align-content:center!important;
+    gap:2px!important;
+    overflow:visible!important;
   }
   .vn-public-viewer.viewer-filters-open #costFilter{
     order:50!important;
     display:grid!important;
-    grid-template-columns:44px repeat(7,minmax(0,1fr))!important;
+    grid-template-columns:40px repeat(7,minmax(0,1fr))!important;
   }
   .vn-public-viewer.viewer-filters-open #atkFilter{
     order:60!important;
     display:grid!important;
-    grid-template-columns:44px repeat(10,minmax(0,1fr))!important;
+    grid-template-columns:40px repeat(10,minmax(0,1fr))!important;
   }
   .vn-public-viewer.viewer-filters-open #hpFilter{
     order:70!important;
     display:grid!important;
-    grid-template-columns:44px repeat(10,minmax(0,1fr))!important;
+    grid-template-columns:40px repeat(10,minmax(0,1fr))!important;
   }
 
+  /* fieldset legends otherwise consume a whole grid row on mobile browsers. */
+  .vn-public-viewer.viewer-filters-open .stat-filter-group>legend{
+    display:none!important;
+  }
   .vn-public-viewer.viewer-filters-open .stat-filter-group>.filter-group-label{
-    display:flex!important;
-    align-items:center!important;
-    justify-content:flex-start!important;
-    width:auto!important;
+    display:grid!important;
+    place-items:center start!important;
+    width:100%!important;
     min-width:0!important;
-    height:30px!important;
+    height:34px!important;
+    margin:0!important;
     padding:0 5px!important;
     font-size:9px!important;
+    line-height:1!important;
   }
   .vn-public-viewer.viewer-filters-open .stat-filter-group label{
     display:block!important;
+    align-self:center!important;
     min-width:0!important;
     width:100%!important;
+    height:34px!important;
     margin:0!important;
   }
   .vn-public-viewer.viewer-filters-open .stat-filter-group label span,
@@ -143,11 +166,13 @@
     width:100%!important;
     min-width:0!important;
     max-width:none!important;
-    height:30px!important;
-    padding:0 1px!important;
-    font-size:8px!important;
+    height:34px!important;
+    margin:0!important;
+    padding:0!important;
+    font-size:7.2px!important;
     line-height:1!important;
     white-space:nowrap!important;
+    overflow:hidden!important;
   }
 
   .vn-public-viewer.viewer-filters-open #resetCardFilters{
@@ -175,24 +200,28 @@
   .vn-public-viewer.viewer-filters-open .footer-stat-filter-row>.filter-group-label{
     display:none!important;
   }
+
+  /* Keep the slide-out deck tab clear of the rarity row. */
+  .vn-public-viewer .viewer-deck-drawer-toggle{
+    top:42%!important;
+  }
 }
 
 @media(max-width:390px){
   .vn-public-viewer.viewer-filters-open #costFilter,
   .vn-public-viewer.viewer-filters-open #atkFilter,
   .vn-public-viewer.viewer-filters-open #hpFilter{
-    gap:2px!important;
+    gap:1px!important;
   }
   .vn-public-viewer.viewer-filters-open #costFilter{
-    grid-template-columns:40px repeat(7,minmax(0,1fr))!important;
+    grid-template-columns:38px repeat(7,minmax(0,1fr))!important;
   }
   .vn-public-viewer.viewer-filters-open #atkFilter,
   .vn-public-viewer.viewer-filters-open #hpFilter{
-    grid-template-columns:40px repeat(10,minmax(0,1fr))!important;
+    grid-template-columns:38px repeat(10,minmax(0,1fr))!important;
   }
   .vn-public-viewer.viewer-filters-open .stat-filter-group label span,
   .vn-public-viewer.viewer-filters-open .stat-filter-group label.edge span{
-    font-size:7.3px!important;
-    padding:0!important;
+    font-size:6.7px!important;
   }
 }
