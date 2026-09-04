@@ -5,7 +5,8 @@
     ['狙撃','effect-snipe'],['突撃','effect-charge'],['2回攻撃','effect-double'],['攻撃不能','effect-disable'],
     ['鉄壁','effect-wall'],['執念','effect-grit'],['不屈','effect-undying'],['連携','effect-link'],
     ['共鳴','effect-resonance'],['加護','effect-blessing'],['鎮魂','effect-requiem'],['孤立','effect-lone'],
-    ['チェイン','effect-chain'],['起動','effect-activate'],['深度','effect-depth']
+    ['チェイン','effect-chain'],['起動','effect-activate'],['深度','effect-depth'],
+    ['神秘','effect-mystic'],['消滅','effect-banish']
   ]);
 
   function applyEffectColors() {

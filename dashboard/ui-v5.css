@@ -31,6 +31,9 @@
 .effect-filter-options label.effect-chain span{color:#77dc66!important}
 .effect-filter-options label.effect-activate span{color:#f0c64b!important}
 .effect-filter-options label.effect-depth span{color:#47c9f2!important}
+/* Dashboard-only palette for v1.1.3 terminology; these are not asserted as official in-game colors. */
+.effect-filter-options label.effect-mystic span{color:#b89cff!important}
+.effect-filter-options label.effect-banish span{color:#e78ad9!important}
 
 /* Recommended decks: slightly larger 10x3 card boards. */
 .deck-compact-card{
