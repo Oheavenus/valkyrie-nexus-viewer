@@ -6,6 +6,7 @@
 
   const STORAGE_KEY = 'vn-viewer-collection-v1';
   const MAX_COPIES = 3;
+  const DEFAULT_N_COUNT = 3;
   const RARITIES = ['N', 'R', 'SR', 'UR'];
   let counts = loadCounts();
   let observer = null;
@@ -27,7 +28,7 @@
       if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
         Object.entries(raw).forEach(([id, value]) => {
           const key = idKey(id), count = normalizeCount(value);
-          if (/^\d{3,}$/.test(key) && count > 0) clean[key] = count;
+          if (/^\d{3,}$/.test(key)) clean[key] = count;
         });
       }
       return clean;
@@ -36,7 +37,11 @@
   function saveCounts() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(counts)); } catch (_) {}
   }
-  function ownedCount(id) { return normalizeCount(counts[idKey(id)] || 0); }
+  function ownedCount(id) {
+    const key = idKey(id);
+    if (Object.prototype.hasOwnProperty.call(counts, key)) return normalizeCount(counts[key]);
+    return cardById(key)?.rarity === 'N' ? DEFAULT_N_COUNT : 0;
+  }
   function cardById(id) {
     const key = idKey(id);
     try { return Array.isArray(allCards) ? allCards.find(card => card.card_id === key) || null : null; }
@@ -61,7 +66,7 @@
     const key = idKey(id);
     if (!/^\d{3,}$/.test(key)) return;
     const next = normalizeCount(nextValue);
-    if (next > 0) counts[key] = next; else delete counts[key];
+    counts[key] = next;
     saveCounts();
     const card = cardById(key);
     if (card) card.count = next;
@@ -115,7 +120,7 @@
     const s = collectionStats();
     panel.hidden = false;
     panel.style.removeProperty('display');
-    panel.innerHTML = `<div class="viewer-stats-intro"><div><strong>所持統計</strong><span>カード一覧で登録した、このブラウザの所持状況だけを集計します。</span></div></div>
+    panel.innerHTML = `<div class="viewer-stats-intro"><div><strong>所持統計</strong><span>Nは全種3枚を既定値とし、それ以外はカード一覧で登録したこのブラウザの所持状況だけを集計します。</span></div></div>
       <div class="viewer-stats-overview">
         <div class="viewer-stat-card"><span>所持種類</span><b>${s.ownedKinds} / ${s.totalKinds}</b></div>
         <div class="viewer-stat-card"><span>コンプリート率</span><b>${s.completion.toFixed(1)}%</b></div>
@@ -256,7 +261,7 @@
     button.className = 'viewer-header-reset';
     button.type = 'button';
     button.textContent = '所持リセット';
-    button.title = 'このブラウザに保存した所持枚数をすべて0に戻す';
+    button.title = 'このブラウザの所持補正を消去し、N全種3枚・その他0枚へ戻す';
     tabs.appendChild(button);
   }
   function removeLegacyFooterArtifacts() {
@@ -322,7 +327,7 @@
       if (event.target.closest?.('#viewerCollectionReset')) {
         event.preventDefault();
         event.stopPropagation();
-        if (!window.confirm('このブラウザに登録した所持状況をすべて0枚に戻しますか？')) return;
+        if (!window.confirm('このブラウザの所持補正を消去し、N全種3枚・R/SR/URは0枚へ戻しますか？')) return;
         counts = {};
         saveCounts();
         applyCountsToModel();
