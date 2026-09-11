@@ -1,0 +1,20 @@
+[
+  {
+    "id": "luka-copy",
+    "title": "ルカコピー / サクリファイス",
+    "file": "../decks/luka-copy.csv",
+    "status": "検証中",
+    "target": "対AI・安定性重視",
+    "summary": "幻影の交錯でルカを増やし、低コストの死亡・自壊カードを資源へ変換する。縦に伸びた大型には確定除去、横展開にはガリーナで回答する現状の本命案。",
+    "confidence": "B+"
+  },
+  {
+    "id": "goodstuff-board",
+    "title": "盤面 Good Stuff / ドラプリ型",
+    "file": "../decks/goodstuff-board.csv",
+    "status": "検証中",
+    "target": "盤面形成の面白さ + 対AI勝率",
+    "summary": "4～6コストの単体性能が高いSRを中心に、守護・除去・共鳴・ドローで盤面を積み上げる。全体確定除去を受けても単体カードの密度で再展開する方針。",
+    "confidence": "B"
+  }
+]

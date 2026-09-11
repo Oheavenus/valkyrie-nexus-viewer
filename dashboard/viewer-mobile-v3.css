@@ -1,0 +1,442 @@
+@import url("viewer-watermark.css?v=20260912b");
+
+/* The private dashboard also loads this mobile stylesheet. Suppress the imported
+   public watermark until the public viewer marks the document explicitly. */
+html:not(.vn-public-viewer) .card-art:not(.placeholder)::after{
+  content:none!important;
+  display:none!important;
+}
+html.vn-public-viewer .card-art:not(.placeholder)::after{
+  display:block!important;
+  opacity:.23!important;
+  background-size:90% auto!important;
+}
+html.vn-public-viewer .modal-art-wrap .card-art:not(.placeholder)::after{
+  opacity:.27!important;
+  background-size:86% auto!important;
+}
+html.vn-public-viewer .deck-copy-card .card-art:not(.placeholder)::after,
+html.vn-public-viewer .draft-mini-card .card-art:not(.placeholder)::after,
+html.vn-public-viewer .quick-deck-row-art .card-art:not(.placeholder)::after{
+  opacity:.19!important;
+  background-size:92% auto!important;
+}
+
+/* Public viewer mobile UX v3: compact, ordered filter sheet. */
+@media(max-width:760px){
+  .vn-public-viewer.viewer-filters-open .card-control-footer{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    column-gap:8px!important;
+    row-gap:8px!important;
+    align-content:start!important;
+    max-height:min(76dvh,680px)!important;
+    padding:0 8px calc(10px + env(safe-area-inset-bottom))!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+  }
+
+  .vn-public-viewer.viewer-filters-open .card-control-footer>.footer-filter-row,
+  .vn-public-viewer.viewer-filters-open .card-control-footer>.footer-stat-filter-row{
+    display:contents!important;
+  }
+
+  .vn-public-viewer.viewer-filters-open #viewerFooterHandle{
+    grid-column:1/-1!important;
+    order:0!important;
+    margin:0 -2px!important;
+  }
+
+  .vn-public-viewer.viewer-filters-open #searchInput{
+    grid-column:1/-1!important;
+    order:10!important;
+    width:100%!important;
+    min-width:0!important;
+    height:42px!important;
+    margin:0!important;
+  }
+
+  .vn-public-viewer.viewer-filters-open #typeFilter{
+    grid-column:1!important;
+    order:20!important;
+  }
+  .vn-public-viewer.viewer-filters-open #rarityFilter{
+    grid-column:2!important;
+    order:21!important;
+  }
+  .vn-public-viewer.viewer-filters-open #typeFilter,
+  .vn-public-viewer.viewer-filters-open #rarityFilter,
+  .vn-public-viewer.viewer-filters-open #ownedButtons,
+  .vn-public-viewer.viewer-filters-open #ownedFilter,
+  .vn-public-viewer.viewer-filters-open #sortSelect{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:42px!important;
+    margin:0!important;
+  }
+
+  .vn-public-viewer.viewer-filters-open #ownedButtons,
+  .vn-public-viewer.viewer-filters-open #ownedFilter{
+    grid-column:1!important;
+    order:30!important;
+  }
+  .vn-public-viewer.viewer-filters-open #sortSelect{
+    grid-column:2!important;
+    order:31!important;
+  }
+
+  .vn-public-viewer.viewer-filters-open #ownedButtons{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:3px!important;
+    padding:2px 4px!important;
+  }
+  .vn-public-viewer.viewer-filters-open #ownedButtons label{
+    display:block!important;
+    flex:1 1 0!important;
+    min-width:0!important;
+    width:100%!important;
+    height:34px!important;
+    margin:0!important;
+  }
+  .vn-public-viewer.viewer-filters-open #ownedButtons label span{
+    display:grid!important;
+    place-items:center!important;
+    width:100%!important;
+    min-width:0!important;
+    height:34px!important;
+    margin:0!important;
+    padding:0 8px!important;
+    line-height:1!important;
+  }
+
+  .vn-public-viewer.viewer-filters-open #effectFilterWrap{
+    grid-column:1/-1!important;
+    order:40!important;
+    width:100%!important;
+    min-width:0!important;
+    height:42px!important;
+    margin:0!important;
+  }
+  .vn-public-viewer.viewer-filters-open #effectFilterButton{
+    width:100%!important;
+    height:42px!important;
+    margin:0!important;
+  }
+
+  .vn-public-viewer.viewer-filters-open #costFilter,
+  .vn-public-viewer.viewer-filters-open #atkFilter,
+  .vn-public-viewer.viewer-filters-open #hpFilter{
+    grid-column:1/-1!important;
+    display:flex!important;
+    flex-flow:row nowrap!important;
+    align-items:center!important;
+    justify-content:stretch!important;
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    min-height:42px!important;
+    height:42px!important;
+    margin:0!important;
+    padding:4px!important;
+    gap:2px!important;
+    overflow:hidden!important;
+  }
+  .vn-public-viewer.viewer-filters-open #costFilter{order:50!important}
+  .vn-public-viewer.viewer-filters-open #atkFilter{order:60!important}
+  .vn-public-viewer.viewer-filters-open #hpFilter{order:70!important}
+
+  .vn-public-viewer.viewer-filters-open .stat-filter-group>legend{
+    display:none!important;
+  }
+  .vn-public-viewer.viewer-filters-open .stat-filter-group>.filter-group-label{
+    display:grid!important;
+    place-items:center!important;
+    flex:0 0 40px!important;
+    width:40px!important;
+    min-width:40px!important;
+    max-width:40px!important;
+    height:32px!important;
+    margin:0!important;
+    padding:0 3px!important;
+    grid-column:auto!important;
+    grid-row:auto!important;
+    align-self:center!important;
+    font-size:9px!important;
+    font-weight:800!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+  }
+  .vn-public-viewer.viewer-filters-open .stat-filter-group label{
+    display:block!important;
+    position:relative!important;
+    flex:1 1 0!important;
+    align-self:center!important;
+    min-width:0!important;
+    width:auto!important;
+    max-width:none!important;
+    height:32px!important;
+    margin:0!important;
+    padding:0!important;
+    grid-column:auto!important;
+    grid-row:auto!important;
+  }
+  .vn-public-viewer.viewer-filters-open .stat-filter-group label.edge{
+    flex:1.35 1 0!important;
+  }
+  .vn-public-viewer.viewer-filters-open .stat-filter-group label span,
+  .vn-public-viewer.viewer-filters-open .stat-filter-group label.edge span{
+    display:grid!important;
+    place-items:center!important;
+    position:absolute!important;
+    inset:0!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0 1px!important;
+    font-size:7px!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+  }
+
+  .vn-public-viewer.viewer-filters-open #resetCardFilters{
+    grid-column:1/-1!important;
+    order:80!important;
+    display:block!important;
+    justify-self:center!important;
+    width:118px!important;
+    min-width:0!important;
+    height:36px!important;
+    margin:2px auto 0!important;
+    padding:0 12px!important;
+  }
+
+  .vn-public-viewer.viewer-filters-open .footer-status-row{
+    grid-column:1/-1!important;
+    order:90!important;
+    display:flex!important;
+    min-height:14px!important;
+    padding:0 2px!important;
+    margin:0!important;
+  }
+
+  .vn-public-viewer.viewer-filters-open .footer-filter-row>.filter-group-label,
+  .vn-public-viewer.viewer-filters-open .footer-stat-filter-row>.filter-group-label{
+    display:none!important;
+  }
+
+  .vn-public-viewer .viewer-deck-drawer-toggle{
+    top:42%!important;
+  }
+
+  /* Card additions notify through the handle only. The old automatic peek state
+     remains in the interaction layer, but the drawer itself never enters view. */
+  .vn-public-viewer.viewer-deck-drawer-peek #quickDeck{
+    transform:translateX(102%)!important;
+    pointer-events:none!important;
+  }
+  .vn-public-viewer.viewer-deck-drawer-peek .viewer-deck-drawer-toggle{
+    right:0!important;
+    animation:vn-deck-handle-flash .72s ease-out 1!important;
+  }
+
+  /* Mobile deck tab: one deliberate vertical flow instead of the desktop
+     two-column card/detail layout. */
+  .vn-public-viewer #decksPanel{
+    width:100%!important;
+    min-width:0!important;
+    padding:4px 2px 18px!important;
+    overflow:visible!important;
+  }
+  .vn-public-viewer #decksPanel #draftDeckPanel,
+  .vn-public-viewer #decksPanel #savedDeckLibrary .saved-deck-card{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:auto auto auto!important;
+    grid-template-areas:"head" "cards" "info"!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0 0 12px!important;
+    overflow:visible!important;
+    align-items:stretch!important;
+  }
+  .vn-public-viewer #decksPanel #draftDeckPanel .draft-compact-head,
+  .vn-public-viewer #decksPanel #savedDeckLibrary .saved-deck-card>.deck-compact-head{
+    grid-area:head!important;
+    min-height:0!important;
+    padding:12px 11px 10px!important;
+  }
+  .vn-public-viewer #decksPanel #draftDeckPanel .draft-compact-head strong,
+  .vn-public-viewer #decksPanel #savedDeckLibrary .deck-compact-title{
+    font-size:17px!important;
+    line-height:1.25!important;
+  }
+  .vn-public-viewer #decksPanel #draftDeckPanel .draft-v4-actions,
+  .vn-public-viewer #decksPanel #savedDeckLibrary .deck-card-actions{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:6px!important;
+    margin-top:8px!important;
+  }
+  .vn-public-viewer #decksPanel #draftDeckPanel .draft-v4-actions button,
+  .vn-public-viewer #decksPanel #savedDeckLibrary .deck-card-actions button{
+    min-height:36px!important;
+    padding:7px 10px!important;
+    font-size:10.5px!important;
+  }
+  .vn-public-viewer #decksPanel #draftDeckPanel .draft-mini-grid,
+  .vn-public-viewer #decksPanel #savedDeckLibrary .saved-deck-card>.deck-copy-grid{
+    grid-area:cards!important;
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    grid-template-rows:auto!important;
+    width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    gap:3px!important;
+    padding:8px!important;
+    box-sizing:border-box!important;
+    align-self:stretch!important;
+  }
+  .vn-public-viewer #decksPanel #draftDeckPanel .draft-mini-card,
+  .vn-public-viewer #decksPanel #savedDeckLibrary .saved-deck-card .deck-copy-card{
+    width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    aspect-ratio:8/13!important;
+  }
+  .vn-public-viewer #decksPanel #draftDeckPanel>.v2analytics,
+  .vn-public-viewer #decksPanel #savedDeckLibrary .saved-deck-card>.v2analytics{
+    grid-area:info!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:10px!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:0!important;
+    padding:11px!important;
+    box-sizing:border-box!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2donuts{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:8px!important;
+    align-items:start!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2d{
+    width:74px!important;
+    height:74px!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2d:after{
+    inset:16px!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2dc{
+    font-size:10px!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2dw{
+    gap:4px!important;
+    font-size:8.5px!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2dw>strong{
+    font-size:9.5px!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2legend{
+    gap:4px!important;
+    font-size:8px!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2m{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:7px!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2box{
+    padding:8px!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2box span{
+    font-size:9px!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2box b{
+    font-size:13px!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2box small{
+    font-size:8px!important;
+    line-height:1.35!important;
+  }
+  .vn-public-viewer #decksPanel #draftDeckPanel>.draft-v4-curve,
+  .vn-public-viewer #decksPanel #draftDeckPanel>.deck-info-side,
+  .vn-public-viewer #decksPanel #savedDeckLibrary .saved-deck-card>.deck-info-side{
+    display:none!important;
+  }
+  .vn-public-viewer #savedDeckLibrary .saved-deck-list{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:12px!important;
+  }
+  .vn-public-viewer #savedDeckLibrary .saved-deck-library-head{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:8px!important;
+    padding:10px!important;
+  }
+  .vn-public-viewer #savedDeckLibrary .v2tools{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    gap:6px!important;
+    width:100%!important;
+    margin:0!important;
+  }
+}
+
+@keyframes vn-deck-handle-flash{
+  0%,100%{background:rgba(19,27,50,.97);border-color:#52618c;box-shadow:-5px 4px 16px rgba(0,0,0,.35);color:#f0f4ff}
+  28%{background:#3458a8;border-color:#a9c8ff;box-shadow:0 0 0 3px rgba(105,157,255,.24),-4px 0 24px rgba(91,146,255,.92);color:#fff}
+  58%{background:#243d78;border-color:#7eaaff;box-shadow:0 0 0 2px rgba(105,157,255,.16),-3px 0 18px rgba(91,146,255,.62);color:#fff}
+}
+
+@media(max-width:390px){
+  .vn-public-viewer.viewer-filters-open #costFilter,
+  .vn-public-viewer.viewer-filters-open #atkFilter,
+  .vn-public-viewer.viewer-filters-open #hpFilter{
+    gap:1px!important;
+    padding-left:3px!important;
+    padding-right:3px!important;
+  }
+  .vn-public-viewer.viewer-filters-open .stat-filter-group>.filter-group-label{
+    flex-basis:34px!important;
+    width:34px!important;
+    min-width:34px!important;
+    max-width:34px!important;
+    padding:0 1px!important;
+    font-size:8px!important;
+  }
+  .vn-public-viewer.viewer-filters-open .stat-filter-group label.edge{
+    flex-grow:1.45 1 0!important;
+  }
+  .vn-public-viewer.viewer-filters-open .stat-filter-group label span,
+  .vn-public-viewer.viewer-filters-open .stat-filter-group label.edge span{
+    font-size:6.3px!important;
+    padding:0!important;
+  }
+  .vn-public-viewer #decksPanel #draftDeckPanel .draft-mini-grid,
+  .vn-public-viewer #decksPanel #savedDeckLibrary .saved-deck-card>.deck-copy-grid{
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2d{
+    width:66px!important;
+    height:66px!important;
+  }
+  .vn-public-viewer #decksPanel .v2analytics .v2d:after{
+    inset:15px!important;
+  }
+  .vn-public-viewer #savedDeckLibrary .v2tools{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+}

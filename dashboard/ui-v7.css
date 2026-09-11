@@ -1,0 +1,115 @@
+/* V7: three-column effect palette, header view switch, right-aligned reset, editable deck notes. */
+
+/* ---------- Header view mode ---------- */
+.header-tabs{
+  display:flex!important;
+  align-items:center!important;
+  gap:5px!important;
+  flex-wrap:nowrap!important;
+}
+.header-tabs .view-switch.header-view-switch{
+  display:flex!important;
+  align-items:center!important;
+  gap:2px!important;
+  height:30px!important;
+  margin-left:8px!important;
+  padding-left:8px!important;
+  border-left:1px solid #39415f!important;
+}
+.header-tabs .view-switch.header-view-switch .view-button{
+  height:28px!important;
+  padding:0 9px!important;
+  font-size:9px!important;
+  border:1px solid #465778!important;
+  background:#151d33!important;
+  color:#aeb8d3!important;
+  border-radius:5px!important;
+}
+.header-tabs .view-switch.header-view-switch .view-button.active{
+  background:#51408b!important;
+  border-color:#987ee0!important;
+  color:#fff!important;
+}
+
+/* ---------- Footer first row ---------- */
+.footer-filter-row{
+  display:grid!important;
+  grid-template-columns:minmax(360px,1fr) 126px 150px 122px 94px 116px 82px!important;
+  gap:5px!important;
+  align-items:center!important;
+}
+.footer-filter-row>*{margin:0!important;align-self:center!important}
+#resetCardFilters{
+  justify-self:end!important;
+  width:82px!important;
+  order:99!important;
+}
+
+/* ---------- Effect palette: compact 3-column layout ---------- */
+.effect-filter-panel{
+  width:420px!important;
+  max-width:min(420px,calc(100vw - 20px))!important;
+  padding:8px!important;
+}
+.effect-filter-head{margin-bottom:5px!important}
+.effect-filter-options{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:3px!important;
+}
+.effect-filter-options label{
+  min-height:27px!important;
+  padding:3px 6px!important;
+  gap:4px!important;
+}
+.effect-filter-options span{
+  min-width:0!important;
+  font-size:9.5px!important;
+  line-height:1.05!important;
+  white-space:nowrap!important;
+}
+.effect-filter-options small{
+  margin-left:auto!important;
+  font-size:8px!important;
+  opacity:.7!important;
+}
+
+/* ---------- Editable deck comments ---------- */
+.deck-compact-summary,.draft-v7-comment{
+  white-space:normal!important;
+  overflow:hidden!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  line-height:1.35!important;
+}
+.deck-card-actions .deck-comment-edit,
+.draft-v4-actions .draft-comment-edit{
+  border-color:#4d6f8c!important;
+  background:#183149!important;
+  color:#dceeff!important;
+}
+.deck-card-actions .deck-comment-edit:hover,
+.draft-v4-actions .draft-comment-edit:hover{
+  background:#244b6b!important;
+  border-color:#6e9fc7!important;
+}
+.draft-compact-head{
+  grid-template-areas:"summary status" "comment comment" "actions actions"!important;
+}
+.draft-v7-comment{
+  grid-area:comment!important;
+  margin:1px 0 0!important;
+  color:#aeb8d4!important;
+  font-size:9px!important;
+  min-height:12px!important;
+}
+
+@media(max-width:1450px){
+  .footer-filter-row{grid-template-columns:minmax(280px,1fr) 118px 142px 116px 88px 108px 76px!important}
+  #resetCardFilters{width:76px!important}
+}
+@media(max-width:1100px){
+  .header-tabs .view-switch.header-view-switch{margin-left:4px!important;padding-left:4px!important}
+  .effect-filter-panel{width:390px!important;max-width:min(390px,calc(100vw - 16px))!important}
+  .effect-filter-options{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
