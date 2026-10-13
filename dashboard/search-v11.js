@@ -5,7 +5,7 @@ const S=[
 ['draw','ドロー',/カードを\d+枚引く|もう1枚引く|カードを引く/],
 ['search','サーチ',/デッキから[^。]{0,75}手札に加え|デッキから[^。]{0,75}手札へ/],
 ['hand','手札追加',/手札に加え|手札に戻す|手札へ/],
-['generate','生成',/手札に加え|手札に戻す/],
+['generate','生成',/手札に加え/],
 ['disabled','攻撃不能',/攻撃不能/],
 ['heal','回復',/回復/],
 ['single','単体除去',/敵ユニット1体[^。]{0,45}(?:破壊|消滅|手札に戻す)|(?:破壊|消滅)[^。]{0,25}敵ユニット1体/],
@@ -35,7 +35,7 @@ const R=[
 ];
 const N={'127':'ver1.4.3：奥義が追加された。','146':'ver1.4.3：執念は攻撃時にターン終了まで得る。','159':'ver1.4.4：コスト軽減の下限は1。ver1.4.0でHP7→3。','144':'ver1.4.0：破壊した味方1体につきリーダーを2回復。','155':'ver1.4.0：死亡時に自身のコピーを手札へ加える。','160':'ver1.4.0：ATK6→8。'};
 function text(c){return String(c&&c.effect_text||'')+' '+String(c&&c.keywords||'');}
-function tags(c){const value=text(c);return S.filter(s=>s[0]==='generate'?value.split('。').some(part=>/手札に加え|手札に戻す/.test(part)&&!/デッキから/.test(part)):s[2].test(value)).map(s=>s[0]);}
+function tags(c){const value=text(c);return S.filter(s=>s[0]==='generate'?value.split('。').some(part=>/手札に加え/.test(part)&&!/デッキから/.test(part)):s[2].test(value)).map(s=>s[0]);}
 function match(c,q){
 const hay=[c.name,c.effect_text,c.keywords,c.card_id,'No.'+c.card_id].join(' ').normalize('NFKC').toLowerCase();
 const found=new Set(tags(c));
