@@ -48,7 +48,7 @@
   }
 
   function updateEffectCount() {
-    const n = document.querySelectorAll('#effectFilterPanel input[name="effectKeyword"]:checked').length;
+    const n = document.querySelectorAll('#effectFilterPanel input[type="checkbox"]:checked').length;
     const badge = document.querySelector('#effectFilterCount');
     if (badge) badge.textContent = n ? String(n) : '';
     document.querySelector('#effectFilterButton')?.classList.toggle('active', n > 0);
