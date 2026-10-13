@@ -67,7 +67,7 @@
     const costTotal = allCount('#costFilter'), atkTotal = allCount('#atkFilter'), hpTotal = allCount('#hpFilter');
 
     const rows = allCards.filter(c => {
-      if (q && ![c.name, c.effect_text, c.keywords, c.card_id].join(' ').toLowerCase().includes(q)) return false;
+      if (q && !(window.VN_CARD_SEARCH_MATCH ? window.VN_CARD_SEARCH_MATCH(c, q) : [c.name, c.effect_text, c.keywords, c.card_id].join(' ').toLowerCase().includes(q))) return false;
       if (!rarities.has(c.rarity)) return false;
       if (!types.has(c.type)) return false;
       if (!groupedMatch(c.cost, costs, costTotal)) return false;
