@@ -1,0 +1,144 @@
+/* VN V12: effect filters in a readable viewport overlay; 20 x 8 atlas is retained. */
+#effectFilterPanel{
+  position:fixed!important;
+  inset:auto auto 130px 50%!important;
+  transform:translateX(-50%)!important;
+  box-sizing:border-box!important;
+  width:min(620px,calc(100vw - 24px))!important;
+  max-width:min(600px,calc(100dvh - 155px))!important;
+  padding:13px!important;
+  overflow:hidden!important;
+  border:1px solid #7560ae!important;
+  border-radius:11px!important;
+  background:rgba(15,20,39,.99)!important;
+  box-shadow:0 22px 70px #000b!important;
+  z-index:1000!important;
+  display:none!important;
+  flex-direction:column;
+  gap:9px;
+  color:#eef3ff;
+}
+#effectFilterPanel[data-vn-open="true"]{display:flex!important}
+#effectFilterPanel .effect-filter-head{flex:none;margin:0!important;min-height:27px}
+#effectFilterPanel .effect-filter-head strong{font-size:13px!important}
+#effectFilterPanel .effect-filter-head button{min-height:27px;font-size:11px!important}
+#effectFilterPanel .vn-effect-tabs{
+  flex:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;
+  padding:3px;background:#10182e;border:1px solid #3d4b6b;border-radius:8px;
+}
+#effectFilterPanel .vn-effect-tab{
+  appearance:none;min-height:35px;padding:7px 10px;border:1px solid transparent;
+  border-radius:6px;background:transparent;color:#aab9d7;
+  font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;
+}
+#effectFilterPanel .vn-effect-tab[aria-selected="true"]{
+  background:#443576;color:#fff;border-color:#937be0;
+}
+#effectFilterPanel .vn-effect-tab:focus-visible,
+#effectFilterPanel .effect-filter-options label:focus-within,
+#effectFilterPanel .vn-semantic-grid label:focus-within{outline:2px solid #bfafff;outline-offset:1px}
+#effectFilterPanel .effect-filter-options,
+#effectFilterPanel #vnSemanticOptions{
+  flex:1 1 auto;min-height:0;max-height:none;
+  overflow-y:auto!important;overflow-x:hidden!important;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;scrollbar-color:#596b95 #151a30;
+}
+#effectFilterPanel .effect-filter-options[hidden],
+#effectFilterPanel #vnSemanticOptions[hidden]{display:none!important}
+#effectFilterPanel .effect-filter-options{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  align-content:start;gap:6px!important;padding:3px!important;
+}
+#effectFilterPanel .effect-filter-options label{
+  min-height:34px!important;padding:7px 9px!important;gap:8px!important;
+  font-size:12px!important;
+}
+#effectFilterPanel .effect-filter-options label span{
+  font-size:12px!important;line-height:1.35!important;
+  white-space:nowrap!important;writing-mode:horizontal-tb!important;
+}
+#effectFilterPanel .effect-filter-options label small{
+  font-size:11px!important;min-width:20px;text-align:right;
+}
+#effectFilterPanel #vnSemanticOptions{
+  border:0!important;margin:0!important;padding:3px!important;
+}
+#effectFilterPanel #vnSemanticOptions>b{
+  display:block;position:sticky;top:0;background:#0f1427;
+  padding:4px 3px 9px;margin:0;font-size:11px;color:#b8c5e2;
+}
+#effectFilterPanel .vn-semantic-grid{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:6px!important;align-content:start;
+}
+#effectFilterPanel .vn-semantic-grid label{
+  box-sizing:border-box;min-width:0;min-height:36px;
+  display:flex!important;align-items:center;gap:9px!important;
+  padding:7px 10px!important;
+  border:1px solid #354361;border-radius:6px;
+  background:#151d34;font-size:12px!important;
+  writing-mode:horizontal-tb!important;white-space:nowrap!important;
+  cursor:pointer;
+}
+#effectFilterPanel .vn-semantic-grid label:has(input:checked){
+  border-color:#9882e4;background:#2a2451;
+}
+#effectFilterPanel .vn-semantic-grid input{
+  flex:0 0 15px;width:15px;height:15px;margin:0;
+  accent-color:#9571ee;
+}
+#effectFilterPanel .vn-semantic-grid span{
+  display:inline!important;min-width:0!important;
+  font-size:12px!important;line-height:1.35!important;
+  white-space:nowrap!important;writing-mode:horizontal-tb!important;
+  overflow:hidden;text-overflow:ellipsis;
+}
+#effectFilterPanel .vn-semantic-grid small{
+  margin-left:auto;flex:0 0 auto;font-size:11px!important;
+  color:#a3b0ce;
+}
+
+/* More usable deck-builder controls without changing the atlas column count. */
+@media(min-width:901px){
+  #cardsPanel .cards-workspace{
+    grid-template-columns:minmax(0,1fr) clamp(270px,17vw,336px)!important;
+    gap:10px!important;
+  }
+}
+#cardsPanel .quick-deck{min-width:0;box-sizing:border-box}
+#cardsPanel .quick-deck-head{padding:10px 11px 8px!important}
+#cardsPanel .quick-deck-title-row{gap:8px}
+#cardsPanel .quick-deck-head strong{font-size:13px!important}
+#cardsPanel .quick-deck-actions button{
+  min-width:0;min-height:29px;font-size:10px!important;padding:5px 6px!important;
+}
+#cardsPanel .quick-deck-row{min-width:0}
+#cardsPanel .quick-deck-name{font-size:11px!important}
+#cardsPanel .quick-deck-meta{font-size:9px!important}
+#cardsPanel .quick-deck-controls button{
+  min-width:25px!important;width:25px!important;height:25px!important;
+}
+#cardsPanel #vnDeckCodeImport{margin:7px 8px!important}
+#cardsPanel #vnDeckCodeImport>summary{
+  white-space:normal;overflow-wrap:anywhere;line-height:1.4;padding:8px 9px;
+  font-size:11px;
+}
+#cardsPanel .vn-deck-import-form{min-width:0}
+#cardsPanel .vn-deck-import-form textarea{max-width:100%;min-width:0}
+
+/* A fixed grid is deliberate. On shorter displays, whitespace at the sides
+   prevents changing card proportions or dropping the eighth row below the footer. */
+@media(max-width:900px){
+  #effectFilterPanel{
+    width:calc(100vw - 16px)!important;padding:10px!important;
+    max-height:min(65dvh,530px)!important;
+  }
+  #effectFilterPanel .effect-filter-options,
+  #effectFilterPanel .vn-semantic-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:450px){
+  #effectFilterPanel .effect-filter-options,
+  #effectFilterPanel .vn-semantic-grid{grid-template-columns:1fr!important}
+}
