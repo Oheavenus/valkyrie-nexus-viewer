@@ -40,12 +40,6 @@ const found=new Set(tags(c));
 return String(q||'').normalize('NFKC').toLowerCase().trim().split(/\s+/).every(k=>!k||hay.includes(k)||Boolean(A[k]&&found.has(A[k])));
 }
 window.VN_CARD_SEARCH_MATCH=match;window.VN_CARD_SEARCH_TAGS=tags;window.VN_CARD_SEARCH_VERSION='1.4.4';
-if(typeof filteredCards==='function'){
-const prev=filteredCards;filteredCards=function(){
-const rows=prev(),keys=[...document.querySelectorAll('#effectFilterPanel input[name="effectSemantic"]:checked')].map(e=>e.value);
-return keys.length?rows.filter(c=>keys.some(key=>tags(c).includes(key))):rows;
-};
-}
 function count(){
 const n=document.querySelectorAll('#effectFilterPanel input[type="checkbox"]:checked').length;
 const el=document.querySelector('#effectFilterCount');if(el)el.textContent=n?String(n):'';
