@@ -62,6 +62,7 @@
     const atks = checkedValues('#atkFilter');
     const hps = checkedValues('#hpFilter');
     const effects = new Set([...document.querySelectorAll('#effectFilterPanel input[name="effectKeyword"]:checked')].map(x => x.value));
+    const semantics = new Set([...document.querySelectorAll('#effectFilterPanel input[name="effectSemantic"]:checked')].map(x => x.value));
     const own = document.querySelector('#ownedFilter')?.value || '';
     const sort = document.querySelector('#sortSelect')?.value || 'id';
     const costTotal = allCount('#costFilter'), atkTotal = allCount('#atkFilter'), hpTotal = allCount('#hpFilter');
@@ -73,7 +74,7 @@
       if (!groupedMatch(c.cost, costs, costTotal)) return false;
       if (atks.size !== atkTotal && (c.type !== 'ユニット' || !groupedMatch(c.atk, atks, atkTotal))) return false;
       if (hps.size !== hpTotal && (c.type !== 'ユニット' || !groupedMatch(c.hp, hps, hpTotal))) return false;
-      if (effects.size && !cardKeywords(c).some(k => effects.has(k))) return false;
+      if ((effects.size || semantics.size) && !cardKeywords(c).some(k => effects.has(k)) && ![...semantics].some(k => window.VN_CARD_SEARCH_TAGS && window.VN_CARD_SEARCH_TAGS(c).includes(k))) return false;
       if (own && (own === 'owned' ? c.count <= 0 : c.count > 0)) return false;
       return true;
     });
