@@ -88,6 +88,7 @@ const frag=document.createDocumentFragment();selected.forEach(([word,note])=>{co
 }
 function start(){
 css();help();
+const filterPanel=document.querySelector('#effectFilterPanel');if(filterPanel)new MutationObserver(sem).observe(filterPanel,{childList:true});
 const el=document.querySelector('#cardModalBody');if(el){let pending=false;new MutationObserver(()=>{if(!pending){pending=true;requestAnimationFrame(()=>{pending=false;annotate();});}}).observe(el,{childList:true,subtree:true});}
 [0,120,350,900,1800,3200].forEach(t=>setTimeout(()=>{sem();help();},t));
 }
