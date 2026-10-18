@@ -5,10 +5,12 @@
   if (!window.VN_PUBLIC_VIEWER) return;
 
   const STORAGE_KEY = 'vn-viewer-collection-v1';
+  const BULK_BACKUP_KEY = 'vn-viewer-collection-pre-bulk-v1';
   const MAX_COPIES = 3;
   const DEFAULT_N_COUNT = 3;
   const RARITIES = ['N', 'R', 'SR', 'UR'];
   let counts = loadCounts();
+  let bulkBackup = loadBulkBackup();
   let observer = null;
   let started = false;
   let decorateScheduled = false;
@@ -36,6 +38,54 @@
   }
   function saveCounts() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(counts)); } catch (_) {}
+  }
+  function loadBulkBackup() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(BULK_BACKUP_KEY) || 'null');
+      return raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : null;
+    } catch (_) { return null; }
+  }
+  function saveBulkBackup() {
+    try {
+      if (bulkBackup === null) localStorage.removeItem(BULK_BACKUP_KEY);
+      else localStorage.setItem(BULK_BACKUP_KEY, JSON.stringify(bulkBackup));
+    } catch (_) {}
+  }
+  function ensureBulkOwnershipButton() {
+    const actions = document.querySelector('.footer-stat-filter-actions');
+    if (!actions) return;
+    let button = document.querySelector('#viewerAllOwned');
+    if (!button) {
+      button = document.createElement('button');
+      button.id = 'viewerAllOwned';
+      button.type = 'button';
+      actions.insertBefore(button, document.querySelector('#resetCardFilters'));
+    }
+    button.setAttribute('aria-pressed', bulkBackup !== null ? 'true' : 'false');
+    button.textContent = bulkBackup !== null ? '全所持を戻す' : '一括全所持';
+    button.title = bulkBackup !== null
+      ? '一括設定前の所持枚数に戻す（このブラウザのみ）'
+      : '登録済み全カードを3枚所持として設定（このブラウザのみ。GitHubの所持DBは変更しません）';
+  }
+  function setAllOwned() {
+    if (!Array.isArray(allCards) || !allCards.length) return;
+    if (bulkBackup === null) {
+      bulkBackup = { ...counts };
+      saveBulkBackup();
+    }
+    allCards.forEach(card => { counts[idKey(card.card_id)] = MAX_COPIES; });
+    saveCounts();
+    applyCountsToModel();
+    refreshAfterOwnershipChange();
+  }
+  function restoreAllOwned() {
+    if (bulkBackup === null) return;
+    counts = { ...bulkBackup };
+    bulkBackup = null;
+    saveCounts();
+    saveBulkBackup();
+    applyCountsToModel();
+    refreshAfterOwnershipChange();
   }
   function ownedCount(id) {
     const key = idKey(id);
@@ -162,6 +212,7 @@
   }
 
   function refreshAfterOwnershipChange() {
+    ensureBulkOwnershipButton();
     try { if (typeof renderSummary === 'function') renderSummary(); } catch (_) {}
     setPublicHeaderText();
     try { if (typeof filterCards === 'function') filterCards(); } catch (_) {}
@@ -294,6 +345,7 @@
       document.body?.classList.add('vn-public-viewer');
       ensureHeaderResetControl();
       ensureStatisticsUI();
+      ensureBulkOwnershipButton();
       removeLegacyFooterArtifacts();
       decorateGallery();
       decorateTable();
@@ -324,11 +376,20 @@
         if (action.getAttribute('aria-disabled') !== 'true') changeCount(action.dataset.cardId, action.dataset.ownedAction === 'inc' ? 1 : -1);
         return;
       }
+      if (event.target.closest?.('#viewerAllOwned')) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (bulkBackup === null) setAllOwned();
+        else restoreAllOwned();
+        return;
+      }
       if (event.target.closest?.('#viewerCollectionReset')) {
         event.preventDefault();
         event.stopPropagation();
         if (!window.confirm('このブラウザの所持補正を消去し、N全種3枚・R/SR/URは0枚へ戻しますか？')) return;
         counts = {};
+        bulkBackup = null;
+        saveBulkBackup();
         saveCounts();
         applyCountsToModel();
         refreshAfterOwnershipChange();
@@ -367,6 +428,7 @@
     try { if (typeof renderDecks === 'function') Promise.resolve(renderDecks()).catch(() => {}); } catch (_) {}
     ensureHeaderResetControl();
     ensureStatisticsUI();
+    ensureBulkOwnershipButton();
     removeLegacyFooterArtifacts();
     setupEvents();
     setupObserver();
@@ -381,7 +443,9 @@
     set:(id,count) => setCount(id,count),
     increment:id => changeCount(id,1),
     decrement:id => changeCount(id,-1),
-    reset:() => { counts = {}; saveCounts(); applyCountsToModel(); refreshAfterOwnershipChange(); },
+    reset:() => { counts = {}; bulkBackup = null; saveBulkBackup(); saveCounts(); applyCountsToModel(); refreshAfterOwnershipChange(); },
+    setAllOwned,
+    restoreAllOwned,
     stats:collectionStats,
     maxCopies:MAX_COPIES
   };
