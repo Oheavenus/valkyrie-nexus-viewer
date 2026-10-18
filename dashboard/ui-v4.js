@@ -90,15 +90,37 @@
     return rows;
   };
 
-  // Avoid the previous "スペル / Cost / スペル" duplication in hover details.
+  // The game-like card corners show cost and only the eleven approved
+  // ability badges. Rarity is communicated by the existing border color.
+  // Match complete keyword tokens: "守護を付与" in unrelated effect text
+  // is not an intrinsic 守護 ability on this card.
+  const CARD_CORNER_TRAITS = [
+    ['守護','守'], ['速攻','速'], ['貫通','貫'], ['狙撃','狙'],
+    ['執念','執'], ['神秘','神'], ['突撃','突'], ['死亡時','死'],
+    ['隠密','隠'], ['不屈','屈'], ['鉄壁','鉄']
+  ];
+  function cardCornerTraits(card) {
+    const keywords = new Set(cardKeywords(card));
+    return CARD_CORNER_TRAITS.filter(([keyword]) => keywords.has(keyword));
+  }
+
+  // Card number remains in the accessible label and searchable data, but not
+  // on the artwork; rarity is shown by the existing rarity-specific frame.
   cardTileHTML = function (c) {
     const unit = c.type === 'ユニット';
     const stats = unit ? `${esc(c.atk)}/${esc(c.hp)}` : '—';
     const ownedClass = c.count ? 'owned' : 'missing';
-    return `<button class="card-tile card-trigger rarity-${esc(c.rarity)}" type="button" data-card-id="${esc(c.card_id)}" aria-label="No.${esc(c.card_id)} ${esc(c.name)} の詳細を表示">
+    const cornerTraits = cardCornerTraits(c);
+    const traitsText = cornerTraits.map(([name]) => name).join('、');
+    const aria = `No.${c.card_id} ${c.name} コスト${c.cost}${traitsText ? ' 特性 ' + traitsText : ''} の詳細を表示`;
+    const traitChips = cornerTraits.map(([name,abbr]) =>
+      `<span class="vn-card-trait" title="${esc(name)}" aria-hidden="true">${abbr}</span>`
+    ).join('');
+    return `<button class="card-tile card-trigger rarity-${esc(c.rarity)}" type="button" data-card-id="${esc(c.card_id)}" aria-label="${esc(aria)}">
       <div class="tile-art-shell">
         ${cardArtHTML(c.card_id, 'gallery')}
-        <div class="tile-topline"><span class="tile-no">No.${esc(c.card_id)}</span><span class="rarity ${esc(c.rarity)}">${esc(c.rarity)}</span></div>
+        <span class="vn-card-cost" title="コスト ${esc(c.cost)}" aria-hidden="true"><span>${esc(c.cost)}</span></span>
+        ${traitChips ? `<span class="vn-card-traits" aria-hidden="true">${traitChips}</span>` : ''}
         <span class="tile-owned ${ownedClass}">×${c.count}</span>
       </div>
       <div class="tile-caption"><span class="tile-caption-name">${esc(c.name)}</span><span class="tile-caption-meta">Cost ${esc(c.cost)}${unit ? ` · ${stats}` : ''}</span></div>
