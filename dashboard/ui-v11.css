@@ -469,7 +469,7 @@ main{
     --atlas-gap:4px;
     --atlas-card-w:min(
       calc((100% - 17 * var(--atlas-gap) - 16px) / 18),
-      calc((var(--vn-cards-viewport-height, 680px) - 6 * var(--atlas-gap) - 18px) * 2 / 21)
+      calc((var(--vn-cards-viewport-height, 680px) - 6 * var(--atlas-gap) - 8px) * 2 / 21)
     )!important;
     grid-template-columns:repeat(18,var(--atlas-card-w))!important;
     justify-content:center!important;
@@ -489,7 +489,7 @@ main{
   #cardsPanel .cards-main .card-gallery{
     --atlas-card-w:min(
       calc((100% - 14 * var(--atlas-gap) - 14px) / 15),
-      calc((var(--vn-cards-viewport-height, 680px) - 6 * var(--atlas-gap) - 18px) * 2 / 21)
+      calc((var(--vn-cards-viewport-height, 680px) - 6 * var(--atlas-gap) - 8px) * 2 / 21)
     )!important;
     grid-template-columns:repeat(15,var(--atlas-card-w))!important;
   }
