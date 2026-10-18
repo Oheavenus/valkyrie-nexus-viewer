@@ -42,7 +42,7 @@
     // caused an orphaned input, a blank search shell, and a wrapped footer.
     const ordered = [
       '.vn-search-shell', '#setFilter', '#typeFilter', '#rarityFilter',
-      '#ownedButtons', '#effectFilterWrap', '#sortSelect', '#resetCardFilters'
+      '#ownedButtons', '#effectFilterWrap', '#sortSelect'
     ].map(s => document.querySelector(s)).filter(Boolean);
 
     const visibleOrderedChildren = [...row.children].filter(el => ordered.includes(el));
