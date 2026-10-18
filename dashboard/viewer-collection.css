@@ -358,3 +358,74 @@
   .vn-public-viewer .viewer-stats-overview,
   .vn-public-viewer .viewer-rarity-grid{grid-template-columns:1fr!important}
 }
+
+
+/* V16: public ownership actions as one compact header pair, beside view mode. */
+.vn-public-viewer .header-tabs .viewer-ownership-controls{
+  box-sizing:border-box!important;
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  height:30px!important;
+  min-height:30px!important;
+  align-items:center!important;
+  gap:2px!important;
+  margin:0 0 0 5px!important;
+  padding:2px!important;
+  border:1px solid #394561!important;
+  border-radius:6px!important;
+  background:#11192d!important;
+  box-shadow:none!important;
+  white-space:nowrap!important;
+}
+.vn-public-viewer .header-tabs .viewer-ownership-controls button{
+  box-sizing:border-box!important;
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  align-items:center!important;
+  justify-content:center!important;
+  height:24px!important;
+  min-height:24px!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0 9px!important;
+  border:1px solid transparent!important;
+  border-radius:4px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  opacity:1!important;
+  font-size:10px!important;
+  font-weight:750!important;
+  line-height:22px!important;
+  color:#afbdd6!important;
+  white-space:nowrap!important;
+  cursor:pointer!important;
+}
+.vn-public-viewer .header-tabs .viewer-ownership-controls #viewerAllOwned{
+  color:#96d4c1!important;
+}
+.vn-public-viewer .header-tabs .viewer-ownership-controls #viewerAllOwned[aria-pressed="true"]{
+  background:#253e40!important;
+  color:#baf4e0!important;
+}
+.vn-public-viewer .header-tabs .viewer-ownership-controls #viewerCollectionReset{
+  color:#cdb6b9!important;
+}
+.vn-public-viewer .header-tabs .viewer-ownership-controls button:hover,
+.vn-public-viewer .header-tabs .viewer-ownership-controls button:focus-visible{
+  border-color:#536483!important;
+  background:#242c43!important;
+  color:#fff!important;
+  outline:none!important;
+}
+@media(max-width:760px){
+  .vn-public-viewer .header-tabs .view-switch.header-view-switch,
+  .vn-public-viewer .header-tabs .viewer-ownership-controls{
+    height:30px!important;
+    min-height:30px!important;
+    margin-left:2px!important;
+  }
+  .vn-public-viewer .header-tabs .viewer-ownership-controls button{
+    padding:0 7px!important;
+    font-size:9px!important;
+  }
+}
