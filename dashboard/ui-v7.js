@@ -38,9 +38,11 @@
     footerScheduled = false;
     const row = document.querySelector('.footer-filter-row');
     if (!row) return false;
+    // Order *whole* controls; detaching #searchInput from .vn-search-shell
+    // caused an orphaned input, a blank search shell, and a wrapped footer.
     const ordered = [
-      '#searchInput', '#typeFilter', '#rarityFilter', '#ownedButtons',
-      '#effectFilterWrap', '#sortSelect', '#resetCardFilters'
+      '.vn-search-shell', '#setFilter', '#typeFilter', '#rarityFilter',
+      '#ownedButtons', '#effectFilterWrap', '#sortSelect', '#resetCardFilters'
     ].map(s => document.querySelector(s)).filter(Boolean);
 
     const visibleOrderedChildren = [...row.children].filter(el => ordered.includes(el));
