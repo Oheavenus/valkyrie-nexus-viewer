@@ -86,7 +86,16 @@
 
       <footer class="card-control-footer" aria-label="カード一覧操作">
         <div class="footer-filter-row">
-          <input id="searchInput" type="search" placeholder="カード名・効果・キーワードを検索" aria-label="カード検索">
+          <div class="vn-search-shell" role="search" aria-label="カード検索">
+            <span class="vn-search-icon" aria-hidden="true">⌕</span>
+            <input id="searchInput" type="search" placeholder="カード名・No.・効果・キーワード" aria-label="カード検索" autocomplete="off">
+            <button id="vnSearchClear" type="button" aria-label="検索文字列を消去" title="クリア">×</button>
+          </div>
+          <fieldset id="setFilter" class="vn-pack-filter" aria-label="収録弾で絞り込む">
+            <legend>収録弾</legend>
+            <label><input type="checkbox" value="1" checked><span>第1弾</span></label>
+            <label><input type="checkbox" value="2" checked><span>第2弾</span></label>
+          </fieldset>
 
           <fieldset id="typeFilter" class="filter-multi type-multi" aria-label="種類で絞り込む">
             <label><input type="checkbox" name="type" value="ユニット" checked><span>ミニオン</span></label>
