@@ -63,12 +63,14 @@
     const hps = checkedValues('#hpFilter');
     const effects = new Set([...document.querySelectorAll('#effectFilterPanel input[name="effectKeyword"]:checked')].map(x => x.value));
     const semantics = new Set([...document.querySelectorAll('#effectFilterPanel input[name="effectSemantic"]:checked')].map(x => x.value));
+    const sets = new Set([...document.querySelectorAll('#setFilter input:checked')].map(x => x.value));
     const own = document.querySelector('#ownedFilter')?.value || '';
     const sort = document.querySelector('#sortSelect')?.value || 'id';
     const costTotal = allCount('#costFilter'), atkTotal = allCount('#atkFilter'), hpTotal = allCount('#hpFilter');
 
     const rows = allCards.filter(c => {
       if (q && !(window.VN_CARD_SEARCH_MATCH ? window.VN_CARD_SEARCH_MATCH(c, q) : [c.name, c.effect_text, c.keywords, c.card_id].join(' ').toLowerCase().includes(q))) return false;
+      if (!sets.has(Number(c.card_id) <= 160 ? '1' : '2')) return false;
       if (!rarities.has(c.rarity)) return false;
       if (!types.has(c.type)) return false;
       if (!groupedMatch(c.cost, costs, costTotal)) return false;
@@ -257,7 +259,8 @@
 
   function wireV4() {
     buildEffectFilter();
-    ['costFilter','atkFilter','hpFilter','typeFilter'].forEach(id => document.querySelector('#'+id)?.addEventListener('change', filterCards));
+    ['costFilter','atkFilter','hpFilter','typeFilter','setFilter'].forEach(id => document.querySelector('#'+id)?.addEventListener('change', filterCards));
+    document.querySelector('#vnSearchClear')?.addEventListener('click', () => { const input=document.querySelector('#searchInput'); if(input){input.value=''; input.focus(); filterCards();} });
     document.querySelector('#effectFilterPanel')?.addEventListener('change',()=>{updateEffectCount();filterCards();});
     document.querySelector('#effectFilterButton')?.addEventListener('click',e=>{e.preventDefault();document.querySelector('#effectFilterWrap')?.classList.toggle('open');});
     document.querySelector('#effectFilterClear')?.addEventListener('click',e=>{e.preventDefault();document.querySelectorAll('#effectFilterPanel input:checked').forEach(x=>x.checked=false);updateEffectCount();filterCards();});
