@@ -199,3 +199,124 @@
   .card-control-footer #setFilter label{min-width:46px;padding:3px 4px}
   .card-control-footer .vn-search-shell #searchInput{font-size:11px!important}
 }
+
+
+/* V14 footer recovery. Prior V7 moved #searchInput outside its wrapper and
+   legacy fixed grid-column declarations produced a second, clipped row. */
+#cardsPanel .card-control-footer{
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-height:0!important;
+  padding:6px 10px 6px!important;
+  overflow:hidden!important;
+}
+#cardsPanel .card-control-footer .footer-filter-row{
+  display:flex!important;
+  flex-flow:row nowrap!important;
+  gap:6px!important;
+  align-items:center!important;
+  min-height:33px!important;
+  margin:0 0 5px!important;
+  min-width:0!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scrollbar-width:thin;
+  scrollbar-color:#64749a #11172a;
+}
+#cardsPanel .card-control-footer .footer-filter-row>*{
+  min-width:0;
+  box-sizing:border-box!important;
+  flex:0 0 auto!important;
+  margin:0!important;
+  align-self:center!important;
+}
+#cardsPanel .card-control-footer .footer-filter-row>.vn-search-shell{
+  display:flex!important;
+  flex:1 1 260px!important;
+  min-width:195px!important;
+  width:auto!important;
+  max-width:none!important;
+}
+#cardsPanel .card-control-footer .footer-filter-row #setFilter{
+  flex:0 0 auto!important;
+}
+#cardsPanel .card-control-footer .footer-filter-row #typeFilter{min-width:126px!important}
+#cardsPanel .card-control-footer .footer-filter-row #rarityFilter{min-width:150px!important}
+#cardsPanel .card-control-footer .footer-filter-row #ownedButtons{min-width:122px!important}
+#cardsPanel .card-control-footer .footer-filter-row #effectFilterWrap{
+  min-width:94px!important;
+}
+#cardsPanel .card-control-footer .footer-filter-row #sortSelect{
+  min-width:106px!important;width:106px!important;
+  flex:0 0 106px!important;
+}
+#cardsPanel .card-control-footer .footer-filter-row #resetCardFilters{
+  order:99!important;
+  flex:0 0 76px!important;
+  width:76px!important;
+  justify-self:auto!important;
+}
+#cardsPanel .card-control-footer .footer-stat-filter-row{
+  display:flex!important;
+  flex-flow:row nowrap!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:6px!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-height:31px!important;
+  margin:0!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scrollbar-width:thin;
+  scrollbar-color:#64749a #11172a;
+}
+#cardsPanel .card-control-footer .footer-stat-filter-row>.stat-filter-group{
+  box-sizing:border-box!important;
+  flex:0 0 auto!important;
+  width:max-content!important;
+  max-width:none!important;
+  min-width:max-content!important;
+}
+#cardsPanel .card-control-footer .footer-status-row{
+  display:flex!important;
+  min-height:12px!important;
+  padding-top:4px!important;
+  overflow:hidden!important;
+}
+#cardsPanel .card-control-footer .footer-status-row .section-note{
+  font-size:9px!important;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#cardsPanel .cards-main{
+  box-sizing:border-box!important;
+  height:var(--vn-cards-viewport-height,calc(100dvh - 220px))!important;
+  min-height:140px!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:#67769a #141a30;
+  padding:1px 5px 8px 2px!important;
+}
+#cardsPanel .cards-main .card-gallery{
+  overflow:visible!important;
+  padding-bottom:6px!important;
+}
+main{
+  padding-bottom:calc(var(--vn-footer-height,110px) + 18px)!important;
+}
+@media(max-width:900px){
+  #cardsPanel .card-control-footer .footer-filter-row>.vn-search-shell{
+    flex:0 0 230px!important;
+    min-width:230px!important;
+  }
+  #cardsPanel .cards-main{
+    height:auto!important;
+    min-height:0!important;
+    overflow:visible!important;
+    padding-bottom:8px!important;
+  }
+}
