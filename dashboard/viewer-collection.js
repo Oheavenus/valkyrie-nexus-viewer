@@ -229,7 +229,9 @@
         tab.className = 'tab';
         tab.dataset.tab = 'pulls';
         tab.type = 'button';
-        tabs.insertBefore(tab, tabs.querySelector('#viewerCollectionReset'));
+        // The reset control now lives inside the ownership group,
+        // so only use a direct child of tabs as the insertion anchor.
+        tabs.insertBefore(tab, tabs.querySelector('.view-switch') || tabs.querySelector('#viewerOwnershipControls'));
       }
       if (tab.textContent !== '所持統計') tab.textContent = '所持統計';
     }
@@ -483,6 +485,7 @@
     reset:() => { counts = {}; bulkBackup = null; saveBulkBackup(); saveCounts(); applyCountsToModel(); refreshAfterOwnershipChange(); },
     setAllOwned,
     restoreAllOwned,
+    ensureHeaderControls:() => { ensureHeaderResetControl(); ensureBulkOwnershipButton(); },
     stats:collectionStats,
     maxCopies:MAX_COPIES
   };
