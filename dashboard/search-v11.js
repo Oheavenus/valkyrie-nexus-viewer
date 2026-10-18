@@ -8,6 +8,9 @@ const S=[
 ['generate','生成',/手札に加え/],
 ['disabled','攻撃不能',/攻撃不能/],
 ['heal','回復',/回復/],
+['leaderHeal','リーダー回復',/(?:自分|味方|相手|敵)?リーダー(?:の)?HP[^。]{0,20}回復|リーダー[^。]{0,15}回復|リーダーを\d+回復/],
+['unitHeal','ユニット回復',/(?:ユニット|味方全体|全ての味方|隣の味方|自分自身)[^。]{0,35}(?:HP[^。]{0,12})?回復/],
+['allyBuff','味方強化',/(?:味方ユニット|味方全体|全ての味方|両隣の味方|隣の味方)[^。]{0,35}(?:\+\d+\/\+\d+|ATK\+\d+|HP\+\d+|強化|付与)/],
 ['single','単体除去',/敵ユニット1体[^。]{0,45}(?:破壊|消滅|手札に戻す)|(?:破壊|消滅)[^。]{0,25}敵ユニット1体/],
 ['area','全体攻撃',/全ての敵ユニット[^。]{0,45}(?:ダメージ|破壊|消滅|ATK-)|敵ユニット全て[^。]{0,35}ダメージ|隣り合っている敵ユニット全て[^。]{0,20}ダメージ/],
 ['summon','召喚',/召喚/],['revive','復活',/復活/],['grave','墓地関連',/墓地|死亡済み|復活/],
@@ -17,7 +20,7 @@ const S=[
 ['shield','鉄壁',/鉄壁/],['tenacity','執念',/執念/],['vanish','消滅',/消滅/],
 ['finisher','奥義',/奥義/],['recursive','再帰',/再帰/]
 ];
-const A={'ドロー':'draw','カードを引く':'draw','引く':'draw','サーチ':'search','デッキ検索':'search','デッキから':'search','回復':'heal','ヒール':'heal','手札追加':'hand','生成':'generate','単体除去':'single','全体攻撃':'area','全体ダメージ':'area','aoe':'area','コスト軽減':'cost','コストダウン':'cost','墓地':'grave','蘇生':'revive','リアニメイト':'revive'};
+const A={'ドロー':'draw','カードを引く':'draw','引く':'draw','サーチ':'search','デッキ検索':'search','デッキから':'search','回復':'heal','ヒール':'heal','リーダー回復':'leaderHeal','ユニット回復':'unitHeal','味方強化':'allyBuff','手札追加':'hand','生成':'generate','単体除去':'single','全体攻撃':'area','全体ダメージ':'area','aoe':'area','コスト軽減':'cost','コストダウン':'cost','墓地':'grave','蘇生':'revive','リアニメイト':'revive'};
 const R=[
 ['奥義','ver1.4.3：同名の奥義カードは1ターンに1枚だけ使用可能。'],
 ['再帰','ver1.4.4：使用後に手札へ加える。第2弾先行カードのルール（未配信カードは現行160枚に含まない）。'],
@@ -41,7 +44,7 @@ const hay=[c.name,c.effect_text,c.keywords,c.card_id,'No.'+c.card_id].join(' ').
 const found=new Set(tags(c));
 return String(q||'').normalize('NFKC').toLowerCase().trim().split(/\s+/).every(k=>!k||hay.includes(k)||Boolean(A[k]&&found.has(A[k])));
 }
-window.VN_CARD_SEARCH_MATCH=match;window.VN_CARD_SEARCH_TAGS=tags;window.VN_CARD_SEARCH_VERSION='1.4.4';
+window.VN_CARD_SEARCH_MATCH=match;window.VN_CARD_SEARCH_TAGS=tags;window.VN_CARD_SEARCH_VERSION='1.5.0';
 function count(){
 const n=document.querySelectorAll('#effectFilterPanel input[type="checkbox"]:checked').length;
 const el=document.querySelector('#effectFilterCount');if(el)el.textContent=n?String(n):'';
@@ -69,7 +72,7 @@ const before=document.querySelector('#effectFilterWrap');if(!before)return;
 const d=document.createElement('details');d.id='vnRulesHelp';d.className='vn-rule-help';
 const sm=document.createElement('summary');sm.textContent='ルール・検索';d.append(sm);
 const body=document.createElement('div');body.className='vn-rule-help-body';
-const p=document.createElement('p');p.textContent='Ver.1.4.4までの公式通知に基づく。名前・効果文に加え、「サーチ」「ドロー」「回復」「全体攻撃」などで検索できます。空白区切りはAND、効果選択はOR。';body.append(p);
+const p=document.createElement('p');p.textContent='Ver.1.5.0までの公式通知に基づく。名前・効果文に加え、「サーチ」「ドロー」「回復」「全体攻撃」などで検索できます。空白区切りはAND、効果選択はOR。';body.append(p);
 const dl=document.createElement('dl');R.forEach(([word,note])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=word;dd.textContent=note;dl.append(dt,dd);});
 body.append(dl);d.append(body);before.insertAdjacentElement('afterend',d);
 }
