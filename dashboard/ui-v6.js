@@ -46,7 +46,9 @@
     const reset = document.querySelector('#resetCardFilters');
     const search = document.querySelector('#searchInput');
     if (!reset || !search) return false;
-    if (search.nextElementSibling !== reset) search.after(reset);
+    // Never move the reset control inside the composite search field.
+    const anchor = document.querySelector('.vn-search-shell') || search;
+    if (anchor.nextElementSibling !== reset) anchor.after(reset);
     return true;
   }
 
