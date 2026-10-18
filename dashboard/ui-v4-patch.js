@@ -3,13 +3,16 @@
   function resetFilters() {
     const search = document.querySelector('#searchInput');
     if (search) search.value = '';
-    document.querySelectorAll('#typeFilter input[type="checkbox"],#rarityFilter input[type="checkbox"],#costFilter input[type="checkbox"],#atkFilter input[type="checkbox"],#hpFilter input[type="checkbox"]').forEach(x => x.checked = true);
-    document.querySelectorAll('#effectFilterPanel input[name="effectKeyword"]').forEach(x => x.checked = false);
+    document.querySelectorAll('#typeFilter input[type="checkbox"],#rarityFilter input[type="checkbox"],#costFilter input[type="checkbox"],#atkFilter input[type="checkbox"],#hpFilter input[type="checkbox"],#setFilter input[type="checkbox"]').forEach(x => x.checked = true);
+    document.querySelectorAll('#effectFilterPanel input[name="effectKeyword"],#effectFilterPanel input[name="effectSemantic"]').forEach(x => x.checked = false);
     const owned = document.querySelector('#ownedFilter'); if (owned) owned.value = '';
     const sort = document.querySelector('#sortSelect'); if (sort) sort.value = 'id';
     const count = document.querySelector('#effectFilterCount'); if (count) count.textContent = '';
     document.querySelector('#effectFilterButton')?.classList.remove('active');
     document.querySelector('#effectFilterWrap')?.classList.remove('open');
+    const panel = document.querySelector('#effectFilterPanel');
+    if (panel) panel.dataset.vnOpen = 'false';
+    document.querySelector('#effectFilterButton')?.setAttribute('aria-expanded', 'false');
     if (typeof filterCards === 'function') filterCards();
   }
 
