@@ -412,3 +412,85 @@ main{
     flex-basis:65px!important;width:65px!important;min-width:65px!important;
   }
 }
+
+
+/* V16: aligned header view controls and seven-visible-row desktop atlas. */
+.header-tabs{
+  align-items:center!important;
+  column-gap:6px!important;
+  row-gap:4px!important;
+}
+.header-tabs .view-switch.header-view-switch{
+  box-sizing:border-box!important;
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  align-items:center!important;
+  height:30px!important;
+  min-height:30px!important;
+  margin:0 0 0 8px!important;
+  padding:2px!important;
+  gap:2px!important;
+  overflow:hidden!important;
+  border:1px solid #394561!important;
+  border-left:1px solid #394561!important;
+  border-radius:6px!important;
+  background:#11192d!important;
+  box-shadow:none!important;
+}
+.header-tabs .view-switch.header-view-switch .view-button{
+  box-sizing:border-box!important;
+  flex:0 0 auto!important;
+  height:24px!important;
+  min-height:24px!important;
+  padding:0 8px!important;
+  margin:0!important;
+  border:1px solid transparent!important;
+  border-radius:4px!important;
+  box-shadow:none!important;
+  font-size:10px!important;
+  line-height:22px!important;
+  font-weight:750!important;
+  white-space:nowrap!important;
+  background:transparent!important;
+  color:#9caac7!important;
+}
+.header-tabs .view-switch.header-view-switch .view-button.active{
+  background:#493875!important;
+  border-color:#66559b!important;
+  color:#f3efff!important;
+}
+.header-tabs .view-switch.header-view-switch .view-button:not(.active):hover,
+.header-tabs .view-switch.header-view-switch .view-button:not(.active):focus-visible{
+  background:#202b47!important;
+  color:#eef3ff!important;
+}
+@media(min-width:901px){
+  #cardsPanel .cards-main .card-gallery{
+    --atlas-gap:4px;
+    --atlas-card-w:min(
+      calc((100% - 17 * var(--atlas-gap) - 16px) / 18),
+      calc((var(--vn-cards-viewport-height, 680px) - 6 * var(--atlas-gap) - 18px) * 2 / 21)
+    )!important;
+    grid-template-columns:repeat(18,var(--atlas-card-w))!important;
+    justify-content:center!important;
+    align-content:start!important;
+    gap:var(--atlas-gap)!important;
+    max-width:100%!important;
+    width:100%!important;
+    margin:0 auto!important;
+  }
+  #cardsPanel .cards-main .card-gallery .tile-no,
+  #cardsPanel .cards-main .card-gallery .tile-topline .rarity,
+  #cardsPanel .cards-main .card-gallery .tile-owned{
+    font-size:7px!important;
+  }
+}
+@media(min-width:901px) and (max-width:1200px){
+  #cardsPanel .cards-main .card-gallery{
+    --atlas-card-w:min(
+      calc((100% - 14 * var(--atlas-gap) - 14px) / 15),
+      calc((var(--vn-cards-viewport-height, 680px) - 6 * var(--atlas-gap) - 18px) * 2 / 21)
+    )!important;
+    grid-template-columns:repeat(15,var(--atlas-card-w))!important;
+  }
+}
