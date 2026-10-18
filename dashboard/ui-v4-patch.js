@@ -18,14 +18,35 @@
 
   function installReset() {
     const row = document.querySelector('.footer-stat-filter-row');
-    if (!row || document.querySelector('#resetCardFilters')) return;
-    const first = row.firstElementChild;
-    const button = document.createElement('button');
-    button.id = 'resetCardFilters';
-    button.className = 'filter-reset-button';
-    button.type = 'button';
-    button.textContent = 'リセット';
-    if (first) first.replaceWith(button); else row.prepend(button);
+    if (!row) return;
+
+    // Keep the stat filters independently scrollable; always expose the
+    // bottom-right action buttons, regardless of viewport width.
+    let scroll = row.querySelector('.footer-stat-filter-scroll');
+    if (!scroll) {
+      scroll = document.createElement('div');
+      scroll.className = 'footer-stat-filter-scroll';
+      row.querySelectorAll(':scope > .stat-filter-group').forEach(group => scroll.appendChild(group));
+      row.prepend(scroll);
+    }
+    let actions = row.querySelector('.footer-stat-filter-actions');
+    if (!actions) {
+      actions = document.createElement('div');
+      actions.className = 'footer-stat-filter-actions';
+      actions.setAttribute('role', 'group');
+      actions.setAttribute('aria-label', 'カード一覧の一括操作');
+      row.appendChild(actions);
+    }
+    let button = document.querySelector('#resetCardFilters');
+    if (!button) {
+      button = document.createElement('button');
+      button.id = 'resetCardFilters';
+      button.className = 'filter-reset-button';
+      button.type = 'button';
+      button.textContent = 'リセット';
+      button.title = '検索・絞り込み条件を初期化します。所持枚数は変更しません。';
+    }
+    if (button.parentElement !== actions) actions.appendChild(button);
   }
 
   function formatPullTimestamp(raw) {
