@@ -101,6 +101,19 @@
   function applyCountsToModel() {
     try {
       if (!Array.isArray(allCards)) return false;
+      // Cards added in later releases also inherit the active full-ownership
+      // preview, without changing the backup used to restore real counts.
+      if (bulkBackup !== null) {
+        let added = false;
+        allCards.forEach(card => {
+          const id = idKey(card.card_id);
+          if (!Object.prototype.hasOwnProperty.call(counts, id)) {
+            counts[id] = MAX_COPIES;
+            added = true;
+          }
+        });
+        if (added) saveCounts();
+      }
       const nextCollection = new Map();
       allCards.forEach(card => {
         const id = idKey(card.card_id), count = ownedCount(id);
