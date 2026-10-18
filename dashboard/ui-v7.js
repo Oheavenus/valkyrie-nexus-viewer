@@ -58,7 +58,43 @@
     requestAnimationFrame(() => {
       placeHeaderViewSwitch();
       placeFooterControls();
+      scheduleFooterMeasure();
     });
+  }
+
+
+  // Keep the eighth atlas row scrollable above the measured fixed footer.
+  // The footer can grow with browser zoom or a narrower viewport.
+  let footerMeasureScheduled = false;
+  function measureFooterAndGallery() {
+    footerMeasureScheduled = false;
+    const footer = document.querySelector('#cardsPanel .card-control-footer');
+    const cardsMain = document.querySelector('#cardsPanel .cards-main');
+    if (!footer || !cardsMain) return;
+    const footerBox = footer.getBoundingClientRect();
+    const cardsBox = cardsMain.getBoundingClientRect();
+    document.documentElement.style.setProperty('--vn-footer-height', Math.ceil(footerBox.height) + 'px');
+    if (window.innerWidth > 900) {
+      const available = Math.max(140, Math.floor(footerBox.top - cardsBox.top - 8));
+      cardsMain.style.setProperty('--vn-cards-viewport-height', available + 'px');
+    } else {
+      cardsMain.style.removeProperty('--vn-cards-viewport-height');
+    }
+  }
+  function scheduleFooterMeasure() {
+    if (footerMeasureScheduled) return;
+    footerMeasureScheduled = true;
+    requestAnimationFrame(measureFooterAndGallery);
+  }
+  function monitorFooterHeight() {
+    const footer = document.querySelector('#cardsPanel .card-control-footer');
+    if (!footer || footer.dataset.vnMeasured === '1') return;
+    footer.dataset.vnMeasured = '1';
+    if (typeof ResizeObserver === 'function') {
+      new ResizeObserver(scheduleFooterMeasure).observe(footer);
+    }
+    window.addEventListener('resize', scheduleFooterMeasure, { passive: true });
+    scheduleFooterMeasure();
   }
 
   function setTextIfChanged(el, value) {
@@ -176,6 +212,7 @@
     placeHeaderViewSwitch();
     scheduleFooterPlacement();
     installObservers();
+    monitorFooterHeight();
     scheduleDeckDecorate();
 
     // V6 still performs a short settling pass after load. Re-apply V7 placement
@@ -185,6 +222,7 @@
       placeHeaderViewSwitch();
       placeFooterControls();
       installObservers();
+      scheduleFooterMeasure();
       decorateDeckComments();
       if (++tries < 6) setTimeout(settle, 80);
     };
