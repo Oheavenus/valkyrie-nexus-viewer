@@ -30,7 +30,16 @@
     const view = document.querySelector('.view-switch');
     if (!tabs || !view) return false;
     view.classList.add('header-view-switch');
-    if (view.parentElement !== tabs || tabs.lastElementChild !== view) tabs.appendChild(view);
+    // In the public viewer, ownership tools belong immediately after the
+    // view-mode toggle. Do not keep moving the toggle past that pair.
+    const ownership = tabs.querySelector('#viewerOwnershipControls');
+    if (ownership) {
+      if (view.parentElement !== tabs || view.nextElementSibling !== ownership) {
+        tabs.insertBefore(view, ownership);
+      }
+    } else if (view.parentElement !== tabs || tabs.lastElementChild !== view) {
+      tabs.appendChild(view);
+    }
     return true;
   }
 
