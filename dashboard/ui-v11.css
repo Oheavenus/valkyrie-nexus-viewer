@@ -494,3 +494,104 @@ main{
     grid-template-columns:repeat(15,var(--atlas-card-w))!important;
   }
 }
+
+
+/* V17: six visible rows, cost diamond and game-style short ability tags.
+   No card number or rarity text is painted on the artwork. */
+@media(min-width:901px){
+  #cardsPanel .cards-main .card-gallery{
+    --atlas-gap:4px;
+    --atlas-card-w:min(
+      calc((100% - 15 * var(--atlas-gap) - 16px) / 16),
+      calc((var(--vn-cards-viewport-height, 680px) - 5 * var(--atlas-gap) - 8px) / 9)
+    )!important;
+    grid-template-columns:repeat(16,var(--atlas-card-w))!important;
+    align-content:start!important;
+    justify-content:center!important;
+  }
+}
+@media(min-width:901px) and (max-width:1200px){
+  #cardsPanel .cards-main .card-gallery{
+    --atlas-card-w:min(
+      calc((100% - 12 * var(--atlas-gap) - 12px) / 13),
+      calc((var(--vn-cards-viewport-height, 680px) - 5 * var(--atlas-gap) - 8px) / 9)
+    )!important;
+    grid-template-columns:repeat(13,var(--atlas-card-w))!important;
+  }
+}
+#cardsPanel #cardsGallery .card-tile .vn-card-cost{
+  position:absolute!important;
+  z-index:9!important;
+  display:grid!important;
+  place-items:center!important;
+  width:clamp(17px,1.32vw,23px)!important;
+  height:clamp(17px,1.32vw,23px)!important;
+  top:3px!important;
+  left:3px!important;
+  box-sizing:border-box!important;
+  border:1.5px solid #90ffe3!important;
+  border-radius:2px!important;
+  background:rgba(6,91,85,.95)!important;
+  color:#fff!important;
+  transform:rotate(45deg)!important;
+  box-shadow:0 0 0 1px #091323,0 1px 4px #000d!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  pointer-events:none!important;
+}
+#cardsPanel #cardsGallery .card-tile .vn-card-cost>span{
+  display:block!important;
+  transform:rotate(-45deg)!important;
+  text-shadow:0 1px 2px #000!important;
+  font-size:inherit!important;
+  line-height:1!important;
+}
+#cardsPanel #cardsGallery .card-tile .vn-card-traits{
+  position:absolute!important;
+  z-index:8!important;
+  display:flex!important;
+  flex-flow:row wrap!important;
+  align-content:start!important;
+  align-items:flex-start!important;
+  justify-content:flex-end!important;
+  gap:2px 1px!important;
+  top:2px!important;
+  right:2px!important;
+  max-width:calc(100% - 27px)!important;
+  box-sizing:border-box!important;
+  pointer-events:none!important;
+}
+#cardsPanel #cardsGallery .card-tile .vn-card-trait{
+  display:inline-grid!important;
+  flex:0 0 auto!important;
+  place-items:center!important;
+  box-sizing:border-box!important;
+  width:14px!important;
+  height:15px!important;
+  min-width:0!important;
+  padding:0!important;
+  border:1px solid #b7a5dd!important;
+  border-radius:5px!important;
+  background:rgba(9,10,20,.90)!important;
+  color:#fff!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  text-shadow:0 1px 2px #000!important;
+}
+@media(min-width:901px) and (max-width:1200px){
+  #cardsPanel #cardsGallery .card-tile .vn-card-trait{
+    width:13px!important;
+    height:14px!important;
+    font-size:9px!important;
+  }
+}
+@media(max-width:900px){
+  #cardsPanel #cardsGallery .card-tile .vn-card-cost{
+    width:19px!important;height:19px!important;
+  }
+  #cardsPanel #cardsGallery .card-tile .vn-card-traits{
+    max-width:calc(100% - 27px)!important;
+  }
+}
