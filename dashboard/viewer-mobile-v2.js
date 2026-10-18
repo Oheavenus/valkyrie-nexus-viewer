@@ -44,16 +44,9 @@
     const statsTab = $('.tab[data-tab="pulls"]');
     if (statsTab) statsTab.textContent = '所持統計';
 
-    const tabs = $('.header-tabs');
-    if (tabs && !$('#viewerCollectionReset')) {
-      const reset = document.createElement('button');
-      reset.id = 'viewerCollectionReset';
-      reset.type = 'button';
-      reset.className = 'viewer-header-reset';
-      reset.textContent = '所持リセット';
-      reset.title = 'このブラウザの所持状況をすべて0枚に戻す';
-      tabs.appendChild(reset);
-    }
+    // Shared viewer-collection controller owns the header button pair on
+    // both desktop and mobile. Never insert a standalone reset here.
+    window.VN_VIEWER_COLLECTION?.ensureHeaderControls?.();
   }
 
   function ensureEffectFilter() {
@@ -328,12 +321,9 @@
         window.scrollTo({top:0,behavior:'smooth'});
         return;
       }
-      if (event.target.closest?.('#viewerCollectionReset')) {
-        event.preventDefault();
-        event.stopPropagation();
-        handleReset();
-        return;
-      }
+      // Ownership reset is handled by viewer-collection.js, which also
+      // clears the reversible bulk-ownership preview correctly.
+      if (event.target.closest?.('#viewerCollectionReset')) return;
 
       const add = event.target.closest?.('.tile-add-btn[data-card-id]');
       if (add && add.getAttribute('aria-disabled') !== 'true') {
