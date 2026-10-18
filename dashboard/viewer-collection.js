@@ -51,15 +51,36 @@
       else localStorage.setItem(BULK_BACKUP_KEY, JSON.stringify(bulkBackup));
     } catch (_) {}
   }
+  function ensureHeaderOwnershipControls() {
+    const tabs = document.querySelector('.header-tabs');
+    if (!tabs) return null;
+    let group = document.querySelector('#viewerOwnershipControls');
+    if (!group) {
+      group = document.createElement('div');
+      group.id = 'viewerOwnershipControls';
+      group.className = 'viewer-ownership-controls';
+      group.setAttribute('role', 'group');
+      group.setAttribute('aria-label', '所持枚数の一括操作');
+    }
+    const view = tabs.querySelector('.header-view-switch');
+    if (view && view.nextElementSibling !== group) view.after(group);
+    else if (group.parentElement !== tabs) tabs.appendChild(group);
+    return group;
+  }
   function ensureBulkOwnershipButton() {
-    const actions = document.querySelector('.footer-stat-filter-actions');
+    ensureHeaderResetControl();
+    const actions = ensureHeaderOwnershipControls();
     if (!actions) return;
     let button = document.querySelector('#viewerAllOwned');
     if (!button) {
       button = document.createElement('button');
       button.id = 'viewerAllOwned';
       button.type = 'button';
-      actions.insertBefore(button, document.querySelector('#resetCardFilters'));
+      button.className = 'viewer-header-bulk';
+    }
+    const reset = actions.querySelector('#viewerCollectionReset');
+    if (button.parentElement !== actions || button.nextElementSibling !== reset) {
+      actions.insertBefore(button, reset || null);
     }
     button.setAttribute('aria-pressed', bulkBackup !== null ? 'true' : 'false');
     button.textContent = bulkBackup !== null ? '全所持を戻す' : '一括全所持';
@@ -318,15 +339,18 @@
   }
 
   function ensureHeaderResetControl() {
-    const tabs = document.querySelector('.header-tabs');
-    if (!tabs || tabs.querySelector('#viewerCollectionReset')) return;
-    const button = document.createElement('button');
-    button.id = 'viewerCollectionReset';
-    button.className = 'viewer-header-reset';
-    button.type = 'button';
-    button.textContent = '所持リセット';
-    button.title = 'このブラウザの所持補正を消去し、N全種3枚・その他0枚へ戻す';
-    tabs.appendChild(button);
+    const actions = ensureHeaderOwnershipControls();
+    if (!actions) return;
+    let button = document.querySelector('#viewerCollectionReset');
+    if (!button) {
+      button = document.createElement('button');
+      button.id = 'viewerCollectionReset';
+      button.className = 'viewer-header-reset';
+      button.type = 'button';
+      button.textContent = '所持リセット';
+      button.title = 'このブラウザの所持補正を消去し、N全種3枚・その他0枚へ戻す';
+    }
+    if (button.parentElement !== actions) actions.appendChild(button);
   }
   function removeLegacyFooterArtifacts() {
     document.querySelectorAll('.footer-filter-row #viewerCollectionReset, .viewer-local-note').forEach(el => el.remove());
