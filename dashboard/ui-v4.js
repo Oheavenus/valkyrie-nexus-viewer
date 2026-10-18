@@ -299,6 +299,13 @@
 
   function start() {
     wireV4();
+    // Deep link: ?card=181 opens the card filter without altering the source DB.
+    const requestedCard = new URLSearchParams(window.location.search).get('card');
+    if (/^\d{3}$/.test(requestedCard || '')) {
+      const search = document.querySelector('#searchInput');
+      if (search) search.value = 'No.' + requestedCard;
+      document.querySelector('.tab[data-tab="cards"]')?.click();
+    }
     let tries=0;
     const tick=()=>{tries++; if(refreshWhenReady()||tries>40)return; setTimeout(tick,60);};
     tick();
