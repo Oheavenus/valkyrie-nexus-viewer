@@ -44,11 +44,9 @@
 
   function moveResetButton() {
     const reset = document.querySelector('#resetCardFilters');
-    const search = document.querySelector('#searchInput');
-    if (!reset || !search) return false;
-    // Never move the reset control inside the composite search field.
-    const anchor = document.querySelector('.vn-search-shell') || search;
-    if (anchor.nextElementSibling !== reset) anchor.after(reset);
+    const actions = document.querySelector('.footer-stat-filter-actions');
+    if (!reset || !actions) return false;
+    if (reset.parentElement !== actions) actions.appendChild(reset);
     return true;
   }
 
