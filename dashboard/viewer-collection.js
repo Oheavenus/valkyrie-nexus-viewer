@@ -86,7 +86,7 @@
     button.textContent = bulkBackup !== null ? '全所持を戻す' : '一括全所持';
     button.title = bulkBackup !== null
       ? '一括設定前の所持枚数に戻す（このブラウザのみ）'
-      : '登録済み全カードを3枚所持として設定（このブラウザのみ。GitHubの所持DBは変更しません）';
+      : '登録済みのカードをすべて3枚所持にします（元に戻せます）';
   }
   function setAllOwned() {
     if (!Array.isArray(allCards) || !allCards.length) return;
