@@ -596,88 +596,114 @@ main{
   }
 }
 
-
-/* V18: follow in-game card badges; thin, smaller cost lozenge and legible,
-   individually colored circular traits. The overlays do not alter artwork. */
+/* V19: align the cost glyph geometrically, without rotating its text box.
+   Emulate the game's lightweight corner typography rather than bold icons. */
 #cardsPanel #cardsGallery .card-tile .vn-card-cost{
-  width:14px!important;
-  height:14px!important;
-  min-width:14px!important;
-  top:5px!important;
-  left:5px!important;
-  border:1.15px solid #bcffe2!important;
-  border-radius:1px!important;
-  background:linear-gradient(135deg,#08633f 0%,#138558 50%,#05392d 100%)!important;
+  position:absolute!important;
+  z-index:9!important;
+  top:1px!important;
+  left:1px!important;
+  display:grid!important;
+  place-items:center!important;
+  width:21px!important;
+  height:21px!important;
+  min-width:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  transform:none!important;
+  isolation:initial!important;
   color:#fff!important;
-  box-shadow:0 0 0 1px rgba(0,0,0,.86),0 1px 2px #0009!important;
-  font-size:11.5px!important;
-  font-weight:950!important;
+  font-size:10.5px!important;
+  font-weight:600!important;
+  line-height:1!important;
   text-shadow:none!important;
-  isolation:isolate!important;
+  pointer-events:none!important;
+}
+#cardsPanel #cardsGallery .card-tile .vn-card-cost::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  top:50%;
+  left:50%;
+  width:15px;
+  height:15px;
+  box-sizing:border-box;
+  border:1px solid #9ddbc4;
+  border-radius:1px;
+  background:linear-gradient(145deg,#086747,#0b654b 65%,#06402f);
+  box-shadow:0 0 0 1px rgba(4,13,17,.85),0 1px 2px #0009;
+  transform:translate(-50%,-50%) rotate(45deg);
 }
 #cardsPanel #cardsGallery .card-tile .vn-card-cost>span{
-  display:flex!important;
-  justify-content:center!important;
-  align-items:center!important;
-  width:max-content!important;
-  min-width:14px!important;
-  height:15px!important;
-  letter-spacing:-.6px!important;
+  position:relative!important;
+  z-index:1!important;
+  display:grid!important;
+  place-items:center!important;
+  width:100%!important;
+  min-width:0!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+  transform:none!important;
+  color:#fff!important;
   font-family:Arial,"Noto Sans JP",sans-serif!important;
-  font-size:11.5px!important;
-  font-weight:900!important;
+  font-size:10.5px!important;
+  font-weight:600!important;
   line-height:1!important;
-  text-shadow:-.6px -.6px 1px #031d1b, .6px .6px 1px #031d1b!important;
-  -webkit-text-stroke:.2px #fff!important;
+  letter-spacing:-.35px!important;
+  text-align:center!important;
+  -webkit-text-stroke:0!important;
+  text-shadow:0 1px 1px rgba(0,25,24,.6)!important;
 }
 #cardsPanel #cardsGallery .card-tile .vn-card-traits{
   top:2px!important;
   right:2px!important;
   max-width:calc(100% - 23px)!important;
-  gap:1px 1px!important;
+  gap:1px!important;
+  align-items:flex-start!important;
+  justify-content:flex-end!important;
 }
 #cardsPanel #cardsGallery .card-tile .vn-card-trait{
-  --trait-line:#bec8dc;
-  --trait-fill:#1d2533;
+  --trait-line:#bac8d2;
+  --trait-fill:#22303d;
+  display:inline-grid!important;
+  place-items:center!important;
+  flex:0 0 auto!important;
   box-sizing:border-box!important;
   width:15px!important;
   height:15px!important;
   min-width:15px!important;
   min-height:15px!important;
+  margin:0!important;
   padding:0!important;
   border:1px solid var(--trait-line)!important;
   border-radius:50%!important;
-  background:radial-gradient(ellipse at 33% 20%,var(--trait-fill),#070d18 83%)!important;
+  background:radial-gradient(circle at 35% 25%,var(--trait-fill),#0b0e17 85%)!important;
   color:#fff!important;
-  font:900 11.5px/1 Arial,"Noto Sans JP",sans-serif!important;
+  font-family:Arial,"Noto Sans JP",sans-serif!important;
+  font-size:10.5px!important;
+  font-weight:600!important;
+  line-height:1!important;
   letter-spacing:0!important;
-  box-shadow:0 0 0 1px rgba(0,0,0,.72),0 1px 2px #000b!important;
-  -webkit-text-stroke:.14px #fff!important;
-  text-shadow:0 1px 2px #000!important;
+  -webkit-text-stroke:0!important;
+  text-shadow:0 1px 1px #0009!important;
+  box-shadow:0 0 0 .5px rgba(0,0,0,.75)!important;
 }
-#cardsPanel #cardsGallery .vn-card-trait[title="守護"]{--trait-line:#93ccff;--trait-fill:#2c5c83}
-#cardsPanel #cardsGallery .vn-card-trait[title="速攻"]{--trait-line:#ff9d80;--trait-fill:#943d25}
-#cardsPanel #cardsGallery .vn-card-trait[title="貫通"]{--trait-line:#ff9573;--trait-fill:#82392d}
-#cardsPanel #cardsGallery .vn-card-trait[title="狙撃"]{--trait-line:#b9e68b;--trait-fill:#476d33}
-#cardsPanel #cardsGallery .vn-card-trait[title="執念"]{--trait-line:#daabff;--trait-fill:#68458b}
-#cardsPanel #cardsGallery .vn-card-trait[title="神秘"]{--trait-line:#f5cf91;--trait-fill:#806130}
-#cardsPanel #cardsGallery .vn-card-trait[title="突撃"]{--trait-line:#faac79;--trait-fill:#85502b}
-#cardsPanel #cardsGallery .vn-card-trait[title="死亡時"]{--trait-line:#bf9eff;--trait-fill:#503078}
-#cardsPanel #cardsGallery .vn-card-trait[title="隠密"]{--trait-line:#b8c5ec;--trait-fill:#47537b}
-#cardsPanel #cardsGallery .vn-card-trait[title="不屈"]{--trait-line:#edd38a;--trait-fill:#766238}
-#cardsPanel #cardsGallery .vn-card-trait[title="鉄壁"]{--trait-line:#abd5da;--trait-fill:#45676d}
-@media(min-width:901px) and (max-width:1200px){
-  #cardsPanel #cardsGallery .card-tile .vn-card-trait{
-    width:15px!important;
-    height:15px!important;
-    font-size:11px!important;
-  }
-}
+#cardsPanel #cardsGallery .vn-card-trait[title="守護"]{--trait-line:#99cfff;--trait-fill:#28456c}
+#cardsPanel #cardsGallery .vn-card-trait[title="速攻"]{--trait-line:#f2b49b;--trait-fill:#6b3329}
+#cardsPanel #cardsGallery .vn-card-trait[title="貫通"]{--trait-line:#f1a88d;--trait-fill:#713d30}
+#cardsPanel #cardsGallery .vn-card-trait[title="狙撃"]{--trait-line:#a8d5a6;--trait-fill:#3a5b3b}
+#cardsPanel #cardsGallery .vn-card-trait[title="執念"]{--trait-line:#c9a6df;--trait-fill:#55436c}
+#cardsPanel #cardsGallery .vn-card-trait[title="神秘"]{--trait-line:#e6ce9c;--trait-fill:#6c5938}
+#cardsPanel #cardsGallery .vn-card-trait[title="突撃"]{--trait-line:#eeb08c;--trait-fill:#69432e}
+#cardsPanel #cardsGallery .vn-card-trait[title="死亡時"]{--trait-line:#c1a7dc;--trait-fill:#49345e}
+#cardsPanel #cardsGallery .vn-card-trait[title="隠密"]{--trait-line:#a9b7d5;--trait-fill:#34405a}
+#cardsPanel #cardsGallery .vn-card-trait[title="不屈"]{--trait-line:#ddce96;--trait-fill:#665635}
+#cardsPanel #cardsGallery .vn-card-trait[title="鉄壁"]{--trait-line:#aecdd2;--trait-fill:#39515b}
 @media(max-width:900px){
-  #cardsPanel #cardsGallery .card-tile .vn-card-cost{
-    width:14px!important;height:14px!important;
-  }
-  #cardsPanel #cardsGallery .card-tile .vn-card-traits{
-    max-width:calc(100% - 23px)!important;
-  }
+  #cardsPanel #cardsGallery .card-tile .vn-card-cost{width:21px!important;height:21px!important}
 }
