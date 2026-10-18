@@ -261,7 +261,9 @@ function setCardViewMode(mode) {
 function filterCards() {
   const rows = filteredCards();
   const imageCount = allCards.filter(c => hasCardImage(c.card_id)).length;
-  $('#cardCount').textContent = `${rows.length}枚表示 / 全${allCards.length}枚 / 画像登録 ${imageCount}枚`;
+  const secondSetCount = allCards.filter(c => Number(c.card_id) >= 161 && Number(c.card_id) <= 210).length;
+  const secondSetStatus = secondSetCount < 50 ? ` / 第2弾DB登録 ${secondSetCount}/50` : '';
+  $('#cardCount').textContent = `${rows.length}枚表示 / 全${allCards.length}枚 / 画像登録 ${imageCount}枚${secondSetStatus}`;
   $('#cardsGallery').innerHTML = rows.map(cardTileHTML).join('');
   $('#cardsBody').innerHTML = rows.map(cardRowHTML).join('');
   applyCardViewMode();
