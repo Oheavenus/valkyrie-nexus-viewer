@@ -142,3 +142,60 @@
   #effectFilterPanel .effect-filter-options,
   #effectFilterPanel .vn-semantic-grid{grid-template-columns:1fr!important}
 }
+
+/* V13: compact and readable card search controls; filters remain user-selectable. */
+.card-control-footer .vn-search-shell{
+  display:flex;align-items:center;gap:5px;min-width:235px;
+  flex:2 1 320px;max-width:680px;min-height:33px;padding:0 7px;
+  border:1px solid #556182;border-radius:7px;background:#131c34;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+.card-control-footer .vn-search-shell:focus-within{
+  border-color:#a28ce7;box-shadow:0 0 0 2px rgba(151,123,236,.20);
+}
+.card-control-footer .vn-search-icon{font-size:18px;color:#a7b9d8;line-height:1;flex:none}
+.card-control-footer .vn-search-shell #searchInput{
+  flex:1 1 auto!important;min-width:0!important;width:100%!important;
+  height:31px!important;margin:0!important;padding:4px 3px!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  font-size:12px!important;color:#e9f1ff!important;
+}
+.card-control-footer .vn-search-shell #searchInput:focus{outline:0!important;box-shadow:none!important}
+.card-control-footer #vnSearchClear{
+  flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+  width:25px;height:25px;min-height:25px;padding:0;
+  border:1px solid transparent;border-radius:5px;
+  background:transparent;color:#b1c4e0;cursor:pointer;font-size:18px;
+}
+.card-control-footer #vnSearchClear:hover,.card-control-footer #vnSearchClear:focus-visible{
+  border-color:#7083ae;background:#2b385a;color:#fff
+}
+.card-control-footer #setFilter{
+  display:inline-flex;align-items:center;gap:3px;box-sizing:border-box;
+  flex:0 0 auto;margin:0!important;padding:3px!important;
+  min-width:0;min-height:33px;border:1px solid #394969;border-radius:7px;
+  background:#121a31;
+}
+.card-control-footer #setFilter legend{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.card-control-footer #setFilter label{
+  display:inline-flex;align-items:center;justify-content:center;gap:4px;
+  min-width:55px;min-height:25px;padding:3px 6px;box-sizing:border-box;
+  border:1px solid #384767;border-radius:5px;cursor:pointer;
+  white-space:nowrap;font-size:10px;color:#a5b6d2;
+}
+.card-control-footer #setFilter label:has(input:checked){
+  background:#423776;border-color:#866bd0;color:#fff;
+}
+.card-control-footer #setFilter label input{
+  width:12px;height:12px!important;margin:0!important;min-width:0!important;
+  flex:0 0 12px!important;accent-color:#a68aff;
+}
+.card-control-footer .footer-filter-row{align-items:center}
+@media(max-width:900px){
+  .card-control-footer .vn-search-shell{flex:1 1 100%;max-width:none}
+  .card-control-footer #setFilter{flex:0 0 auto}
+}
+@media(max-width:520px){
+  .card-control-footer #setFilter label{min-width:46px;padding:3px 4px}
+  .card-control-footer .vn-search-shell #searchInput{font-size:11px!important}
+}
