@@ -260,8 +260,9 @@
     }
     lastScrollY = y;
     clearTimeout(scrollStopTimer);
+    // Do not bring the fixed header back over the card grid 140 ms after
+    // every downward swipe. Restore it only on an upward scroll or near top.
     scrollStopTimer = setTimeout(() => {
-      header?.classList.remove('viewer-header-scrolling');
       syncHeaderHeight();
     }, 140);
   }
