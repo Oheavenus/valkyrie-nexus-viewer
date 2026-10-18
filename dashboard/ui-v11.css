@@ -320,3 +320,95 @@ main{
     padding-bottom:8px!important;
   }
 }
+
+
+/* V15: bottom action rail remains visible while Cost / ATK / HP scroll */
+#cardsPanel .card-control-footer .footer-stat-filter-row{
+  display:flex!important;
+  flex-flow:row nowrap!important;
+  gap:8px!important;
+  overflow:visible!important;
+  align-items:center!important;
+}
+#cardsPanel .card-control-footer .footer-stat-filter-scroll{
+  flex:1 1 auto!important;
+  display:flex!important;
+  flex-flow:row nowrap!important;
+  min-width:0!important;
+  min-height:31px!important;
+  width:auto!important;
+  max-width:none!important;
+  gap:6px!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scrollbar-width:thin;
+  scrollbar-color:#64749a #11172a;
+}
+#cardsPanel .card-control-footer .footer-stat-filter-scroll>.stat-filter-group{
+  flex:0 0 auto!important;
+  min-width:max-content!important;
+  width:max-content!important;
+  max-width:none!important;
+  margin:0!important;
+}
+#cardsPanel .card-control-footer .footer-stat-filter-actions{
+  display:flex!important;
+  flex:0 0 auto!important;
+  margin-left:auto!important;
+  gap:7px!important;
+  min-width:0!important;
+  justify-content:flex-end!important;
+  align-items:center!important;
+  white-space:nowrap!important;
+}
+#cardsPanel .card-control-footer .footer-stat-filter-actions #resetCardFilters{
+  display:inline-flex!important;
+  flex:0 0 78px!important;
+  order:99!important;
+  width:78px!important;
+  min-width:78px!important;
+  height:30px!important;
+  min-height:30px!important;
+  margin:0!important;
+  align-items:center;
+  justify-content:center;
+}
+#cardsPanel .card-control-footer #viewerAllOwned{
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  min-width:105px!important;
+  min-height:30px!important;
+  padding:5px 9px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px solid #52796e!important;
+  border-radius:6px!important;
+  background:#183b37!important;
+  color:#b6eee0!important;
+  font-size:10px!important;
+  font-weight:700!important;
+  cursor:pointer!important;
+}
+#cardsPanel .card-control-footer #viewerAllOwned:hover,
+#cardsPanel .card-control-footer #viewerAllOwned:focus-visible{
+  border-color:#8bd7bd!important;
+  background:#20564c!important;
+}
+#cardsPanel .card-control-footer #viewerAllOwned[aria-pressed="true"]{
+  border-color:#a18ac8!important;
+  background:#3f3562!important;
+  color:#e5d8ff!important;
+}
+@media(max-width:550px){
+  #cardsPanel .card-control-footer .footer-stat-filter-row{gap:4px!important}
+  #cardsPanel .card-control-footer #viewerAllOwned{
+    padding:4px 6px!important;
+    min-width:88px!important;
+    font-size:9px!important;
+  }
+  #cardsPanel .card-control-footer .footer-stat-filter-actions #resetCardFilters{
+    flex-basis:65px!important;width:65px!important;min-width:65px!important;
+  }
+}
